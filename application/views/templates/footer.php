@@ -4,7 +4,7 @@
         <!-- FOOTER -->
         <?php if ($application=='frontoffice') { ?>
             <center id="footer">
-                <p><Strong>OC-정의</Strong> will help you configurate your characters's fitures. Don't hesitate to <a href="">learn more</a></p>
+            
             </center>
         <?php } ?>
         <!-- FOOTER -->
