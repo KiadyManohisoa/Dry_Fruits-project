@@ -4,7 +4,7 @@
         <!-- FOOTER -->
         <?php if ($application=='frontoffice') { ?>
             <center id="footer">
-            
+                
             </center>
         <?php } ?>
         <!-- FOOTER -->

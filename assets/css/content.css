@@ -20,7 +20,7 @@
     border-color: #68A28A;
 }
 
-.content h2{
+.content h2, .content h3{
     font-weight: bold;
 }
 

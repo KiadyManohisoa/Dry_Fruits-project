@@ -3,7 +3,7 @@
     <h2>Products Categories</h2>
     <form>
         <div class="form-group">
-            <input class="form-control" type="text" class="form-control form-control-custom" placeholder="Enter the product categorie">
+            <input class="form-control" type="text" class="form-control" placeholder="Enter the product categorie">
         </div>
         <div class="form-group text-right">
             <button type="submit" class="btn btn-custom btn-lg">Submit</button>
@@ -36,7 +36,7 @@
     <h2>Fruits Categories</h2>
     <form>
         <div class="form-group">
-            <input class="form-control" type="text" class="form-control form-control-custom" placeholder="Enter the fruit categorie">
+            <input class="form-control" type="text" class="form-control" placeholder="Enter the fruit categorie">
         </div>
         <div class="form-group text-right">
             <button type="submit" class="btn btn-custom btn-lg">Submit</button>
@@ -68,13 +68,13 @@
 <div class="content col-lg-12">
     <h2>Finished Products</h2>
     <form class="col-lg-6 col-md-6">
-        <div class="form-group col-lg-6 col-mg-6">
+        <div class="form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="categorie">Fruits Categories</label>
             <select class="form-control" name="" id="categorie">
                 <option value="">Strawberries</option>
             </select>
         </div>
-        <div class="form-group col-lg-6 col-mg-6">
+        <div class="form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="categorie">Products Categories</label>
             <select class="form-control" name="" id="categorie">
                 <option value="">Dried</option>
@@ -86,11 +86,11 @@
             <input class="form-control" type="text" name="" id="allonger" placeholder="Enter the stock (Kg)">
         </div>
 
-        <div class="desc form-group col-lg-6 col-mg-6">
+        <div class="desc form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="">Desciption</label>
             <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Enter the stock (Kg)"></textarea>
         </div>
-        <div class="desc form-group col-lg-6 col-mg-6">
+        <div class="desc form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="">Pictures details</label>
             <input class="form-control" type="file" name="" id="" placeholder="Add a file">
         </div>
@@ -100,29 +100,29 @@
             <input class="form-control" type="text" name="" id="allonger" placeholder="Enter the charges (Ar)">
         </div>
 
-        <div class="form-group col-lg-6 col-mg-6">
+        <div class="form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="">Detail price(100g)</label>
             <input class="form-control" type="text" name="" placeholder="Enter the price (Kg)">
         </div>
-        <div class="form-group col-lg-6 col-mg-6">
+        <div class="form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="">Detail reduction</label>
             <input class="form-control" type="text" name="" placeholder="Enter the reduction (%)">
         </div>
 
-        <div class="form-group col-lg-6 col-mg-6">
+        <div class="form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="">Wholesale price(100g)</label>
             <input class="form-control" type="text" name="" placeholder="Enter the price (Kg)">
         </div>
-        <div class="form-group col-lg-6 col-mg-6">
+        <div class="form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="">Wholesale reduction</label>
             <input class="form-control" type="text" name="" placeholder="Enter the reduction (%)">
         </div>
 
-        <div class="form-group col-lg-6 col-mg-6">
+        <div class="form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="">Bluck price(100g)</label>
             <input class="form-control" type="text" name="" placeholder="Enter the price (Kg)">
         </div>
-        <div class="form-group col-lg-6 col-mg-6">
+        <div class="form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="">Bluck reduction</label>
             <input class="form-control" type="text" name="" placeholder="Enter the reduction (%)">
         </div>

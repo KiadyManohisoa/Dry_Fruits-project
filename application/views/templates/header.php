@@ -14,22 +14,18 @@
     <!-- HEADER -->
     <div class="header">
         <div class="row">
-            <div height="50px" class="col-lg-9 col-md-8 col-xs-4 col-sm-7" id="title">
-                <a href="<?php echo base_url("View/page/".$application."/info") ?>">
+            <div height="50px" class="col-lg-3 col-md-3 col-xs-3 col-sm-3" id="title">
+                <a href="<?php if ($application=='frontoffice') { echo base_url("View/page/".$application."/info"); } else { echo base_url("View/page/".$application); } ?>">
                     <img height="35px" src="
                         <?php echo base_url('assets/icons/'.$title.".png") ?>
                     ">
                 </a>
             </div>
-            <div class="col-lg-3 col-md-4 col-xs-8 col-sm-5 last">
-                <?php foreach ($nav_bar as $key => $value) { 
-                    $width=18;
-                    if ($value['action']=='enable') {
-                        $width=24;
-                    } ?>
+            <div class="col-lg-9 col-md-9 col-xs-9 col-sm-9 last">
+                <?php foreach ($nav_bar as $key => $value) { ?>
                     <a href="<?php echo base_url("View/page/".$application."/".$value['wording']) ?>" class="btn btn-default form-component">
                         <center>
-                            <img width="<?php echo $width ?>px" src="
+                            <img class="<?php echo $value['action'] ?>" src="
                             <?php echo base_url('assets/icons/'.$key."-".$value['action'].".png") ?>
                             ">
                             <p><?php echo $value['wording'] ?></p>
