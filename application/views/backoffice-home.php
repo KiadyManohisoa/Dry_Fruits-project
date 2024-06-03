@@ -119,7 +119,7 @@
     <h2>General Report</h2>
     <form class="col-lg-6 col-md-6">
         <div class="form-group">
-            <input class="form-control" type="text" class="form-control form-control-custom" placeholder="Enter the client full name">
+            <input class="form-control" type="date" class="form-control form-control-custom">
         </div>
         <div class="form-group text-right">
             <button class="btn btn-custom btn-lg" onclick="submitForm()">Submit</button>
