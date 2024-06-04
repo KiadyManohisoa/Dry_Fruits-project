@@ -1,0 +1,67 @@
+.content {
+    font-family: century-gothic;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.btn-custom {
+    background-color: #79B09D;
+    border-color: #79B09D;
+    color: #fff;
+    padding: 10px 20px; 
+    font-size: 15px;
+    border-radius: 4px; 
+}
+.btn-custom:hover {
+    transition: 0.5s;
+    background-color: #68A28A;
+    border-color: #68A28A;
+}
+
+.content h2{
+    font-weight: bold;
+}
+
+.reduction{
+    font-size: 20px;
+    font-weight: bolder;
+    color: #d2475c;
+}
+
+.table{
+    font-size: 15px;
+}
+
+#table{
+    height: 300px;
+    overflow-y: auto;
+}
+
+.table img{
+    width: 20px;
+}
+
+.table #btn{
+    align-items: center;
+    text-align: center;
+    width: 2%;
+}
+
+.table .btn{
+    border: none;
+    background: none;
+}
+
+.table #btn:hover, .table #btn:focus {
+    transition: 0.5s;
+    background-color: #f0f0f0;
+}
+.desc{
+    height: 150px;
+}
+
+.form-group{
+    padding: 10px;
+}

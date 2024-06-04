@@ -1,0 +1,15 @@
+@font-face {
+    font-family: century-gothic;
+    src: url("../fonts/century-gothic.ttf");
+}
+* {
+    box-sizing: border-box;
+}
+
+hr,br{
+    width: 100%;
+}
+
+/* body{
+    background-color: #f0f0f0;
+} */
