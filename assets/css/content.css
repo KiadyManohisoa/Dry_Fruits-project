@@ -65,3 +65,9 @@
 .form-group{
     padding: 10px;
 }
+
+.disabled-link {
+    pointer-events: none;
+    cursor: default; 
+    text-decoration: none;
+}
