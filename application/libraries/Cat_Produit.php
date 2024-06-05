@@ -38,33 +38,33 @@ class Cat_Produit
     }
 
     /*Liste Produits*/
-    public function get_All_Cat_Produits()
+    public function get_All_Produits()
     {
         return $this->CI->Cat_Produit_Model->get_all();
     }
 
     /*Récuperer un produit par son id*/
-    public function get_Cat_Produit_By_Id($id)
+    public function get_Produit_By_Id($id)
     {
         return $this->CI->Cat_Produit_Model->get_by_id($id);
     }
 
     /*Insertion Produit*/
-    public function add_Cat_Produit($lib)
+    public function add_Produit()
     {
-        $data = array('libelle' => $lib);
+        $data = array('libelle' => $this->libelle);
         return $this->CI->Cat_Produit_Model->insert($data);
     }
 
     /*Mise à jour*/
-    public function update_Cat_Produit($id,$libelle)
+    public function update_Produit()
     {
-        $data = array('libelle' => $libelle);
-        return $this->CI->Cat_Produit_Model->update($id, $data);
+        $data = array('libelle' => $this->libelle);
+        return $this->CI->Cat_Produit_Model->update($this->id, $data);
     }
 
     /*Suppression produit*/
-    public function delete_Cat_Produit($id)
+    public function delete_Produit($id)
     {
         return $this->CI->Cat_Produit_Model->delete($id);
     }

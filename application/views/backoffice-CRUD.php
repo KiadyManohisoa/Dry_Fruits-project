@@ -34,15 +34,17 @@
         </table>
     </div>
 </div>
-
 <!-- categories de produits -->
 
 <!-- categories de fruits -->
 <div class="content col-lg-6 col-md-6">
     <h2>Fruits Categories</h2>
-    <form>
+    <form method="get" action="<?php echo site_url();?>index.php/Cat_Fruit_Controller/insert_Cat_Fruit">
         <div class="form-group">
-            <input class="form-control" type="text" class="form-control form-control-custom" placeholder="Enter the fruit categorie">
+            <?php if(isset($cat_fruit_update)) { ?>
+                <input type="hidden" name="id_cat_fruits_to_update" value="<?php echo $cat_fruit_update->get_Id(); ?>">
+            <?php } ?>
+            <input class="form-control" type="text" name="cat_fruits_name" <?php if(isset($cat_fruit_update)) { ?> value="<?php echo $cat_fruit_update->get_Libelle();?>" <?php } ?>  placeholder="Enter the fruit category">
         </div>
         <div class="form-group text-right">
             <button type="submit" class="btn btn-custom btn-lg">Submit</button>
@@ -59,11 +61,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Strawberries</td>
-                    <td id="btn"><button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png') ?>" alt=""></button></td>
-                    <td id="btn"><button class="btn"><img src="<?php echo base_url('assets/icons/trash.png') ?>" alt=""></button></td>
-                </tr>
+                <?php if(isset($ls_cat_fruits)) { 
+                    foreach ($ls_cat_fruits as $cat_fruit) { ?>
+                        <tr>
+                            <td><?php echo $cat_fruit['libelle']; ?></td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_Fruit_Controller/form_Update_Cat_Fruit/<?php echo $cat_fruit['id'];?>">  <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png'); ?>" alt="Edit"></button> </a></td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_Fruit_Controller/delete_Cat_Fruit/<?php echo $cat_fruit['id'];?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/trash.png'); ?>" alt="Delete"></button> </a></td>
+                        </tr>
+                    <?php } 
+                } ?>
             </tbody>
         </table>
     </div>
