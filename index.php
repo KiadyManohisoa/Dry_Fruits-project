@@ -97,7 +97,7 @@ switch (ENVIRONMENT)
  * This variable must contain the name of your "system" directory.
  * Set the path if it is not in the same directory as this file.
  */
-	$system_path = 'D:\ITU\S3\Web\xampp\htdocs\S4\Projet_Mme_Baovola\Dry_Fruits-project\system';
+	$system_path = './system';
 
 /*
  *---------------------------------------------------------------

@@ -1,9 +1,3 @@
-CREATE DATABASE dry_fruits_project;
-
-ALTER DATABASE dry_fruits_project OWNER TO postgres;
-
-\c dry_fruits_project;
-
 CREATE TABLE Cat_Produit(
    id SERIAL,
    libelle VARCHAR(20)  NOT NULL,

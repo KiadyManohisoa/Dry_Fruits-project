@@ -1,3 +1,9 @@
+CREATE DATABASE dry_fruits_project;
+
+ALTER DATABASE dry_fruits_project OWNER TO postgres;
+
+\c dry_fruits_project;
+
 CREATE SEQUENCE stock_sequence
     START 1
     INCREMENT 1
