@@ -1,144 +1,130 @@
-CREATE TABLE Cat_Produit(
-   id SERIAL,
-   libelle VARCHAR(20)  NOT NULL,
-   PRIMARY KEY(id),
-   UNIQUE(libelle)
+CREATE TABLE cat_product(
+   id_cat_product SERIAL,
+   wording VARCHAR(20)  NOT NULL,
+   PRIMARY KEY(id_cat_product),
+   UNIQUE(wording)
 );
 
-CREATE TABLE Cat_Fruit(
-   id SERIAL,
-   libelle VARCHAR(25)  NOT NULL,
-   PRIMARY KEY(id),
-   UNIQUE(libelle)
+CREATE TABLE cat_fruit(
+   id_cat_fruit SERIAL,
+   wording VARCHAR(25)  NOT NULL,
+   PRIMARY KEY(id_cat_fruit),
+   UNIQUE(wording)
 );
 
-CREATE TABLE Produit(
-   id SERIAL,
-   lienImage VARCHAR(50)  NOT NULL,
+CREATE TABLE Product(
+   id_product SERIAL,
+   image_link VARCHAR(50)  NOT NULL,
    description VARCHAR(75) ,
-   dateCreation DATE,
-   id_1 INTEGER NOT NULL,
-   id_2 INTEGER NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(id_1) REFERENCES Cat_Produit(id),
-   FOREIGN KEY(id_2) REFERENCES Cat_Fruit(id)
+   creation_date DATE,
+   id_cat_product INTEGER NOT NULL,
+   id_cat_fruit INTEGER NOT NULL,
+   PRIMARY KEY(id_product),
+   FOREIGN KEY(id_cat_product) REFERENCES cat_product(id_cat_product),
+   FOREIGN KEY(id_cat_fruit) REFERENCES cat_fruit(id_cat_fruit)
 );
 
-CREATE TABLE Stock(
-   id VARCHAR(50) DEFAULT ('STK') || LPAD(nextval('stock_sequence')::TEXT,4,'0'),
-   dateRenouvellement TIMESTAMP,
-   qttKg NUMERIC(9,2)   NOT NULL,
-   id_1 INTEGER NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(id_1) REFERENCES Produit(id)
+CREATE TABLE stock(
+   id_stock VARCHAR(50) DEFAULT ('STK') || LPAD(nextval('stock_sequence')::TEXT, 4, '0'),
+   renewal_date TIMESTAMP,
+   quantity_kg NUMERIC(9,2)   NOT NULL,
+   id_product INTEGER NOT NULL,
+   PRIMARY KEY(id_stock),
+   FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );
 
-CREATE TABLE Compte_clients(
-   id VARCHAR(20) DEFAULT ('CTL') || LPAD(nextval('compte_clients_sequence')::TEXT,4,'0'),
-   pseudoName VARCHAR(25) ,
-   mdp VARCHAR(50)  NOT NULL,
+CREATE TABLE clients_account(
+   id_client VARCHAR(20) DEFAULT ('CTL') || LPAD(nextval('client_account_sequence')::TEXT, 4, '0'),
+   full_name VARCHAR(100)  NOT NULL,
    mail VARCHAR(50) ,
-   numéro VARCHAR(20)  NOT NULL,
-   PRIMARY KEY(id),
-   UNIQUE(pseudoName)
+   password VARCHAR(50)  NOT NULL,
+   phone_number VARCHAR(20)  NOT NULL,
+   PRIMARY KEY(id_client)
 );
 
-CREATE TABLE Admin(
-   id SERIAL,
-   pseudoName VARCHAR(25) ,
-   mdp VARCHAR(50)  NOT NULL,
-   PRIMARY KEY(id),
-   UNIQUE(pseudoName)
+CREATE TABLE administrators(
+   id_admin SERIAL,
+   pseudo_name VARCHAR(25) ,
+   password VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(id_admin),
+   UNIQUE(pseudo_name)
 );
 
-CREATE TABLE Mvt_Detail(
-   id VARCHAR(50) DEFAULT ('MVD') || LPAD(nextval('mvt_detail_sequence')::TEXT,4,'0'),
-   dateMvt DATE,
-   prix NUMERIC(14,2)  ,
+CREATE TABLE detail_movement(
+   id_detail_movement VARCHAR(50) DEFAULT ('MVD') || LPAD(nextval('movement_detail_sequence')::TEXT, 4, '0'),
+   movement_date DATE,
+   price NUMERIC(14,2)  ,
    reduction SMALLINT,
-   id_1 INTEGER NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(id_1) REFERENCES Produit(id)
+   id_product INTEGER NOT NULL,
+   PRIMARY KEY(id_detail_movement),
+   FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );
 
-CREATE TABLE Mvt_Vrac(
-   id VARCHAR(50) DEFAULT ('MVV') || LPAD(nextval('mvt_vrac_sequence')::TEXT,4,'0'),
-   dateMvt DATE,
-   prix NUMERIC(14,2)  ,
+CREATE TABLE client_favorite_products(
+   id_client_favorite_products VARCHAR(50) DEFAULT ('FAV') || LPAD(nextval('client_favorite_products_sequence')::TEXT, 4, '0'),
+   id_client VARCHAR(20)  NOT NULL,
+   id_product INTEGER NOT NULL,
+   PRIMARY KEY(id_client_favorite_products),
+   FOREIGN KEY(id_client) REFERENCES clients_account(id_client),
+   FOREIGN KEY(id_product) REFERENCES Product(id_product)
+);
+
+CREATE TABLE wholesale_movement(
+   id_wholesale_movement VARCHAR(50) DEFAULT ('MVW') || LPAD(nextval('movement_wholesale_sequence')::TEXT, 4, '0'),
+   movement_date DATE,
+   price NUMERIC(14,2)  ,
    reduction SMALLINT,
-   id_1 INTEGER NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(id_1) REFERENCES Produit(id)
+   id_product INTEGER NOT NULL,
+   PRIMARY KEY(id_wholesale_movement),
+   FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );
 
-CREATE TABLE Mvt_Gros(
-   id VARCHAR(50) DEFAULT ('MVG') || LPAD(nextval('mvt_gros_sequence')::TEXT,4,'0'),
-   dateMvt DATE,
-   prix NUMERIC(14,2)  ,
+CREATE TABLE bulk_movement(
+   id_bulk_movement VARCHAR(50) DEFAULT ('MVB') || LPAD(nextval('movement_bulk_sequence')::TEXT, 4, '0'),
+   movement_date DATE,
+   price NUMERIC(14,2)  ,
    reduction SMALLINT,
-   id_1 INTEGER NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(id_1) REFERENCES Produit(id)
+   id_product INTEGER NOT NULL,
+   PRIMARY KEY(id_bulk_movement),
+   FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );
 
-CREATE TABLE Mvt_DepensesKg(
-   id VARCHAR(50) DEFAULT ('MVD') || LPAD(nextval('mvt_depensesKg_sequence')::TEXT,4,'0'),
-   dateMvt DATE,
-   prix NUMERIC(14,2)  ,
-   id_1 INTEGER NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(id_1) REFERENCES Produit(id)
+CREATE TABLE charges_kg_movement(
+   id_charges_movement VARCHAR(50) DEFAULT ('MVC') || LPAD(nextval('movement_charges_sequence')::TEXT, 4, '0'),
+   movement_date DATE,
+   price NUMERIC(14,2)  ,
+   id_product INTEGER NOT NULL,
+   PRIMARY KEY(id_charges_movement),
+   FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );
 
-CREATE TABLE Produit_commander(
-   id VARCHAR(50) DEFAULT ('PCM') || LPAD(nextval('produit_commander_sequence')::TEXT,4,'0'),
-   typeVente CHAR(1) ,
-   quantite NUMERIC(14,2)  ,
-   id_1 INTEGER NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(id_1) REFERENCES Produit(id)
-);
-
-CREATE TABLE Favoris_Client(
-   id VARCHAR(50) DEFAULT ('FAC') || LPAD(nextval('favoris_client_sequence')::TEXT,4,'0'),
-   PRIMARY KEY(id)
-);
-
-CREATE TABLE Commande(
-   id SERIAL,
-   idCommande VARCHAR(35)  NOT NULL,
+CREATE TABLE orders(
+   id_order VARCHAR(35) DEFAULT ('ORD') || LPAD(nextval('ordered_product_sequence')::TEXT, 4, '0'),
    reduction SMALLINT,
-   dateCommande TIMESTAMP,
-   id_1 VARCHAR(75)  NOT NULL,
-   id_2 VARCHAR(20)  NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(id_1) REFERENCES Produit_commander(id),
-   FOREIGN KEY(id_2) REFERENCES Compte_clients(id)
+   ordering_date TIMESTAMP,
+   id_client VARCHAR(20)  NOT NULL,
+   PRIMARY KEY(id_order),
+   FOREIGN KEY(id_client) REFERENCES clients_account(id_client)
 );
 
-CREATE TABLE Livraison(
-   id VARCHAR(50) DEFAULT ('LIV') || LPAD(nextval('livraison_sequence')::TEXT,4,'0'),
-   dateLivraison TIMESTAMP,
-   adresseLivraison VARCHAR(50)  NOT NULL,
-   frais NUMERIC(10,2)   NOT NULL,
-   statut SMALLINT NOT NULL,
-   id_1 INTEGER NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(id_1) REFERENCES Commande(id)
+CREATE TABLE delivery(
+   id_delivery VARCHAR(50) DEFAULT ('DLV') || LPAD(nextval('delivery_sequence')::TEXT, 4, '0'),
+   delivery_date TIMESTAMP,
+   delivery_address VARCHAR(50)  NOT NULL,
+   cost NUMERIC(10,2)   NOT NULL,
+   status SMALLINT NOT NULL,
+   id_order VARCHAR(35)  NOT NULL,
+   PRIMARY KEY(id_delivery),
+   FOREIGN KEY(id_order) REFERENCES orders(id_order)
 );
 
-CREATE TABLE Asso_13(
-   id INTEGER,
-   id_1 VARCHAR(50) ,
-   PRIMARY KEY(id, id_1),
-   FOREIGN KEY(id) REFERENCES Produit(id),
-   FOREIGN KEY(id_1) REFERENCES Favoris_Client(id)
-);
-
-CREATE TABLE Asso_14(
-   id VARCHAR(20) DEFAULT ('ASO') || LPAD(nextval('asso_14_sequence')::TEXT,4,'0'),
-   id_1 VARCHAR(50) ,
-   PRIMARY KEY(id, id_1),
-   FOREIGN KEY(id) REFERENCES Compte_clients(id),
-   FOREIGN KEY(id_1) REFERENCES Favoris_Client(id)
+CREATE TABLE products_ordered(
+   id_product_ordered VARCHAR(75) DEFAULT ('PRO') || LPAD(nextval('products_ordered_sequence')::TEXT, 4, '0'),
+   sales_type CHAR(1) ,
+   quantity NUMERIC(14,2)  ,
+   id_order VARCHAR(35)  NOT NULL,
+   id_product INTEGER NOT NULL,
+   PRIMARY KEY(id_product_ordered),
+   FOREIGN KEY(id_order) REFERENCES orders(id_order),
+   FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );

@@ -1,46 +1,36 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Cat_Fruit_Model extends CI_Model
+class Cat_fruit_Model extends CI_Model
 {
-
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();
     }
 
-    // Récupérer toutes les catégories
     public function get_all()
     {
-        $query = $this->db->get('cat_fruit');
-        return $query->result_array();
+        return $this->db->get('cat_fruit')->result_array();
     }
 
-    // Récupérer une catégorie par ID
     public function get_by_id($id)
     {
-        $query = $this->db->get_where('cat_fruit', array('id' => $id));
-        return $query->row_array();
+        return $this->db->get_where('cat_fruit', array('id_cat_fruit' => $id))->row_array();
     }
 
-    // Ajouter une nouvelle catégorie
     public function insert($data)
     {
         return $this->db->insert('cat_fruit', $data);
     }
 
-    // Mettre à jour une catégorie existante
     public function update($id, $data)
     {
-        $this->db->where('id', $id);
+        $this->db->where('id_cat_fruit', $id);
         return $this->db->update('cat_fruit', $data);
     }
 
-    // Supprimer une catégorie
-    public function delete_category($id)
+    public function delete($id)
     {
-        $this->db->where('id', $id);
-        return $this->db->delete('cat_fruit');
+        return $this->db->delete('cat_fruit', array('id_cat_fruit' => $id));
     }
 }

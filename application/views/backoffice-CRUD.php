@@ -1,12 +1,12 @@
 <!-- categories de produits -->
 <div class="content col-lg-6 col-md-6">
     <h2>Products Categories</h2>
-    <form method="get" action="<?php echo site_url();?>index.php/Cat_Produit_Controller/insert_Cat_Produit">
-        <?php if(isset($cat_produit_update)) { ?>
-            <input type="hidden" name="id_cat_product_to_update" value="<?php echo $cat_produit_update->id;?>">
+    <form method="get" action="<?php echo site_url();?>index.php/Cat_product_Controller/insert_cat_product">
+        <?php if(isset($cat_product_update)) { ?>
+            <input type="hidden" name="id_cat_product_to_update" value="<?php echo $cat_product_update->get_id_cat_product();?>">
         <?php } ?>
         <div class="form-group">
-            <input name="cat_product_name" class="form-control" type="text" class="form-control form-control-custom" <?php if(isset($cat_produit_update)) { ?> value="<?php echo $cat_produit_update->libelle;?>" <?php } ?> placeholder="Enter the product categorie">
+            <input name="cat_product_name" class="form-control" type="text" class="form-control form-control-custom" <?php if(isset($cat_product_update)) { ?> value="<?php echo $cat_product_update->get_wording();?>" <?php } ?> placeholder="Enter the product categorie">
         </div>
         <div class="form-group text-right">
             <button type="submit" class="btn btn-custom btn-lg">Submit</button>
@@ -23,13 +23,17 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($ls_cat_prod as $cat_prod) { ?>
-                    <tr>
-                        <td><?php echo $cat_prod->libelle;?></td>
-                        <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_Produit_Controller/form_Update_Cat_Produit/<?php echo $cat_prod->id;?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png') ?>" alt=""></button> </a> </td>
-                        <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_Produit_Controller/delete_Cat_Produit/<?php echo $cat_prod->id;?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/trash.png') ?>" alt=""></button> </a> </td>
-                    </tr>
-                <?php  } ?>
+                <?php 
+                if(isset($ls_cat_products)) {
+                    foreach ($ls_cat_products as $cat_prod) { ?>
+                        <tr>
+                            <td><?php echo $cat_prod->get_wording();?></td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_product_Controller/form_update_cat_product/<?php echo $cat_prod->get_id_cat_product();?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png') ?>" alt=""></button> </a> </td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_product_Controller/delete_cat_product/<?php echo $cat_prod->get_id_cat_product();?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/trash.png') ?>" alt=""></button> </a> </td>
+                        </tr>
+                <?php  } 
+                }
+                ?>
             </tbody>
         </table>
     </div>
@@ -39,12 +43,12 @@
 <!-- categories de fruits -->
 <div class="content col-lg-6 col-md-6">
     <h2>Fruits Categories</h2>
-    <form method="get" action="<?php echo site_url();?>index.php/Cat_Fruit_Controller/insert_Cat_Fruit">
+    <form method="get" action="<?php echo site_url();?>index.php/Cat_fruit_Controller/insert_cat_fruit">
         <div class="form-group">
             <?php if(isset($cat_fruit_update)) { ?>
-                <input type="hidden" name="id_cat_fruits_to_update" value="<?php echo $cat_fruit_update->get_Id(); ?>">
+                <input type="hidden" name="id_cat_fruits_to_update" value="<?php echo $cat_fruit_update->get_id_cat_fruit();?>">
             <?php } ?>
-            <input class="form-control" type="text" name="cat_fruits_name" <?php if(isset($cat_fruit_update)) { ?> value="<?php echo $cat_fruit_update->get_Libelle();?>" <?php } ?>  placeholder="Enter the fruit category">
+            <input class="form-control" type="text" name="cat_fruits_name" <?php if(isset($cat_fruit_update)) { ?> value="<?php echo $cat_fruit_update->get_wording();?>" <?php } ?>  placeholder="Enter the fruit category">
         </div>
         <div class="form-group text-right">
             <button type="submit" class="btn btn-custom btn-lg">Submit</button>
@@ -64,9 +68,9 @@
                 <?php if(isset($ls_cat_fruits)) { 
                     foreach ($ls_cat_fruits as $cat_fruit) { ?>
                         <tr>
-                            <td><?php echo $cat_fruit['libelle']; ?></td>
-                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_Fruit_Controller/form_Update_Cat_Fruit/<?php echo $cat_fruit['id'];?>">  <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png'); ?>" alt="Edit"></button> </a></td>
-                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_Fruit_Controller/delete_Cat_Fruit/<?php echo $cat_fruit['id'];?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/trash.png'); ?>" alt="Delete"></button> </a></td>
+                            <td><?php echo $cat_fruit->get_wording(); ?></td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_fruit_Controller/form_update_cat_fruit/<?php echo $cat_fruit->get_id_cat_fruit();?>">  <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png'); ?>" alt="Edit"></button> </a></td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_fruit_Controller/delete_cat_fruit/<?php echo $cat_fruit->get_id_cat_fruit();?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/trash.png'); ?>" alt="Delete"></button> </a></td>
                         </tr>
                     <?php } 
                 } ?>
