@@ -3,106 +3,102 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Stock
 {
-    public $id;
-    public $dateRenouvellement;
-    public $qttKg;
-    public $id_1;
     protected $CI;
 
-    public function __construct($id = null, $dateRenouvellement = null, $qttKg = null, $id_1 = null)
+    private $id_stock;
+    private $renewal_date;
+    private $quantity_kg;
+    private $id_product;
+
+    public function __construct($id_stock = null, $renewal_date = null, $quantity_kg = null, $id_product = null)
     {
-        // Récupérer l'instance de l'objet CodeIgniter
         $this->CI = &get_instance();
-        $this->CI->load->model('Stock_model');
+        $this->CI->load->model('Stock_Model');
 
-        $this->id = $id;
-        $this->dateRenouvellement = $dateRenouvellement;
-        $this->qttKg = $qttKg;
-        $this->id_1 = $id_1;
+        $this->id_stock = $id_stock;
+        $this->renewal_date = $renewal_date;
+        $this->quantity_kg = $quantity_kg;
+        $this->id_product = $id_product;
     }
 
-    // Getters
-    public function get_id()
+    public function get_id_stock()
     {
-        return $this->id;
+        return $this->id_stock;
     }
 
-    public function get_dateRenouvellement()
+    public function set_id_stock($id_stock)
     {
-        return $this->dateRenouvellement;
+        $this->id_stock = $id_stock;
     }
 
-    public function get_qttKg()
+    public function get_renewal_date()
     {
-        return $this->qttKg;
+        return $this->renewal_date;
     }
 
-    public function get_id_1()
+    public function set_renewal_date($renewal_date)
     {
-        return $this->id_1;
+        $this->renewal_date = $renewal_date;
     }
 
-    // Setters
-    public function set_id($id)
+    public function get_quantity_kg()
     {
-        $this->id = $id;
+        return $this->quantity_kg;
     }
 
-    public function set_dateRenouvellement($dateRenouvellement)
+    public function set_quantity_kg($quantity_kg)
     {
-        $this->dateRenouvellement = $dateRenouvellement;
+        $this->quantity_kg = $quantity_kg;
     }
 
-    public function set_qttKg($qttKg)
+    public function get_id_product()
     {
-        $this->qttKg = $qttKg;
+        return $this->id_product;
     }
 
-    public function set_id_1($id_1)
+    public function set_id_product($id_product)
     {
-        $this->id_1 = $id_1;
+        $this->id_product = $id_product;
     }
 
-    // CRUD Operations
-
-    // Create
-    public function add_Stock()
+    public function get_all_stocks()
     {
-        //$this->dateRenouvellement = date('Y-m-d H:i:s');
-        $data = array(
-            'daterenouvellement' => $this->dateRenouvellement,
-            'qttkg' => $this->qttKg,
-            'id_1' => $this->id_1
+        $result = $this->CI->Stock_Model->get_all();
+        $stocks = array();
+        foreach ($result as $data) {
+            $stocks[] = new Stock(
+                $data['id_stock'],
+                $data['renewal_date'],
+                $data['quantity_kg'],
+                $data['id_product']
+            );
+        }
+        return $stocks;
+    }
+
+    public function get_stock_by_id($id)
+    {
+        $data = $this->CI->Stock_Model->get_by_id($id);
+        return new Stock(
+            $data['id_stock'],
+            $data['renewal_date'],
+            $data['quantity_kg'],
+            $data['id_product']
         );
-        return $this->CI->Stock_model->insert_stock($data);
     }
 
-    // Read all
-    public function get_All_Stock()
+    public function add_stock($data)
     {
-        return $this->CI->Stock_model->get_all_stock();
+        return $this->CI->Stock_Model->insert($data);
     }
 
-    // Read by ID
-    public function get_Stock_By_Id($id)
+    public function update_stock($id, $data)
     {
-        return $this->CI->Stock_model->get_stock_by_id($id);
+        return $this->CI->Stock_Model->update($id, $data);
     }
 
-    // Update
-    public function update_Stock()
+    public function delete_stock($id)
     {
-        $data = array(
-            'dateRenouvellement' => $this->dateRenouvellement,
-            'qttKg' => $this->qttKg,
-            'id_1' => $this->id_1
-        );
-        return $this->CI->Stock_model->update_stock($this->id, $data);
-    }
-
-    // Delete
-    public function delete_Stock($id)
-    {
-        return $this->CI->Stock_model->delete_stock($id);
+        return $this->CI->Stock_Model->delete($id);
     }
 }

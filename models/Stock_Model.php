@@ -1,44 +1,36 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Stock_model extends CI_Model
+class Stock_Model extends CI_Model
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();
     }
 
-    // Create
-    public function insert_stock($data)
+    public function get_all()
+    {
+        return $this->db->get('stock')->result_array();
+    }
+
+    public function get_by_id($id)
+    {
+        return $this->db->get_where('stock', array('id_stock' => $id))->row_array();
+    }
+
+    public function insert($data)
     {
         return $this->db->insert('stock', $data);
     }
 
-    // Read all
-    public function get_all_stock()
+    public function update($id, $data)
     {
-        $query = $this->db->get('stock');
-        return $query->result();
-    }
-
-    // Read by ID
-    public function get_stock_by_id($id)
-    {
-        $query = $this->db->get_where('stock', array('id' => $id));
-        return $query->row();
-    }
-
-    // Update
-    public function update_stock($id, $data)
-    {
-        $this->db->where('id', $id);
+        $this->db->where('id_stock', $id);
         return $this->db->update('stock', $data);
     }
 
-    // Delete
-    public function delete_stock($id)
+    public function delete($id)
     {
-        return $this->db->delete('stock', array('id' => $id));
+        return $this->db->delete('stock', array('id_stock' => $id));
     }
 }
