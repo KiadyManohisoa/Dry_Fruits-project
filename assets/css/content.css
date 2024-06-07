@@ -6,6 +6,16 @@
     border-radius: 10px;
 }
 
+input:focus, input.form-control:focus {
+    border-color: #AAD7C3; /* Couleur de la bordure lorsque le focus est activé */
+    /* Autres styles facultatifs */
+    box-shadow: 0 0 5px #AAD7C3; /* Ombre pour mettre en évidence */
+    outline: none; /* Supprime l'outline par défaut */
+}
+
+button:focus{
+    border: none;
+}
 .btn-custom {
     background-color: #79B09D;
     border-color: #79B09D;
@@ -20,7 +30,7 @@
     border-color: #68A28A;
 }
 
-.content h2, .content h3{
+.content h1, .content h2, .content h3{
     font-weight: bold;
 }
 
@@ -70,4 +80,41 @@
     pointer-events: none;
     cursor: default; 
     text-decoration: none;
+}
+
+/* Masque l'élément radio par défaut */
+.round-check input[type="checkbox"], .round-check input[type="radio"] {
+    display: none;
+}
+
+/* Style de l'élément personnalisé */
+.round-check span {
+    width: 30px; /* Vous pouvez ajuster la taille selon vos besoins */
+    height: 30px;
+    border-radius: 50%; /* Cela rend l'élément rond */
+    display: inline-block;
+    border: 1.5px solid #6e6e6e; /* Bordure de la case à cocher */
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Ajoute le style quand la case est cochée */
+.round-check input[type="checkbox"]:checked + span, .round-check input[type="radio"]:checked + span {
+    background-color: #79B09D; /* Couleur de fond quand la case est cochée */
+    border-color: #79B09D; /* Change aussi la couleur de la bordure */
+}
+
+/* Style de l'indicateur de coche */
+.round-check input[type="checkbox"]:checked + span::after, .round-check input[type="radio"]:checked + span::after {
+    content: '';
+    width: 6px; /* Ajustez la taille de l'indicateur de coche */
+    height: 12px;
+    border: solid #000; /* Bordure noire pour le check */
+    border-width: 0 2px 2px 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%) rotate(45deg); /* Positionne et tourne pour faire un check */
+    transition: transform 0.3s;
 }

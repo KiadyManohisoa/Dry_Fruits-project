@@ -30,7 +30,7 @@ class View_model extends CI_Model {
         $data['nav_bar'] = $this->set_nav_bar($application,$section);
         $data['contents'] = $application."-".$section;
         $data['css'] = array('font.css','content.css','bootstrap.css','bootstrap.min.css', 'scrollbar.css','header.css','footer.css','loader.css',$application.'-'.$section.'.css');
-        $data['js'] = array('bootstrap.js','jquery.min.js','bootstrap.min.js','npm.js','chart.js',$application.'.js');
+        $data['js'] = array('bootstrap.js','jquery.min.js','bootstrap.min.js','npm.js','chart.js',$application.'-'.$section.'.js');
         return $data;
     }
 }
