@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Clients_Account
+class Clients_account
 {
     protected $CI;
 
@@ -142,5 +142,20 @@ class Clients_Account
     public function login($email, $password)
     {
         return $this->CI->Clients_account_Model->verify_login($email, $password);
+    }
+
+    public function search_client_by_name($name)
+    {
+        $client = $this->CI->Clients_account_Model->search_client($name);
+        $result = array();
+        if ($client) {
+            foreach ($client as $client_result) {
+                $client_search = new Client_account();
+                $client_search->set_id_client($client_result['id_client']);
+                $client_search->set_full_name($client_result['full_name']);
+                $result[] = $client_search;
+            }
+        }
+        return $result;
     }
 }

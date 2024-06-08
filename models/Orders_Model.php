@@ -35,44 +35,102 @@ class Orders_Model extends CI_Model
         return $this->db->delete('orders', array('id_order' => $id));
     }
 
-    public function get_basket_link($order_id)
+    public function get_total_quantity_ordered($date, $product_id)
     {
         $sql = "
-        WITH OrderDetails AS (
-            SELECT 
-                product_category, 
-                fruit_category, 
-                product_ordered_sales_type,
-                product_ordered_quantity,
-                CASE 
-                    WHEN product_ordered_sales_type = 'D' THEN detail_price
-                    WHEN product_ordered_sales_type = 'W' THEN wholesale_price
-                    WHEN product_ordered_sales_type = 'B' THEN bulk_price
-                    ELSE NULL
-                END AS product_price,
-                CASE 
-                    WHEN product_ordered_sales_type = 'D' THEN detail_price * product_ordered_quantity
-                    WHEN product_ordered_sales_type = 'W' THEN wholesale_price * product_ordered_quantity
-                    WHEN product_ordered_sales_type = 'B' THEN bulk_price * product_ordered_quantity
-                    ELSE NULL
-                END AS total_price_product,
-                order_reduction
-            FROM v_order_delivery_link
-            WHERE order_id = ?
-        )
-        SELECT 
-            product_category, 
-            fruit_category, 
-            product_ordered_sales_type,
-            product_ordered_quantity,
-            product_price,
-            order_reduction,
-            total_price_product,
-            total_price_product - (total_price_product * order_reduction / 100) AS total_order_price
-        FROM OrderDetails;
-    ";
+            SELECT
+                SUM(quantity) AS total_quantity
+            FROM
+                orders o
+            JOIN
+                products_ordered po ON o.id_order = po.id_order
+            WHERE
+                DATE(o.ordering_date) = ?
+                AND po.id_product = ?
+        ";
 
-        $query = $this->db->query($sql, array($order_id));
+        $query = $this->db->query($sql, array($date, $product_id));
+        return $query->row_array();
+    }
+
+    public function get_number_package_ordered($date, $product_id)
+    {
+        $sql = "
+            SELECT
+                SUM(quantity) / 0.1 AS number_package
+            FROM
+                orders o
+            JOIN
+                products_ordered po ON o.id_order = po.id_order
+            WHERE
+                DATE(o.ordering_date) = ?
+                AND po.id_product = ?
+                AND (sales_type = 'B' OR sales_type = 'D')
+        ";
+
+        $query = $this->db->query($sql, array($date, $product_id));
+        return $query->row_array();
+    }
+
+    public function get_charge_price($product_id, $movement_date)
+    {
+        $sql = "
+            SELECT DISTINCT
+                ckm.price
+            FROM
+                charges_kg_movement ckm
+            JOIN
+                products_ordered po ON ckm.id_product = po.id_product
+            WHERE
+                ckm.id_product = ?
+                AND ckm.movement_date = ?
+        ";
+
+        $query = $this->db->query($sql, array($product_id, $movement_date));
+        return $query->result_array();
+    }
+
+    public function get_sales_amount($ordering_date, $product_id)
+    {
+        $sql = "
+            SELECT
+                SUM(
+                    CASE 
+                        WHEN po.sales_type = 'D' THEN dm.price * po.quantity
+                        WHEN po.sales_type = 'W' THEN wm.price * po.quantity
+                        WHEN po.sales_type = 'B' THEN bm.price * po.quantity
+                        ELSE 0
+                    END
+                ) AS total_price
+            FROM
+                orders o
+            JOIN
+                products_ordered po ON o.id_order = po.id_order
+            LEFT JOIN
+                detail_movement dm ON po.id_product = dm.id_product AND po.sales_type = 'D' AND DATE(o.ordering_date) = dm.movement_date
+            LEFT JOIN
+                wholesale_movement wm ON po.id_product = wm.id_product AND po.sales_type = 'W' AND DATE(o.ordering_date) = wm.movement_date
+            LEFT JOIN
+                bulk_movement bm ON po.id_product = bm.id_product AND po.sales_type = 'B' AND DATE(o.ordering_date) = bm.movement_date
+            WHERE
+                DATE(o.ordering_date) = ?
+                AND po.id_product = ?
+        ";
+
+        $query = $this->db->query($sql, array($ordering_date, $product_id));
+        return $query->row_array();
+    }
+
+    public function get_all_client_orders($id_client)
+    {
+        $query = $this->db->get_where('v_client_orders', array('id_client' => $id_client));
+        return $query->result_array();
+    }
+
+    public function last_client_orders($id_client, $row)
+    {
+        $sql = 'SELECT * FROM orders where id_client =' . $id_client . 'order by ordering_date DESC limit ' . $row;
+        $query = $this->db->query($sql);
         return $query->result_array();
     }
 }

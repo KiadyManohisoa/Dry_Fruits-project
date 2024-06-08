@@ -52,4 +52,12 @@ class Clients_account_Model extends CI_Model
             return false;
         }
     }
+
+    public function search_client($name)
+    {
+        $name = strtolower($this->db->escape_like_str($name));
+        $sql = "SELECT * FROM clients_account WHERE LOWER(full_name) LIKE '%$name%'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
 }

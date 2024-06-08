@@ -269,3 +269,71 @@ SELECT
             SUM(total_price_product - (total_price_product * order_reduction / 100)) AS total_order_price_with_reduction
         FROM Order_Details_Result GROUP BY order_reduction;
 
+
+/*Balance Production*/
+    /*Stock selon date et produit*/
+    SELECT *
+    FROM stock
+    WHERE id_product = ? AND DATE(renewal_date) = ?
+    /*Somme quantité selon date et produit*/
+    SELECT
+                SUM(quantity) AS total_quantity
+            FROM
+                orders o
+            JOIN
+                products_ordered po ON o.id_order = po.id_order
+            WHERE
+                DATE(o.ordering_date) = ?
+                AND po.id_product = ?
+    /*Nombre paquet selon date et produit*/
+    SELECT
+        SUM(quantity) / 0.1 AS number_package
+    FROM
+        orders o
+    JOIN
+        products_ordered po ON o.id_order = po.id_order
+    WHERE
+        DATE(o.ordering_date) = '2023-06-01'  
+        AND po.id_product = 1
+        AND (sales_type = 'B' OR sales_type = 'D');
+    /*Depense selon date et produit*/
+    SELECT DISTINCT
+        ckm.price
+    FROM
+        charges_kg_movement ckm
+    JOIN
+        products_ordered po ON ckm.id_product = po.id_product
+    WHERE
+        ckm.id_product = 1  
+        AND ckm.movement_date='2023-06-01';
+    /*Somme vente selon date et produit*/
+    SELECT
+        SUM(
+            CASE 
+                WHEN po.sales_type = 'D' THEN dm.price * po.quantity
+                WHEN po.sales_type = 'W' THEN wm.price * po.quantity
+                WHEN po.sales_type = 'B' THEN bm.price * po.quantity
+                ELSE 0
+            END
+        ) AS total_price
+    FROM
+        orders o
+    JOIN
+        products_ordered po ON o.id_order = po.id_order
+    LEFT JOIN
+        detail_movement dm ON po.id_product = dm.id_product AND po.sales_type = 'D' AND DATE(o.ordering_date) = dm.movement_date
+    LEFT JOIN
+        wholesale_movement wm ON po.id_product = wm.id_product AND po.sales_type = 'W' AND DATE(o.ordering_date) = wm.movement_date
+    LEFT JOIN
+        bulk_movement bm ON po.id_product = bm.id_product AND po.sales_type = 'B' AND DATE(o.ordering_date) = bm.movement_date
+    WHERE
+        DATE(o.ordering_date) = '2023-06-01'
+        AND po.id_product = 1;
+
+
+-- Commande client 
+create or replace view v_client_orders as
+select orders.id_order , client.id_client , orders.reduction , orders.ordering_date,client.full_name , client.mail , client.phone_number
+from orders join clients_account as client on orders.id_client = client.id_client ; 
+select * from v_client_orders where id_client='CTL0001';
+SELECT * FROM v_client_orders where id_client ='CTL0001'order by ordering_date DESC limit 3 ;

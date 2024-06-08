@@ -14,6 +14,7 @@ class Orders
     {
         $this->CI = &get_instance();
         $this->CI->load->model('Orders_Model');
+        $this->CI->load->model('Client');
 
         $this->id_order = $id;
         $this->reduction = $reduction;
@@ -102,8 +103,39 @@ class Orders
         return $this->CI->Orders_Model->delete($id);
     }
 
-    public function get_basket_link($order_id)
+    public function get_total_quantity_ordered($date, $product_id)
     {
-        return $this->CI->Delivery_model->get_basket_link($order_id);
+        return $this->CI->Orders_Model->get_total_quantity_ordered($date, $product_id);
+    }
+
+    public function get_charge_price($product_id, $movement_date)
+    {
+        return $this->CI->Orders_Model->get_charge_price_by_product_and_date($product_id, $movement_date);
+    }
+
+    public function get_number_package_ordered($date, $product_id)
+    {
+        return $this->CI->Orders_Model->get_number_package_ordered($date, $product_id);
+    }
+
+    public function get_all_client_orders($id_client)
+    {
+        return $this->CI->Orders_Model->get_all_client_orders($id_client);
+    }
+
+    // donner l'id client et le nombre de ligne de resultat qu'on veut recuperer
+    public function last_client_order($id_client, $row)
+    {
+        $order_list = $this->CI->Orders_Model->last_client_order($id_client, $row);
+        $client_order = array();
+        foreach ($order_list as $order) :
+            $client_order[] = new Orders(
+                $order['id_order'],
+                $order['reduction'],
+                $order['ordering_date'],
+                $order['id_client']
+            );
+        endforeach;
+        return $client_order;
     }
 }

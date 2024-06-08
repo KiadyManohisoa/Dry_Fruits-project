@@ -56,6 +56,15 @@ CREATE TABLE administrators(
 ALTER TABLE administrators
 ALTER COLUMN password TYPE VARCHAR(225);
 
+CREATE TABLE client_favorite_products(
+   id_client_favorite_products VARCHAR(50) DEFAULT ('FAV') || LPAD(nextval('client_favorite_products_sequence')::TEXT, 4, '0'),
+   id_client VARCHAR(20)  NOT NULL,
+   id_product INTEGER NOT NULL,
+   PRIMARY KEY(id_client_favorite_products),
+   FOREIGN KEY(id_client) REFERENCES clients_account(id_client),
+   FOREIGN KEY(id_product) REFERENCES Product(id_product)
+);
+
 CREATE TABLE detail_movement(
    id_detail_movement VARCHAR(50) DEFAULT ('MVD') || LPAD(nextval('mouvementt_detail_sequence')::TEXT, 4, '0'),
    movement_date DATE,
@@ -63,15 +72,6 @@ CREATE TABLE detail_movement(
    reduction SMALLINT,
    id_product INTEGER NOT NULL,
    PRIMARY KEY(id_detail_movement),
-   FOREIGN KEY(id_product) REFERENCES Product(id_product)
-);
-
-CREATE TABLE client_favorite_products(
-   id_client_favorite_products VARCHAR(50) DEFAULT ('FAV') || LPAD(nextval('client_favorite_products_sequence')::TEXT, 4, '0'),
-   id_client VARCHAR(20)  NOT NULL,
-   id_product INTEGER NOT NULL,
-   PRIMARY KEY(id_client_favorite_products),
-   FOREIGN KEY(id_client) REFERENCES clients_account(id_client),
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );
 
@@ -85,7 +85,7 @@ CREATE TABLE wholesale_movement(
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );
 
-CREATE TABLE   (
+CREATE TABLE bulk_movement  (
    id_bulk_movement VARCHAR(50) DEFAULT ('MVB') || LPAD(nextval('mouvement_bulk_sequence')::TEXT, 4, '0'),
    movement_date DATE,
    price NUMERIC(14,2)  ,
