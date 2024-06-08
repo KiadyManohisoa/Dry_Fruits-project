@@ -41,6 +41,10 @@ CREATE TABLE clients_account(
    phone_number VARCHAR(20)  NOT NULL,
    PRIMARY KEY(id_client)
 );
+ALTER TABLE clients_account
+ADD COLUMN user_image VARCHAR(30);
+ALTER COLUMN password TYPE VARCHAR(225);
+
 
 CREATE TABLE administrators(
    id_admin SERIAL,
@@ -49,6 +53,8 @@ CREATE TABLE administrators(
    PRIMARY KEY(id_admin),
    UNIQUE(pseudo_name)
 );
+ALTER TABLE administrators
+ALTER COLUMN password TYPE VARCHAR(225);
 
 CREATE TABLE detail_movement(
    id_detail_movement VARCHAR(50) DEFAULT ('MVD') || LPAD(nextval('mouvementt_detail_sequence')::TEXT, 4, '0'),
@@ -79,7 +85,7 @@ CREATE TABLE wholesale_movement(
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );
 
-CREATE TABLE bulk_movement(
+CREATE TABLE   (
    id_bulk_movement VARCHAR(50) DEFAULT ('MVB') || LPAD(nextval('mouvement_bulk_sequence')::TEXT, 4, '0'),
    movement_date DATE,
    price NUMERIC(14,2)  ,
@@ -127,4 +133,14 @@ CREATE TABLE products_ordered(
    PRIMARY KEY(id_product_ordered),
    FOREIGN KEY(id_order) REFERENCES orders(id_order),
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
+);
+
+CREATE TABLE payment_methods (
+    id_payment SERIAL PRIMARY KEY,
+    id_client VARCHAR(20) NOT NULL,
+    payment_type VARCHAR(50) NOT NULL,
+    card_number VARCHAR(16),
+    expiry_date DATE,
+    cvv VARCHAR(3),
+    FOREIGN KEY (id_client) REFERENCES clients_account(id_client)
 );
