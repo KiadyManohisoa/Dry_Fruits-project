@@ -1,0 +1,56 @@
+/* styles.css */
+
+/* Conteneur des produits */
+.product-container {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    font-family: inherit;
+}
+
+/* Classe pour les défiler */
+.product-defiler{
+    font-family: inherit;
+}
+
+/* Style des produits */
+.product {
+    font-family: inherit;
+    flex: 0 0 25%; /* Répartit l'espace pour afficher 4 produits par ligne */
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Style pour les images des produits */
+.product-img {
+    border-radius: 10px;
+    background-position: center;
+    background-size: cover;
+}
+
+/* Masquer la barre de défilement */
+.product-container::-webkit-scrollbar {
+    display: none; 
+}
+
+.product-container {
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+}
+
+/* Style pour le titre */
+.product-defiler .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+/* Media query pour les écrans de taille moyenne et plus petits */
+@media (max-width: 768px) {
+    .product {
+        flex: 0 0 50%; /* Répartit l'espace pour afficher 2 produits par ligne */
+    }
+}

@@ -2,6 +2,12 @@
     font-family: century-gothic;
     src: url("../fonts/century-gothic.ttf");
 }
+
+@font-face {
+    font-family: notted;
+    src: url("../fonts/Notted.ttf");
+}
+
 * {
     box-sizing: border-box;
 }

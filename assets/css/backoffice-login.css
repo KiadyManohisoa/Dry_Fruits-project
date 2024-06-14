@@ -1,0 +1,64 @@
+.header, .footer{
+    display: none;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+.carousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Placer le carousel en arrière-plan */
+}
+.carousel-inner {
+    width: 100%;
+    height: 100%;
+}
+.carousel .item {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.login-form {
+    /* width: 400px; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.7);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.login-form .form-control{
+  background-color: #ffffff7d;
+}
+.form-div{
+    flex: 0 0 100%;
+}
+.btn{
+    width: 100%;
+}
+.google, .google:hover{
+    color: #282828;
+    border-color: #282828;
+  background-color: #ffffff7d;
+}
+.google img{
+    width: 30px;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    padding: 10px 0;
+}

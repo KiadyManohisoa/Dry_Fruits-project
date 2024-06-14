@@ -77,40 +77,13 @@
                     <td>xxx kg</td>
                     <td>xxx kg</td>
                     <td>x xxx Ar</td>
-                    <td>x xxx xxx kg</td>
-                    <td>x xxx xxx kg</td>
+                    <td>x xxx xxx Ar</td>
+                    <td>x xxx xxx Ar</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div id="table">
-        <h3>2th month of 2024</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Wording</th>
-                    <th>Stock</th>
-                    <th>Out</th>
-                    <th>Sales</th>
-                    <th>Charges</th>
-                    <th>Sales Amount</th>
-                    <th>Results</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Dried Bananas</td>
-                    <td>xxx kg</td>
-                    <td>xxx kg</td>
-                    <td>xxx kg</td>
-                    <td>x xxx Ar</td>
-                    <td>x xxx xxx kg</td>
-                    <td>x xxx xxx kg</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 </div>
 <!-- bilan de production -->
 

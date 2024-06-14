@@ -19,7 +19,7 @@
                     </small>
                     <small class="total-item">Total: 18 000 Ar</small>
                 </div>
-                <div class="item-number col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <div class="item-number col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <p>10</p>
                 </div>
                 <hr>

@@ -111,11 +111,11 @@ body{
     border-radius: 5px;
 }
 
-.payments button{
+.payments .btn{
     background-color: #D2475C;
 }
 
-.payments button:hover, .payments button:focus{
+.payments .btn:hover, .payments .btn:focus{
     background-color: #D2475C;
 }
 .section{
