@@ -48,8 +48,18 @@ CREATE TABLE administrators(
    id_admin SERIAL,
    pseudo_name VARCHAR(25) ,
    password VARCHAR(50)  NOT NULL,
+   status CHAR(1)  NOT NULL,
    PRIMARY KEY(id_admin),
    UNIQUE(pseudo_name)
+);
+
+CREATE TABLE delivery(
+   id_delivery VARCHAR(50) DEFAULT('DLV') || LPAD(nextval('delivery_sequence')),
+   delivery_date TIMESTAMP,
+   delivery_address VARCHAR(50)  NOT NULL,
+   cost NUMERIC(10,2)   NOT NULL,
+   status SMALLINT NOT NULL,
+   PRIMARY KEY(id_delivery)
 );
 
 CREATE TABLE detail_movement(
@@ -100,24 +110,43 @@ CREATE TABLE charges_kg_movement(
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
 );
 
-CREATE TABLE orders(
-   id_order VARCHAR(35) DEFAULT ('ORD') || LPAD(nextval('ordered_product_sequence')::TEXT, 4, '0'),
-   reduction SMALLINT,
-   ordering_date TIMESTAMP DEFAULT NOW(),
+CREATE TABLE client_products_review(
+   id_product_review VARCHAR(50) DEFAULT ('CPR') || LPAD(nextval('client_product_review_sequence ')),
+   stars SMALLINT NOT NULL,
+   comment TEXT,
    id_client VARCHAR(20)  NOT NULL,
-   PRIMARY KEY(id_order),
+   id_product INTEGER NOT NULL,
+   PRIMARY KEY(id_product_review),
+   FOREIGN KEY(id_client) REFERENCES clients_account(id_client),
+   FOREIGN KEY(id_product) REFERENCES Product(id_product)
+);
+
+CREATE TABLE client_services_review(
+   id_service_review VARCHAR(50) DEFAULT('CSR') || LPAD(nextval('client_services_review_sequence')),
+   stars SMALLINT NOT NULL,
+   id_client VARCHAR(20)  NOT NULL,
+   PRIMARY KEY(id_service_review),
    FOREIGN KEY(id_client) REFERENCES clients_account(id_client)
 );
 
-CREATE TABLE delivery(
-   id_delivery VARCHAR(50) DEFAULT ('DLV') || LPAD(nextval('delivery_sequence')::TEXT, 4, '0'),
-   delivery_date TIMESTAMP DEFAULT NOW(),
-   delivery_address VARCHAR(50)  NOT NULL,
-   cost NUMERIC(10,2)   NOT NULL,
-   status SMALLINT NOT NULL,
-   id_order VARCHAR(35)  NOT NULL,
-   PRIMARY KEY(id_delivery),
-   FOREIGN KEY(id_order) REFERENCES orders(id_order)
+CREATE TABLE payement(
+   id_payement VARCHAR(35) DEFAULT('PMT') || LPAD(nextval('payement_sequence')),
+   mode VARCHAR(15)  NOT NULL,
+   phone_number VARCHAR(20) ,
+   PRIMARY KEY(id_payement)
+);
+
+CREATE TABLE orders(
+   id_order VARCHAR(35) DEFAULT('ORD') || LPAD(nextval('ordered_product_sequence')),
+   reduction SMALLINT,
+   ordering_date TIMESTAMP,
+   id_payement VARCHAR(35)  NOT NULL,
+   id_delivery VARCHAR(50)  NOT NULL,
+   id_client VARCHAR(20)  NOT NULL,
+   PRIMARY KEY(id_order),
+   FOREIGN KEY(id_payement) REFERENCES payement(id_payement),
+   FOREIGN KEY(id_delivery) REFERENCES delivery(id_delivery),
+   FOREIGN KEY(id_client) REFERENCES clients_account(id_client)
 );
 
 CREATE TABLE products_ordered(

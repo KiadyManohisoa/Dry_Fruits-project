@@ -73,3 +73,24 @@ CREATE SEQUENCE products_ordered_sequence
     MINVALUE 1
     MAXVALUE 999999
     CACHE 1;
+
+CREATE SEQUENCE client_product_review_sequence 
+    START 1
+    INCREMENT 1
+    MINVALUE 1
+    MAXVALUE 999999
+    CACHE 1;
+
+CREATE SEQUENCE client_services_review_sequence
+    START 1
+    INCREMENT 1
+    MINVALUE 1
+    MAXVALUE 999999
+    CACHE 1;
+
+CREATE SEQUENCE payement_sequence 
+    START 1
+    INCREMENT 1
+    MINVALUE 1
+    MAXVALUE 999999
+    CACHE 1;
