@@ -1,4 +1,5 @@
 <!-- secction produits -->
+
 <div id="products" class="content col-lg-6 col-lg-push-6 col-md-6 col-md-push-6">
     <h1 class="title-products">My Basket</h1>
 
