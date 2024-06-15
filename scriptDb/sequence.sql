@@ -11,63 +11,63 @@ CREATE SEQUENCE stock_sequence
     MAXVALUE 999999
     CACHE 1;
 
-CREATE SEQUENCE compte_clients_sequence
+CREATE SEQUENCE client_account_sequence
     START 1
     INCREMENT 1
     MINVALUE 1
     MAXVALUE 999999
     CACHE 1;
 
-CREATE SEQUENCE mvt_detail_sequence
+CREATE SEQUENCE movement_detail_sequence
     START 1
     INCREMENT 1
     MINVALUE 1
     MAXVALUE 999999
     CACHE 1;
 
-CREATE SEQUENCE mvt_vrac_sequence
+CREATE SEQUENCE movement_bulk_sequence
     START 1
     INCREMENT 1
     MINVALUE 1
     MAXVALUE 999999
     CACHE 1;
 
-CREATE SEQUENCE mvt_gros_sequence
+CREATE SEQUENCE movement_wholesale_sequence
     START 1
     INCREMENT 1
     MINVALUE 1
     MAXVALUE 999999
     CACHE 1;
 
-CREATE SEQUENCE mvt_depensesKg_sequence
+CREATE SEQUENCE movement_charges_sequence
     START 1
     INCREMENT 1
     MINVALUE 1
     MAXVALUE 999999
     CACHE 1;
 
-CREATE SEQUENCE produit_commander_sequence
+CREATE SEQUENCE ordered_product_sequence
     START 1
     INCREMENT 1
     MINVALUE 1
     MAXVALUE 999999
     CACHE 1;
 
-CREATE SEQUENCE favoris_client_sequence
+CREATE SEQUENCE client_favorite_products_sequence
     START 1
     INCREMENT 1
     MINVALUE 1
     MAXVALUE 999999
     CACHE 1;
 
-CREATE SEQUENCE livraison_sequence
+CREATE SEQUENCE delivery_sequence
     START 1
     INCREMENT 1
     MINVALUE 1
     MAXVALUE 999999
     CACHE 1;
 
-CREATE SEQUENCE asso_14_sequence
+CREATE SEQUENCE products_ordered_sequence
     START 1
     INCREMENT 1
     MINVALUE 1

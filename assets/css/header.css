@@ -2,13 +2,6 @@ body{
     background-color: #f0f0f0;
 }
 
-
-/* color
-#1b3355
-#5a96e2
-#3f689e
-#94c1fa */
-
 .header{
     font-family: century-gothic;
     background-color: #ffffff;
@@ -52,11 +45,23 @@ body{
     z-index: 1000;
 }
 
-.last .btn:hover img, .last .btn:focus img  {
+.last .btn:hover .disable, .last .btn:focus .disable  {
+    width: 22px;
+}
+
+.last .disable{
+    width: 18px;
+}
+
+.last .enable{
+    width: 24px;
+}
+
+.last .btn:hover .enable, .last .btn:focus .enable  {
     width: 30px;
 }
 
-.last .btn:hover p, .last .btn:focus p  {
+.last .btn img:hover ~ p, .last .btn img:focus ~ p  {
     transition: 0.5s;
     opacity: 1;
 }

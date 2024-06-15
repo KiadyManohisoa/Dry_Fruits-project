@@ -1,0 +1,268 @@
+body{
+    background-color: #fff;
+}
+/* Vous pouvez toujours conserver vos media queries pour d'autres styles */
+@media (min-width: 1200px) {
+    .title-products {
+        color: #ffffff00;
+    }
+}
+
+@media (min-width: 992px) {
+    .title-products {
+        color: #ffffff00;
+    }
+}
+.item:last-child {
+    border-bottom: none;
+}
+.receipt img {
+    width: 100px;
+    height: 100px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+}
+
+.item{
+    padding-top: 10px;
+    height: 105px;
+}
+
+.item-list{
+    height: 450px;
+    overflow-y: auto;
+    border: 1px solid #f0f0f0;
+    border-radius: 5px;
+}
+.item-details {
+    flex-grow: 1;
+}
+.item-details small {
+    display: block;
+}
+.item-number {
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .item-number {
+        padding: 20px;
+    }
+    .item{
+        height: 155px;
+    }
+}
+
+.item-number p{
+    margin-left: 10px;
+    text-align: center;
+}
+.item-number button{
+    margin-left: 10px;
+    padding: 0%;
+    height: 30px;
+    width: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    border: 2px solid #f0f0f0; 
+    font-weight: bold;
+}
+
+.item-number img{
+    width: 20px;
+    height: 20px;
+    background: none;
+}
+
+.original-price {
+    text-decoration: line-through;
+}
+.reduced-price {
+    color: #D2475C;
+    font-weight: bold;
+    font-size: 20px;
+}
+.totals{
+    height: 100px;
+}
+.totals .price{
+    text-align: right;
+}
+
+.payments .contents{
+    border-radius: 5px;
+    border: 1px solid #f0f0f0;
+}
+
+.payments .section{
+    font-family: century-gothic;
+    background-color: #fff;
+    padding:0 20px;
+    border-radius: 5px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.payments #part1{
+    font-family: century-gothic;
+    background-color: #fff;
+    padding:0 20px;
+    border-radius: 5px;
+}
+
+.payments button{
+    background-color: #D2475C;
+}
+
+.payments button:hover, .payments button:focus{
+    background-color: #D2475C;
+}
+.section{
+    height: 75px;
+}
+.round-check{
+    padding: 10px 0;
+}
+.section h4{
+    font-weight: bolder;
+    padding: 7px 0;
+}
+.section-button{
+    padding: 15px 5px;
+    display: flex;
+    justify-content: flex-end;
+}
+#ship-select select, #ship-edit{
+    background: none;
+    border: none;
+}
+#ship-edit{
+    text-align: right;
+    justify-content: right;
+}
+
+.section #ship-edit{
+    transition: 0.5s;
+    display: block;
+}
+
+.section #ship-select{
+    transition: 0.5s;
+    display: none;
+}
+
+.enabled #ship-select{
+    transition: 0.5s;
+    display: block;
+}
+.enabled #ship-edit{
+    transition: 0.5s;
+    display: none;
+}
+.disabled{
+    transition: 0.5s;
+    display: none;
+}
+.round-check span {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+.section .round-check span {
+    border: none;
+    background-color: #f0f0f0;
+}
+.enabled .round-check span {
+    border: none;
+    background-color: #FCDFE1;
+}
+
+.payment-form, #ship-info{
+    padding: 20px;
+}
+
+#pay-form .text-right{
+    border: none;
+}
+
+/* Masquer le bouton radio natif */
+.radio input[type="radio"] {
+    display: none;
+    cursor: pointer;
+}
+
+.input{
+    font-weight: bold;
+    border: none;
+    display: none;
+}
+
+/* Style personnalisé pour le bouton radio */
+.radio {
+    border-radius: 5px;
+    padding: 20px;
+    border: 1px solid #f0f0f0;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.radio label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Cercle extérieur du bouton radio */
+.radio label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+/* Cercle intérieur du bouton radio lorsqu'il est coché */
+.radio input[type="radio"]:checked + label::before {
+    border-color: #79B09D;
+    background-color: #79B09D;
+}
+
+.radio input[type="radio"]:checked ~ .input {
+    display: block;
+}
+
+/* Cercle intérieur en blanc */
+.radio input[type="radio"]:checked + label::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+/* Changer la couleur de la bordure au survol */
+.radio label:hover::before {
+    border-color: #79B09D;
+}
+
+/* Style de texte pour le label */
+.radio label {
+    color: #333;
+    font-size: 16px;
+}
+
+#pay-form .check{
+    transition: border-color 0.5s;
+    border: 2px solid #79B09D;
+}

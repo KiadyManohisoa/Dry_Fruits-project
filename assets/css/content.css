@@ -1,0 +1,225 @@
+.content {
+    font-family: century-gothic;
+    background-color: #fff;
+    border: 1px solid #f0f0f0;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.dark-content {
+    font-family: century-gothic;
+    background-color: #282828;
+    border: 1px solid #000;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+input:focus, input.form-control:focus {
+    border-color: #AAD7C3; /* Couleur de la bordure lorsque le focus est activé */
+    /* Autres styles facultatifs */
+    box-shadow: 0 0 5px #AAD7C3; /* Ombre pour mettre en évidence */
+    outline: none; /* Supprime l'outline par défaut */
+}
+
+button:focus{
+    border: none;
+}
+.btn-custom {
+    background-color: #79B09D;
+    border-color: #79B09D;
+    color: #fff;
+    padding: 10px 20px; 
+    font-size: 15px;
+    border-radius: 4px; 
+}
+.btn-custom:hover {
+    transition: 0.5s;
+    background-color: #68A28A;
+    border-color: #68A28A;
+}
+
+.content h1, .content h2, .content h3{
+    font-weight: bold;
+}
+
+.dark-content h1, .dark-content h2, .dark-content h3{
+    font-weight: bold;
+}
+
+.reduction{
+    font-size: 20px;
+    font-weight: bolder;
+    color: #d2475c;
+}
+
+.table{
+    font-size: 15px;
+}
+
+#table{
+    height: 300px;
+    overflow-y: auto;
+}
+
+.table img{
+    width: 20px;
+}
+
+.table #btn{
+    align-items: center;
+    text-align: center;
+    width: 2%;
+}
+
+.table .btn{
+    border: none;
+    background: none;
+}
+
+.table #btn:hover, .table #btn:focus {
+    transition: 0.5s;
+    background-color: #f0f0f0;
+}
+.desc{
+    height: 150px;
+}
+
+.form-group{
+    padding: 10px;
+}
+
+.disabled-link {
+    pointer-events: none;
+    cursor: default; 
+    text-decoration: none;
+}
+
+/* Masque l'élément radio par défaut */
+.round-check input[type="checkbox"], .round-check input[type="radio"] {
+    display: none;
+}
+
+/* Style de l'élément personnalisé */
+.round-check span {
+    width: 30px; /* Vous pouvez ajuster la taille selon vos besoins */
+    height: 30px;
+    border-radius: 50%; /* Cela rend l'élément rond */
+    display: inline-block;
+    border: 1.5px solid #6e6e6e; /* Bordure de la case à cocher */
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Ajoute le style quand la case est cochée */
+.round-check input[type="checkbox"]:checked + span, .round-check input[type="radio"]:checked + span {
+    background-color: #79B09D; /* Couleur de fond quand la case est cochée */
+    border-color: #79B09D; /* Change aussi la couleur de la bordure */
+}
+
+/* Style de l'indicateur de coche */
+.round-check input[type="checkbox"]:checked + span::after, .round-check input[type="radio"]:checked + span::after {
+    content: '';
+    width: 6px; /* Ajustez la taille de l'indicateur de coche */
+    height: 12px;
+    border: solid #000; /* Bordure noire pour le check */
+    border-width: 0 2px 2px 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%) rotate(45deg); /* Positionne et tourne pour faire un check */
+    transition: transform 0.3s;
+}
+
+.bag-icon{
+    width: 20px;
+    height: 20px;
+}
+.bag-icon img{
+    width: 20px;
+ }
+ .bag-icon .option{
+    top:10px;
+    width: 200px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    display: none;
+    border: 1px solid #6e6e6e;
+    border-radius: 5px;
+    z-index: 10000;
+ }
+ .bag-icon .btn{
+    text-decoration: none;
+    width: 200px;
+    border: 1px solid #fff;
+    background-color: #fff;
+    border-radius: 5px;
+    color: #000;
+ }
+
+ .bag-icon input[type="checkbox"]:checked ~ .option{
+    display: block;
+ }
+
+ .bag-icon .btn:hover,  .bag-icon .btn:focus{
+    transition: 0.5s;
+    background-color: #f0f0f0;
+    border-color: #f0f0f0;
+ }
+.bag-icon input[type="checkbox"]{
+    display: none;
+}
+ .bag-icon{
+    width: 30px;
+    height: 40px;
+    padding: 5px;
+ }
+ .logo{
+    font-family: notted;
+    font-weight: normal;
+ }
+
+ .carousel-img{
+    height: 400px;
+    background-position: center;
+    background-size: cover;
+}
+    
+.carousel{
+    height: 400px;
+    padding: 0;  
+}
+
+.carousel-control{
+    transition : 0.5s;
+    padding: 185px 0;
+}
+
+.item-img {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    background-position: center;
+    background-size: cover;
+    height: 200px;
+    width: 200px;
+}
+
+.item-img a img{
+    width: 20px;
+ }
+
+ .item-img a{
+    width: 30px;
+    height: 40px;
+    padding: 5px;
+ }
+
+.item-desc{
+    width: 200px;
+}

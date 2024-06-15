@@ -1,0 +1,12 @@
+a{
+    color: black;
+    text-decoration: underline;
+    text-decoration-thickness: 0.5px;
+}
+ a:hover, a:focus{
+    transition: 0.5s;
+    color: #6e6e6e;
+    text-decoration: underline;
+    text-decoration-thickness: 0.75px;
+ }
+
