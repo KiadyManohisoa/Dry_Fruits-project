@@ -91,3 +91,49 @@
     </form>
 </div>
 <!-- section payement -->
+<hr>
+<!-- section revue -->
+<div class="content col-lg-12 col-md-12">
+    <center>
+        <h2>Client review</h2>
+        <form action="">
+            <div class="stars-div">
+                <label for="1-star">
+                    <input type="radio" name="stars" value="1" id="1-star">
+                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
+                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                </label>
+    
+                <label for="2-star">
+                    <input type="radio" name="stars" value="2" id="2-star">
+                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
+                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                </label>
+    
+                <label for="3-star">
+                    <input type="radio" name="stars" value="3" id="3-star">
+                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
+                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                </label>
+    
+                <label for="4-star">
+                    <input type="radio" name="stars" value="4" id="4-star">
+                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
+                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                </label>
+    
+                <label for="5-star">
+                    <input type="radio" name="stars" value="5" id="5-star">
+                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
+                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                </label>
+                <hr>
+            </div>
+            
+            <div class="from-group">
+                <button type="submit" class="btn btn-custom btn-lg">Submit</button>
+            </div>
+        </form>
+    </center>
+</div>
+<!-- section revue -->
