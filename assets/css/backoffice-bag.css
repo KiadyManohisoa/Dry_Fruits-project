@@ -266,3 +266,21 @@ body{
     transition: border-color 0.5s;
     border: 2px solid #79B09D;
 }
+
+.stars-div input[type="radio"],.star-enabled {
+    display: none;
+}
+.star-disabled{
+    display: block;
+}
+
+.star-enabled {
+    display: none;
+}
+label.selected .star-enabled {
+    display: block;
+}
+
+label.selected .star-disabled {
+    display: none;
+}

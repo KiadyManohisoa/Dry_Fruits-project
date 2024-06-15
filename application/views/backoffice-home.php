@@ -1,9 +1,9 @@
 <!-- recherche de clients -->
 <div class="content">
     <h2>Clients Search</h2>
-    <form class="col-lg-6 col-md-6">
+    <form class="col-lg-6 col-md-6" action="<?php echo site_url();?>index.php/backoffice/Clients_Search_Controller/search" method="post">
         <div class="form-group">
-            <input class="form-control" type="text" class="form-control form-control-custom" placeholder="Enter the client full name">
+            <input class="form-control" type="text" name="client_name" placeholder="Enter the client full name">
         </div>
         <div class="form-group text-right">
             <button type="submit" class="btn btn-custom btn-lg">Submit</button>
@@ -23,14 +23,23 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Ninja Kassadias</td>
-                    <td>ninja@impekable.com</td>
-                    <td>933923223</td>
-                    <td>xxx</td>
-                    <td>xx-xx-xxxx</td>
-                </tr>
+                <?php if(isset($clients) && !empty($clients)) {
+                    ?>
+                    <?php foreach($clients as $client) { ?>
+                        <tr>
+                            <td><a href="<?php echo site_url('Clients_Search_Controller/client_info/' . $client->get_id_client()); ?>"><?php echo $client->get_id_client(); ?></a></td>
+                            <td><?php echo $client->get_full_name(); ?></td>
+                            <td><?php echo $client->get_mail(); ?></td>
+                            <td><?php echo $client->get_phone_number(); ?></td>
+                            <td><?php echo $client->get_purchases();?></td>
+                            <td><?php echo $client->get_last_activites();?></td>
+                        </tr>
+                    <?php } ?>
+                <?php } else if(isset($clients) && empty($clients)) { ?>
+                        <tr>
+                            <td>No clients found</td>
+                        </tr>
+                <?php } ?>
             </tbody>
         </table>
     </div>
@@ -40,7 +49,7 @@
 <!-- bilan de production -->
 <div class="content">
     <h2>Production situation report</h2>
-    <form class="col-lg-6 col-md-6"  method="get" action="<?php echo site_url();?>index.php/Production_balance_Controller/form_get_Production_balance">
+    <form class="col-lg-6 col-md-6"  method="get" action="<?php echo site_url();?>index.php/backoffice/Production_balance_Controller/form_get_Production_balance">
         <div class="form-group col-lg-6 col-mg-6 col-sm-6">
             <label for="date">Date</label>
             <input class="form-control" name="date_rechercher" id="date" type="date">

@@ -3,9 +3,34 @@
 
         <!-- FOOTER -->
         <?php if ($application=='frontoffice') { ?>
-            <center id="footer">
-            
-            </center>
+            <div class="footer">
+                <div class="footer-link">
+                    <div id="discover" class="div-footer col-lg-4 col-md-4">
+                        <h1>Discover <span class="logo">Dryfruit</span></h1>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#investitors') ?>">Investitors</a></p>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#about-us') ?>">About Us</a></p>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#about-us') ?>">Delivery</a></p>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/login#signup') ?>">Join Us</a></p>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#type-products') ?>">Type of Products</a></p>
+                        
+                    </div> 
+                    <div id="legal-notices" class="div-footer col-lg-4 col-md-4">
+                        <h1>Legal notices</h1>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#legal-notices') ?>">Legal notices</a></p>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#confidentiality') ?>">Confidentiality</a></p>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#cookies') ?>">Cookies</a></p>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#partners') ?>">Ranking of our partners</a></p>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#public-authorities-information-request') ?>">Public Authorities information requests</a></p>
+                    </div> 
+                    <div id="help" class="div-footer col-lg-4 col-md-4">
+                        <h1>Help</h1>
+                        <p><a href="<?php echo base_url('index.php/backoffice/View/page/frontoffice/info#contact-us') ?>">Contact Us</a></p>
+                    </div> 
+                </div>
+               <div class="text-right">
+                    <h3>&copy; 2024 <span class="logo">Dryfruit</span> Media</h3>
+               </div>
+            </div>
         <?php } ?>
         <!-- FOOTER -->
     <?php for($i=0; $i<count($js); $i++) { ?>

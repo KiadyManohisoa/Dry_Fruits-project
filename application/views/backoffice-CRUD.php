@@ -1,7 +1,7 @@
 <!-- categories de produits -->
 <div class="content col-lg-6 col-md-6">
     <h2>Products Categories</h2>
-    <form method="get" action="<?php echo site_url();?>index.php/Cat_product_Controller/insert_cat_product">
+    <form method="get" action="<?php echo site_url();?>index.php/backoffice/Cat_product_Controller/insert_cat_product">
         <?php if(isset($cat_product_update)) { ?>
             <input type="hidden" name="id_cat_product_to_update" value="<?php echo $cat_product_update->get_id_cat_product();?>">
         <?php } ?>
@@ -28,8 +28,8 @@
                     foreach ($ls_cat_products as $cat_prod) { ?>
                         <tr>
                             <td><?php echo $cat_prod->get_wording();?></td>
-                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_product_Controller/form_update_cat_product/<?php echo $cat_prod->get_id_cat_product();?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png') ?>" alt=""></button> </a> </td>
-                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_product_Controller/delete_cat_product/<?php echo $cat_prod->get_id_cat_product();?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/trash.png') ?>" alt=""></button> </a> </td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/backoffice/Cat_product_Controller/form_update_cat_product/<?php echo $cat_prod->get_id_cat_product();?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png') ?>" alt=""></button> </a> </td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/backoffice/Cat_product_Controller/delete_cat_product/<?php echo $cat_prod->get_id_cat_product();?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/trash.png') ?>" alt=""></button> </a> </td>
                         </tr>
                 <?php  } 
                 }
@@ -43,7 +43,7 @@
 <!-- categories de fruits -->
 <div class="content col-lg-6 col-md-6">
     <h2>Fruits Categories</h2>
-    <form method="get" action="<?php echo site_url();?>index.php/Cat_fruit_Controller/insert_cat_fruit">
+    <form method="get" action="<?php echo site_url();?>index.php/backoffice/Cat_fruit_Controller/insert_cat_fruit">
         <div class="form-group">
             <?php if(isset($cat_fruit_update)) { ?>
                 <input type="hidden" name="id_cat_fruits_to_update" value="<?php echo $cat_fruit_update->get_id_cat_fruit();?>">
@@ -69,8 +69,8 @@
                     foreach ($ls_cat_fruits as $cat_fruit) { ?>
                         <tr>
                             <td><?php echo $cat_fruit->get_wording(); ?></td>
-                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_fruit_Controller/form_update_cat_fruit/<?php echo $cat_fruit->get_id_cat_fruit();?>">  <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png'); ?>" alt="Edit"></button> </a></td>
-                            <td id="btn"> <a href="<?php echo site_url();?>index.php/Cat_fruit_Controller/delete_cat_fruit/<?php echo $cat_fruit->get_id_cat_fruit();?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/trash.png'); ?>" alt="Delete"></button> </a></td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/backoffice/Cat_fruit_Controller/form_update_cat_fruit/<?php echo $cat_fruit->get_id_cat_fruit();?>">  <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png'); ?>" alt="Edit"></button> </a></td>
+                            <td id="btn"> <a href="<?php echo site_url();?>index.php/backoffice/Cat_fruit_Controller/delete_cat_fruit/<?php echo $cat_fruit->get_id_cat_fruit();?>"> <button class="btn"><img src="<?php echo base_url('assets/icons/trash.png'); ?>" alt="Delete"></button> </a></td>
                         </tr>
                     <?php } 
                 } ?>
@@ -83,7 +83,7 @@
 <!-- produits finis -->
 <div class="content col-lg-12">
     <h2>Finished Products</h2>
-    <form class="col-lg-6 col-md-6" method="post" enctype="multipart/form-data" action="<?php echo site_url();?>index.php/Finished_Product_Controller/insert_finished_product">
+    <form class="col-lg-6 col-md-6" method="post" enctype="multipart/form-data" action="<?php echo site_url();?>index.php/backoffice/Finished_Product_Controller/insert_finished_product">
     <?php if(isset($update_finished_product)) { ?>
             <input type="hidden" name="update_mode" value="1">
     <?php } ?>
@@ -269,7 +269,7 @@
                         <p class="reduction"><?php echo $prod_conf['bulk_reduction']; ?>%</p>
                     </td>
                     <td id="btn">
-                        <a href="<?php echo site_url();?>index.php/Finished_Product_Controller/form_update_finished_product/<?php echo 
+                        <a href="<?php echo site_url();?>index.php/backoffice/Finished_Product_Controller/form_update_finished_product/<?php echo 
                             $prod_conf["product_id"]."/"
                             .$prod_conf["id_detail_movement"]."/"
                             .$prod_conf["id_wholesale_movement"]."/"
@@ -277,7 +277,7 @@
                             .$prod_conf["id_charges_movement"];?>">
                         <button class="btn"><img src="<?php echo base_url('assets/icons/edit-disable.png') ?>" alt="">
                         </button> </a> </td>
-                    <td id="btn"><a href="<?php echo site_url();?>index.php/Finished_Product_Controller/delete_finished_product/<?php echo 
+                    <td id="btn"><a href="<?php echo site_url();?>index.php/backoffice/Finished_Product_Controller/delete_finished_product/<?php echo 
                     $prod_conf["product_id"]; ?>"><button class="btn"><img src="<?php echo base_url('assets/icons/trash.png') ?>" alt=""></button></a></td>
                 </tr>
                 <?php }} ?>
