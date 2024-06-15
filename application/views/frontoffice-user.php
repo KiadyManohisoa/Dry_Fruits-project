@@ -1,4 +1,4 @@
-<?php $user = true; if($user) {?>
+<?php $user = false; if($user) {?>
     <!-- Modal de connexion -->
     <div id="profileEditer" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
