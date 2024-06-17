@@ -332,8 +332,19 @@ SELECT
 
 
 -- Commande client 
-create or replace view v_client_orders as
-select orders.id_order , client.id_client , orders.reduction , orders.ordering_date,client.full_name , client.mail , client.phone_number
-from orders join clients_account as client on orders.id_client = client.id_client ; 
-select * from v_client_orders where id_client='CTL0001';
-SELECT * FROM v_client_orders where id_client ='CTL0001'order by ordering_date DESC limit 3 ;
+CREATE or replace VIEW v_client_orders as 
+select 
+clients_account.id_client as id_client , 
+orders.id_order as id_order ,
+orders.reduction as reduction ,
+orders.ordering_date as ordering_date ,
+payement.mode as payement_mode , 
+payement.phone_number as phone_number , 
+delivery.delivery_date as delivery_date , 
+delivery.delivery_address as delivery_address , 
+delivery.cost as delivery_cost ,
+delivery.status as delivery_status
+from 
+orders join payement on orders.id_payement = payement.id_payement 
+join delivery on orders.id_delivery = delivery.id_delivery 
+join clients_account on orders.id_client = clients_account.id_client ;
