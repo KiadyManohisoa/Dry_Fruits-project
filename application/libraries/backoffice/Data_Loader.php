@@ -3,11 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Data_Loader {
 
-    public function load_data($app, $section) {
+    public function load_data($section) {
         $CI =& get_instance();
 
         $data = array();
-        if ($app == 'backoffice' && $section == 'CRUD') {
+        if ($section == 'CRUD') {
             $CI->load->library('backoffice/Cat_product');
             $CI->load->library('backoffice/Cat_fruit');
             $CI->load->library('backoffice/Product');
@@ -16,14 +16,26 @@ class Data_Loader {
             $CI->load->library('backoffice/Wholesale_movement');
             $CI->load->library('backoffice/Bulk_movement');
             $CI->load->library('backoffice/Charges_kg_movement');
-
+            
+            
             $data['ls_cat_products'] = $CI->cat_product->get_all_products();
             $data['ls_cat_fruits'] = $CI->cat_fruit->get_all_fruits();
             $data['ls_product_configuration'] = $CI->product->get_product_configuration();
         }
-        else if ($app == 'backoffice' && $section == 'home'){
+        else if ($section == 'home'){
             $CI->load->library('backoffice/Cat_product');
+            $CI->load->library('backoffice/Production_balance', 'production_balance');
+            $CI->load->library('backoffice/Clients_account','clients_account');
             $data['ls_cat_products'] = $CI->cat_product->get_all_products();
+            $data['clients'] = $CI->clients_account->get_all_clients();
+            $data['Production_balance'] = $CI->production_balance->get_balance_production(date('Y-m-d'),1);
+            $data['date_search'] = date('Y-m-d');
+        }
+        else if ($section == 'delivery'){
+            $CI->load->model('backoffice/Delivery_Model');
+            $data['pending_baskets'] = $CI->Delivery_Model->get_pending_baskets();
+            $data['delivered_baskets'] = $CI->Delivery_Model->get_delivered_baskets();
+            $data['deliveries_management'] = $CI->Delivery_Model->get_deliveries_management(date('Y-m-d'));
         }
 
         return $data;

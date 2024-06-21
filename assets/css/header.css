@@ -1,8 +1,19 @@
+html{
+    background-color: #6e6e6e;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100%;
+    overflow-x: hidden;
+    justify-content: center;
+}
 body{
+    width: 100vw;
     background-color: #f0f0f0;
 }
 
 .header{
+    width: 100vw;
     font-family: century-gothic;
     background-color: #ffffff;
     padding:0.1% 2%;
@@ -16,7 +27,6 @@ body{
 #title a {
     font-size: 27px;
 }
-
 
 #title a:hover img, #title a:focus img{
     transition: 0.5s;
@@ -68,4 +78,44 @@ body{
 
 #form-control:focus{
     border: 1px solid #aad7c3;
+}
+
+#ExceptionModal{
+    font-family: century-gothic;
+}
+
+#ExceptionModal h3{
+    font-weight: bold;
+}
+
+#ExceptionModal .btn, #ExceptionModal .btn:hover{
+    background-color: #D2475C;
+}
+
+.container, .container-fluid{
+    padding: 0%;
+    margin: 0%;
+}
+
+.row{
+    padding: 0%;
+    margin: 0%;
+}
+
+@media (max-width : 768px) {
+    #title img{
+        height: 25px;
+    }
+
+    .last .disable{
+        width: 15px;
+    }
+    
+    .last .enable{
+        width: 20px;
+    }
+
+    .last p{
+        display: none;
+    }
 }

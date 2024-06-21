@@ -152,7 +152,7 @@ button:focus{
     display: none;
     border: 1px solid #6e6e6e;
     border-radius: 5px;
-    z-index: 10000;
+    z-index: 100000;
 }
 .bag-icon .btn{
     display: flex;
@@ -168,6 +168,7 @@ button:focus{
  .bag-icon input[type="checkbox"]:checked ~ .option{
     display: block;
  }
+
 
  .bag-icon .btn:hover,  .bag-icon .btn:focus{
     transition: 0.5s;
@@ -239,3 +240,23 @@ button:focus{
         height: 175px;
     }
 }
+
+a{
+    color: black;
+    text-decoration: underline;
+    text-decoration-thickness: 0.5px;
+}
+ a:hover, a:focus{
+    transition: 0.5s;
+    color: #6e6e6e;
+    text-decoration: underline;
+    text-decoration-thickness: 0.75px;
+ }
+
+ .product-desc a,.product-desc a:hover{
+    text-decoration: none;
+}
+
+/* .basket{
+    height: 120vh;
+} */

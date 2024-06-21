@@ -76,7 +76,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language']	= 'french';
 
 /*
 |--------------------------------------------------------------------------
@@ -367,13 +367,14 @@ $config['encryption_key'] = '';
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
-$config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 7200;
-$config['sess_save_path'] = NULL;
-$config['sess_match_ip'] = FALSE;
-$config['sess_time_to_update'] = 300;
-$config['sess_regenerate_destroy'] = FALSE;
+$config['sess_driver'] = 'files'; // Peut être 'files', 'database', 'redis', 'memcached', etc.
+$config['sess_cookie_name'] = 'ci_session'; // Nom du cookie de session
+$config['sess_expiration'] = 7200; // Durée de vie de la session en secondes (2 heures)
+$config['sess_save_path'] = sys_get_temp_dir(); // Chemin où les fichiers de session sont enregistrés. Assurez-vous que ce chemin est accessible et en écriture.
+$config['sess_match_ip'] = FALSE; // Correspondance de l'IP de l'utilisateur pour la session
+$config['sess_time_to_update'] = 3600; // Intervalle de temps (en secondes) pour actualiser l'ID de session
+$config['sess_regenerate_destroy'] = FALSE; // Détruire les anciennes données de session lors de la régénération de l'ID de session
+
 
 /*
 |--------------------------------------------------------------------------
@@ -390,11 +391,11 @@ $config['sess_regenerate_destroy'] = FALSE;
 |       'cookie_httponly') will also affect sessions.
 |
 */
-$config['cookie_prefix']	= '';
-$config['cookie_domain']	= '';
-$config['cookie_path']		= '/';
-$config['cookie_secure']	= FALSE;
-$config['cookie_httponly'] 	= FALSE;
+$config['cookie_prefix'] = '';
+$config['cookie_domain'] = '';
+$config['cookie_path'] = '/';
+$config['cookie_secure'] = FALSE;
+$config['cookie_httponly'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------

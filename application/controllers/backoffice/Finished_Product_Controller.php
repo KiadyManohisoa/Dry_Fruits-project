@@ -22,13 +22,17 @@ class Finished_Product_Controller extends CI_Controller {
         
         $data = $this->main->page('backoffice', 'CRUD');
         $data['id_product_to_update'] = $id_product;
+        $exist = $this->product->get_product_by_id($id_product);
+        echo json_encode($exist);
+        $data['id_cat_fruit'] = $exist->get_id_cat_fruit();
+        $data['id_cat_product'] = $exist->get_id_cat_product();
         // $data["stock_update"]=$this->stock->get_stock_by_id($id_stock);
         $data["wholesale_update"]=$this->wholesale_movement->get_wholesale_movement_by_id($id_wholesale);
         $data["detail_update"]=$this->detail_movement->get_detail_movement_by_id($id_detail);
         $data["bulk_update"]=$this->bulk_movement->get_bulk_movement_by_id($id_bulk);
         $data["charges_update"]=$this->charges_kg_movement->get_charges_movement_by_id($id_charges_kg);
         $data['update_finished_product']=1;
-        $extra_data = $this->data_loader->load_data('backoffice', 'CRUD');
+        $extra_data = $this->data_loader->load_data('CRUD');
         $data = array_merge($data, $extra_data);
 
         $this->load->view('templates/template', $data);
@@ -36,22 +40,41 @@ class Finished_Product_Controller extends CI_Controller {
 
     public function delete_finished_product($id_product) {
        $this->product->delete_product($id_product); 
-        redirect('index.php/backoffice/View/page/backoffice/CRUD');
+        redirect('index.php/backoffice/View/page/CRUD');
     }
 
-    // public function delete_finished_product($id_detail,
-    // $id_wholesale,$id_bulk,$id_charges_kg) {
-    //     // //echo $id_stock;
-    //     // $this->stock->delete_stock($id_stock);
-    //     $this->detail_movement->delete_detail_movement($id_detail);
-    //     $this->wholesale_movement->delete_wholesale_movement($id_wholesale);
-    //     $this->bulk_movement->delete_bulk_movement($id_bulk);
-    //     $this->charges_kg_movement->delete_charges_movement($id_charges_kg);
-
-    //     redirect('index.php/backoffice/View/page/backoffice/CRUD');
-    // }
+    public function check_form_exception() {
+        $postDatas = $this->input->post();
+        $error = '';
+        if($postDatas) {
+            foreach ($postDatas as $key => $value) {
+                if($value=='' || str_contains($value,"Choose")) {
+                    $error.= '- The key ' . $key . ' must contain a value </br>';
+                }
+            }
+        }
+        return $error;
+    }
 
     public function insert_finished_product() {
+        $error = $this->check_form_exception();
+        if(!empty($error)) {
+            $data = $this->main->page('backoffice', 'CRUD');
+            $extra_data = $this->data_loader->load_data('CRUD');
+            $data = array_merge($data, $extra_data);
+            $data['error'] = $error;
+            if($this->input->post('update_mode')==1) {
+                $data['id_product_to_update'] = $this->input->post('id_product_to_update');
+                $data['wholesale_update'] =$this->wholesale_movement->get_wholesale_movement_by_id($this->input->post('id_wholesale_to_update'));
+                $data['detail_update'] = $this->detail_movement->get_detail_movement_by_id($this->input->post('id_detail_to_update'));
+                $data['bulk_update'] = $this->bulk_movement->get_bulk_movement_by_id($this->input->post('id_bulk_to_update'));
+                $data['charges_update'] = $this->charges_kg_movement->get_charges_movement_by_id($this->input->post('id_charges_to_update'));
+                $data['update_finished_product'] = 1;
+            }
+            $this->load->view('templates/template', $data);
+            return;
+        }
+
         $data_product = array();
 
         $stock = $this->input->post('stock');
@@ -101,7 +124,7 @@ class Finished_Product_Controller extends CI_Controller {
         $this->bulk_movement->add_bulk_movement($data_bulk);
         
 
-          redirect('index.php/backoffice/View/page/backoffice/CRUD');
+        redirect('index.php/backoffice/View/page/CRUD');
         
         } else {
 
@@ -208,7 +231,7 @@ class Finished_Product_Controller extends CI_Controller {
             $this->stock->add_stock($data_stock);
             $this->product_model->update_stock();
 
-             redirect('index.php/backoffice/View/page/backoffice/CRUD');
+            redirect('index.php/backoffice/View/page/CRUD');
         }
     }
 }

@@ -20,7 +20,10 @@ class Detail_movement_Model extends CI_Model
 
     public function insert($data)
     {
-        return $this->db->insert('detail_movement', $data);
+        $max = $this->db->query("select * from detail_movement where id_product = '".$data['id_product']."' order by movement_date desc limit 1")->row_array();
+        if ($max == null ||  $max['price']!=$data['price'] || $max['reduction']!=$data['reduction']) {
+            return $this->db->insert('detail_movement', $data);
+        }
     }
 
     public function update($id, $data)

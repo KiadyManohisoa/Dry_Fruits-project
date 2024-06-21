@@ -124,18 +124,14 @@ class Orders
     }
 
     // donner l'id client et le nombre de ligne de resultat qu'on veut recuperer
-    public function last_client_order($id_client, $row)
+    // return array
+    public function last_client_orders($id_client, $row)
     {
-        $order_list = $this->CI->Orders_Model->last_client_order($id_client, $row);
-        $client_order = array();
-        foreach ($order_list as $order) :
-            $client_order[] = new Orders(
-                $order['id_order'],
-                $order['reduction'],
-                $order['ordering_date'],
-                $order['id_client']
-            );
-        endforeach;
-        return $client_order;
+        return $this->CI->Orders_Model->last_client_orders($id_client , $row);
+    }
+
+    // maka my id_produit ao anatina commande ray 
+    public function get_product_by_order_id ($id_order){
+        return $this->CI->Orders_Model->get_product_by_order($id_order);
     }
 }

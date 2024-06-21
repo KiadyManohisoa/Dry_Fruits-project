@@ -38,8 +38,12 @@ class Clients_account
     }
 
     public function set_last_activities() {
-        $this->last_activities = ($this->CI->Orders_Model->last_client_orders($this->get_id_client(),1))[0]['ordering_date'];
-       // $this->last_activities = '2024-07-25';
+        if($this->CI->Orders_Model->last_client_orders($this->get_id_client(),1)==null) {
+            $this->last_activities = null;
+        }
+        else {
+            $this->last_activities = ($this->CI->Orders_Model->last_client_orders($this->get_id_client(),1))[0]['ordering_date'];
+        }
     }
 
     public function get_last_activites ()  {
@@ -138,11 +142,11 @@ class Clients_account
 
     public function add_client()
     {
-        $hashed_password = password_hash($this->password, PASSWORD_DEFAULT);
+        //$hashed_password = password_hash($this->password, PASSWORD_DEFAULT);
         $data = array(
             'full_name' => $this->full_name,
             'mail' => $this->mail,
-            'password' => $hashed_password,
+            'password' => MD5(''.$this->password.''),
             'phone_number' => $this->phone_number,
             'user_image' => $this->user_image
         );
@@ -158,11 +162,6 @@ class Clients_account
     public function delete_client($id)
     {
         return $this->CI->Clients_account_Model->delete($id);
-    }
-
-    public function login($email, $password)
-    {
-        return $this->CI->Clients_account_Model->verify_login($email, $password);
     }
 
     public function search_client_by_name($name)
@@ -182,5 +181,10 @@ class Clients_account
             }
         }
         return $result;
+    }
+
+    public function login($client, $password)
+    {
+        return $this->CI->Clients_account_Model->verify_login($client, $password);
     }
 }

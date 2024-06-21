@@ -1,30 +1,86 @@
 var global_chart;
 var sales_chart;
 
-window.onload = function(){
-    submitForm();
+var app = angular.module('statApp', []);
+
+function convertToDoubleArray(obj) {
+    return Object.values(obj).map(value => parseFloat(value.replace(/ /g, '')));
 }
-function submitForm() {
-    function getRandomIntMultipleOf100(min, max) {
-        const minMultiple = Math.ceil(min / 100);
-        const maxMultiple = Math.floor(max / 100);
-        return Math.floor(Math.random() * (maxMultiple - minMultiple + 1) + minMultiple) * 100;
+function getCurrentMonthYear() {
+    var currentDate = new Date();
+    var currentMonth = currentDate.getMonth() + 1; // Ajouter 1 car getMonth() retourne de 0 à 11
+    var currentYear = currentDate.getFullYear();
+
+    // Formater le mois pour qu'il ait toujours deux chiffres (par exemple, janvier => '01')
+    var formattedMonth = ('0' + currentMonth).slice(-2);
+
+    // Retourner la date au format YYYY-MM
+    return currentYear + '-' + formattedMonth;
+}
+
+app.controller('GraphController', function($scope, $http) {
+    window.onload = function(){
+        var currentDate = new Date();
+        
+        // Formater la date pour correspondre à ce que votre API PHP attend (par exemple, ISO8601)
+        var formattedDate = getCurrentMonthYear(); 
+
+        $scope.getGraphByDate(formattedDate);
     }
 
-    const labels = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
-    const sales = Array.from({ length: 31 }, () => getRandomIntMultipleOf100(1000, 5000));
-    const charges = Array.from({ length: 31 }, () => getRandomIntMultipleOf100(1000, 5000));
-    const results = Array.from({ length: 31 }, () => getRandomIntMultipleOf100(1000, 5000));
-    const sales_figures = Array.from({ length: 31 }, () => getRandomIntMultipleOf100(1000, 5000));
+    $scope.getGraphByDate = function(date){
+        $http.get(site_url+'/backoffice/Sales_Controller/get_sales_stats/'+date)
+        .then(function(response) {
+            // Succès de la requête
+                var data = response.data;
+                submitForm(data.sales,data.charges,data.results,data.sales_figures);
+            // Vous pouvez effectuer d'autres actions ici avec les données reçues
+        }, function(error) {
+            document.getElementById("exception").innerHTML=JSON.stringify(error);
+            $('#ExceptionModal').modal('show');
+            // Erreur lors de la requête
+        });
+};
+    $scope.getGraph = function() {
+        var date = document.getElementById("stat-date").value;
+        if (date=="") {
+            document.getElementById("exception").innerHTML="You should input the month and year to see the General Report";
+            $('#ExceptionModal').modal('show');
+        }
+        else{
+            $http.get(site_url+'/backoffice/Sales_Controller/get_sales_stats/'+date)
+                .then(function(response) {
+                    // Succès de la requête
+                    var data = response.data;
+                    submitForm(data.sales,data.charges,data.results,data.sales_figures);
+                    // Vous pouvez effectuer d'autres actions ici avec les données reçues
+                },function(error) {
+                    document.getElementById("exception").innerHTML=JSON.stringify(error);
+                    $('#ExceptionModal').modal('show');
+                    // Erreur lors de la requête
+                });
+        }
+    };
+});
+
+function submitForm(salesTab,chargesTab,resultsTab,sales_figuresTab) {
+    const sales = convertToDoubleArray(salesTab);
+    const charges = convertToDoubleArray(chargesTab);
+    const results = convertToDoubleArray(resultsTab);
+    const sales_figures = convertToDoubleArray(sales_figuresTab);
+    const labels = Array.from({ length: sales.length }, (_, i) => (i + 1).toString());
+    
 
     const totalSales = sales.reduce((acc, val) => acc + val, 0);
     const totalCharges = charges.reduce((acc, val) => acc + val, 0);
     const totalResults = results.reduce((acc, val) => acc + val, 0);
+    const totalSales_figures = sales_figures[sales_figures.length-1];
 
     const data = {
         sales: totalSales,
         charges: totalCharges,
         results: totalResults,
+        sales_figures : totalSales_figures,
         chartData: {
             labels: labels,
             sales: sales,
@@ -34,12 +90,11 @@ function submitForm() {
         }
     };
 
-    console.log(data);
-
     // Mettre à jour les valeurs sur la page
     document.getElementById('sales').innerText = data.sales + ' Ar';
     document.getElementById('charges').innerText = data.charges + ' Ar';
     document.getElementById('results').innerText = data.results + ' Ar';
+    document.getElementById('sales_figures').innerText = data.sales_figures + ' Ar';
 
     // Mettre à jour le graphique
     update_global_chart(data.chartData);
@@ -83,8 +138,8 @@ function update_global_chart(chartData) {
         options: {
             scales: {
                 y: {
-                    min : 500,
-                    max : 6000
+                    min : 0,
+                    max : 250000
                 }
             }
         }
@@ -113,8 +168,7 @@ function update_sales_chart(chartData) {
         options: {
             scales: {
                 y: {
-                    min : 500,
-                    max : 6000
+                    min : 0
                 }
             }
         }

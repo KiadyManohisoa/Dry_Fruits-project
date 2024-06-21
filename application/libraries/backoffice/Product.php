@@ -87,6 +87,23 @@ class Product
         $this->id_cat_fruit = $id_cat_fruit;
     }
 
+    public function get_products_category($category)
+    {
+        $result = $this->CI->Product_Model->get_product_by_category($category);
+        $products = array();
+        foreach ($result as $data) {
+            $products[] = new Product(
+                $data['id_product'],
+                $data['image_link'],
+                $data['description'],
+                $data['creation_date'],
+                $data['id_cat_product'],
+                $data['id_cat_fruit']
+            );
+        }
+        return $products;
+    }
+
     public function get_all_products()
     {
         $result = $this->CI->Product_Model->get_all();

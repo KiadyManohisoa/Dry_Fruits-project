@@ -1,32 +1,45 @@
-<!-- secction produits -->
-<div id="products" class="content col-lg-6 col-lg-push-6 col-md-6 col-md-push-6">
-    <h1 class="title-products">My Basket</h1>
+<?php if($order_details) { ?>
 
-    <div class="receipt col-lg-12">
-        <div class="item-list">
-            <div class="item">
-                <img src="" alt="Dried Grapes" class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <div class="item-details col-lg-5 col-md-5 col-sm-6 col-xs-6">
-                    <strong>Dried Grapes</strong>
-                    <small>Bluck</small>
-                    <small>
-                        <?php $reduction=true; if($reduction) { ?>
-                            <span class="original-price">2 000 Ar</span>
-                            <span class="reduced-price"> / 1 800 Ar</span>
-                        <?php } else {?>
-                            <span>2 000 Ar</span>
-                        <?php } ?>
-                    </small>
-                    <small class="total-item">Total: 18 000 Ar</small>
-                </div>
-                <div class="item-number col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                    <p>10</p>
-                </div>
-                <hr>
+    <!-- secction produits -->
+    <div id="products" class="content basket col-lg-6 col-lg-push-6 col-md-6 col-md-push-6">
+        <h1 class="title-products"><?php echo $order_details[0]['client_full_name']; ?>'s Basket</h1>
+
+        <div class="receipt col-lg-12">
+            <div class="item-list">
+                <?php if (isset($order_details) && !empty($order_details)) { ?>
+                    <?php foreach ($order_details as $order) { ?>
+                        <div class="item">
+                            <img src="" alt="Product Image" class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                            <div class="item-details col-lg-5 col-md-5 col-sm-6 col-xs-6">
+                                <strong><?php echo $order['product_name']; ?></strong>
+                                <small><?php echo $order['type_sales']; ?></small>
+                                <small>
+                                    <?php if ($order['reduction_product']  != $order['unit_product_price']) { ?>
+                                        <span class="original-price"><?php echo number_format($order['unit_product_price'], 0, '.', ' '); ?>
+                                            Ar</span>
+                                        <span class="reduced-price"> / <?php echo number_format($order['reduction_product'], 0, '.', ' '); ?> Ar</span>
+                                    <?php } else { ?>
+                                        <span><?php echo number_format($order['unit_product_price'], 0, '.', ' '); ?> Ar</span>
+                                    <?php } ?>
+                                </small>
+                                <small class="total-item">Total:
+                                    <?php echo number_format($order['price_product_with_reduction'], 0, '.', ' '); ?> Ar</small>
+                            </div>
+                            <div class="item-number col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <p><?php echo number_format($order['quantity_product']); ?></p>
+                            </div>
+                            <hr>
+                        </div>
+                    <?php } ?>
+                <?php } else { ?>
+                    <div class="content">
+                        <p>No order details found.</p>
+                    </div>
+                <?php } ?>
             </div>
-        </div>
 
-        <div class="totals">
+            <div class="totals">
+            <?php $order = $order_details[0]; ?>
             <div class="title col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <p>Subtotal :</p>
                 <p>Reduction :</p>
@@ -34,106 +47,64 @@
                 <h4><strong>Total :</strong></h4>
             </div>
             <div class="price col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <p>48 000 Ar</p>
-                <p>10%</p>
+                <p><?php echo number_format($order['total_price_product'],0,'.',' '); ?> Ar</p>
+                <p>-<?php echo number_format($order['reduction']); ?>%</p>
                 <hr>
-                <h4><strong>42 100 Ar</strong></h4>
+                <h4><strong><?php echo number_format($order['result'],0,'.',' '); ?> Ar</strong></h4>
             </div>
         </div>
 
+        </div>
     </div>
-</div>
-<!-- secction produits -->
+    <!-- secction produits -->
+    
+    <!-- section payment -->
+    <div id="payments" class="content col-lg-6 col-lg-pull-6 col-md-6 col-md-pull-6 payments">
+        <h1 class="hidden-sm hidden-xs"><?php echo $order['client_full_name']; ?>'s Basket</h1>
 
-<!-- section payment -->
-<div id="payments" class="content col-lg-6 col-lg-pull-6 col-md-6 col-md-pull-6 payments">
-    <h1 class="hidden-sm hidden-xs">My Basket</h1>
-
-    <form>
-        <!-- SHIP -->
-        <div class="contents">
-            <div id="ship" class="section enabled">
-                <h4 class="col-lg-6 col-md-6 col-xs-4 col-sm-4">SHIP TO</h4>
-            </div>
-            <div id="ship-info">
-                <div class="form-group">
-                <div class="col-lg-12 col-md-12">
-                        <p><strong>Personal Information</strong></p>
-                        <p id="Adress">Ninja Kassadias</p>
-                        <p id="Adress">ninja@impekable.com, 933923223</p>
-                    </div>
-                    <div class="col-lg-12 col-md-12">
-                        <p><strong>Adress</strong></p>
-                        <p id="Adress">10 N. Martingale Road, Suite 400, Schaumburg, IL 60173</p>
-                    </div>
+        <form>
+            <!-- SHIP -->
+            <div class="contents">
+                <div id="ship" class="section enabled">
+                    <h4 class="col-lg-6 col-md-6 col-xs-4 col-sm-4">SHIP TO</h4>
                 </div>
-                <hr style="visibility:hidden">
-            </div>
-        </div>
-        <!-- SHIP -->
-        <br>
-        <!-- PAYMENT -->
-        <div class="contents">
-            <div id="pay" class="section">
-                <h4 class="col-lg-10 col-md-10 col-xs-8 col-sm-8">PAY WITH</h4>
-            </div>
-            <div id="ship-info">
-                <div class="form-group">
-                    <div class="col-lg-12 col-md-12">
-                        <p><strong>Mobile Money</strong></p>
-                        <p id="Adress">034 33 032 39</p>
+                <div id="ship-info">
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12">
+                            <p><strong>Personal Information</strong></p>
+                            <p id="Adress"><?php echo $order['client_full_name']; ?></p>
+                            <p id="Adress"><?php echo $order['client_email']; ?>,
+                                <?php echo $order['client_phone_number']; ?></p>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <p><strong>Adress</strong></p>
+                            <p id="Adress"><?php echo $order['delivery_address']; ?></p>
+                        </div>
                     </div>
+                    <hr style="visibility:hidden">
                 </div>
-                <hr style="visibility:hidden">
             </div>
-        </div>
-        <!-- PAYMENT -->
-    </form>
-</div>
-<!-- section payement -->
-<hr>
-<!-- section revue -->
-<div class="content col-lg-12 col-md-12">
-    <center>
-        <h2>Client review</h2>
-        <form action="">
-            <div class="stars-div">
-                <label for="1-star">
-                    <input type="radio" name="stars" value="1" id="1-star">
-                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
-                </label>
-    
-                <label for="2-star">
-                    <input type="radio" name="stars" value="2" id="2-star">
-                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
-                </label>
-    
-                <label for="3-star">
-                    <input type="radio" name="stars" value="3" id="3-star">
-                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
-                </label>
-    
-                <label for="4-star">
-                    <input type="radio" name="stars" value="4" id="4-star">
-                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
-                </label>
-    
-                <label for="5-star">
-                    <input type="radio" name="stars" value="5" id="5-star">
-                    <img src="<?php echo base_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                    <img src="<?php echo base_url('assets/icons/star-enable.png') ?>" class="star-enabled">
-                </label>
-                <hr>
+            <!-- SHIP -->
+            <br>
+            <!-- PAYMENT -->
+            <div class="contents">
+                <div id="pay" class="section">
+                    <h4 class="col-lg-10 col-md-10 col-xs-8 col-sm-8">PAID WITH</h4>
+                </div>
+                <div id="ship-info">
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12">
+                            <p><strong><?php echo $order['payment_type']; ?></strong></p>
+                            <p id="Adress"><?php echo $order['payment_phone_number']; ?></p>
+                        </div>
+                    </div>
+                    <hr style="visibility:hidden">
+                </div>
             </div>
-            
-            <div class="from-group">
-                <button type="submit" class="btn btn-custom btn-lg">Submit</button>
-            </div>
+            <!-- PAYMENT -->
         </form>
-    </center>
-</div>
-<!-- section revue -->
+    </div>
+    <!-- section payement -->
+<?php } else {
+    redirect(site_url('backoffice/View/page/home'));
+} ?>

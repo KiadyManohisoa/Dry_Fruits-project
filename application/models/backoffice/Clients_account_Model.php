@@ -34,24 +34,31 @@ class Clients_account_Model extends CI_Model
         return $this->db->delete('clients_account', array('id_client' => $id));
     }
 
-    public function verify_login($email, $password)
+    // public function verify_login($mail, $password)
+    // {
+    //     $query = $this->db->get_where('clients_account', array('mail' => $mail, 'password' => MD5('' . $password . '')));
+    //     //echo $this->db->last_query();
+    //     if ($query->num_rows() >= 1) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
+
+    public function verify_login($client, $password)
     {
-        $query = $this->db->get_where('clients_account', array('mail' => $email));
+        $this->db->where('(mail = ' . $this->db->escape($client) . ' OR phone_number = ' . $this->db->escape($client) . ')');
+        $this->db->where('password', MD5($password));
+        $query = $this->db->get('clients_account');
 
-        if ($query->num_rows() > 0) {
-            $user = $query->row_array();
+        // Uncomment the following line to debug the query
+        // echo $this->db->last_query();
 
-            $hashed_password = $user['password'];
-
-            if (password_verify($password, $hashed_password)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
+        if ($query->num_rows() >= 1) {
+            return $query->row()->id_client;
         }
+        return false;
     }
+
 
     public function search_client($name)
     {

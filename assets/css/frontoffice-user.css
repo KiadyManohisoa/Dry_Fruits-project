@@ -93,3 +93,21 @@ hr{
 .modal .btn{
     width: 200px;
 }
+
+.stars-div input[type="radio"],.star-enabled {
+    display: none;
+}
+.star-disabled{
+    display: block;
+}
+
+.star-enabled {
+    display: none;
+}
+label.selected .star-enabled {
+    display: block;
+}
+
+label.selected .star-disabled {
+    display: none;
+}

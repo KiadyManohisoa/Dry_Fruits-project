@@ -1,6 +1,117 @@
 .chart-container {
     border: 1px solid #f0f0f0;
-    background-color: #fafafa;
+    background-color: #fff;
     padding: 50px;
     border-radius: 10px;
+}
+
+.chart-container canvas {
+    height: 50vh;
+}
+a{
+    color: black;
+    text-decoration: underline;
+    text-decoration-thickness: 0.5px;
+}
+ a:hover, a:focus{
+    transition: 0.5s;
+    color: #6e6e6e;
+    text-decoration: underline;
+    text-decoration-thickness: 0.75px;
+ }
+
+ 
+.star-rating {
+    font-size: 0;
+    direction: rtl;
+    display: inline-block;
+}
+.star-rating input {
+    display: none;
+}
+.star-rating label {
+    font-size: 1em; /* Agrandir les étoiles */
+    color: #ddd;
+    display: inline-block;
+    cursor: pointer;
+}
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #D2475C;
+}
+.progress-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.rating-label {
+    width: 60px;
+}
+.progress {
+    flex: 1;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    background-color: #e0e0e0;
+    margin-right: 10px;
+    position: relative;
+}
+.progress-bar {
+    height: 100%;
+    text-align: center;
+    color: white;
+}
+.progress-bar-success {
+    background-color: #D2475C;
+}
+.rating-percentage {
+    width: 40px;
+    text-align: right;
+}
+.rating-summary .d-flex {
+    display: flex;
+    align-items: center;
+}
+.rating-summary .stars i {
+    color: #D2475C;
+    font-size: 2em; /* Agrandir les étoiles dans le résumé de la notation */
+}
+.review {
+    margin-bottom: 1.5rem;
+}
+.review .stars {
+    color: #D2475C; /* Couleur des étoiles */
+}
+.review-date {
+    font-size: 0.9em;
+    color: #777;
+}
+.review h5{
+    font-weight: bold;
+}
+.see-all-reviews {
+    text-decoration: underline;
+    color: #007bff; /* Bootstrap primary color */
+}
+
+.rating-div{
+    font-family: century-gothic;
+    padding: 40px;
+}
+.rating-div img{
+    width: 30px;
+}
+.stars-img img{
+    width: 150px;
+}
+.stars-final{
+    width: 250px;
+}
+.stars-final img{
+    width: 220px;
+}
+.review-div {
+    height: 500px;
+    overflow-x: auto;
 }

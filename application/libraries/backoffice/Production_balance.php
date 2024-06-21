@@ -25,6 +25,7 @@ class Production_balance
         $this->CI = &get_instance();
     }
 
+
     public function get_product()
     {
         return $this->product;
@@ -120,6 +121,7 @@ class Production_balance
     {
         $CI = &get_instance();
         $CI->load->model('backoffice/Production_balance_Model','Production_balance_Model');
+        $CI->load->library('backoffice/util_lib','util_lib');
 
         $balances_data = $CI->Production_balance_Model->get_balance_by_date($date_search, $id_cat_produit);
 
@@ -127,12 +129,12 @@ class Production_balance
         foreach ($balances_data as $data) {
             $balance = new self(
                 $data['product_name'],
-                $data['stock'],
-                $data['out_production'],
-                $data['sales'],
-                $data['charges'],
-                $data['sales_amount'],
-                $data['results']
+                $data['stock'] > 0 ? $CI->util_lib->format_number($data['stock'],2) : 0,
+                $data['out_production'] > 0 ? $CI->util_lib->format_number($data['out_production'],2) : 0,
+                $CI->util_lib->format_number($data['sales'],2),
+                $data['charges'] > 0 ? $CI->util_lib->format_number($data['charges'],2) : 0,
+                $CI->util_lib->format_number($data['sales_amount'],2),
+                $data['results'] > 0 ? $CI->util_lib->format_number($data['results'],2) : 0
             );
             $balances[] = $balance;
         }

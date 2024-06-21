@@ -20,6 +20,7 @@ class Cat_fruit_Model extends CI_Model
 
     public function insert($data)
     {
+        
         return $this->db->insert('cat_fruit', $data);
     }
 

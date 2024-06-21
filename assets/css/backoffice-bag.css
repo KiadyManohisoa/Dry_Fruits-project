@@ -284,3 +284,9 @@ label.selected .star-enabled {
 label.selected .star-disabled {
     display: none;
 }
+
+.quantity{
+    border: none;
+    background: none;
+    width: 20px;
+}

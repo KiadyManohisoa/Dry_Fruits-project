@@ -132,11 +132,17 @@ class Orders_Model extends CI_Model
         $query = $this->db->query($sql);
         return $query->result_array();
     }
-
+    // return an array 
     public function last_client_orders($id_client, $row)
     {
-        $sql = 'SELECT * FROM orders where id_client =\'' . $id_client . '\'order by ordering_date DESC limit ' . $row;
+        $sql = 'SELECT * FROM v_client_orders where id_client =\'' . $id_client . '\'order by ordering_date DESC limit ' . $row;
         $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+     // maka my id_produit ao anatina commande ray 
+    public function get_product_by_order  ($id_order){
+        $sql = 'SELECT id_product FROM  products_ordered  where id_order = '.$id_order ; 
+        $query = $this ->db->query($sql);
         return $query->result_array();
     }
 }

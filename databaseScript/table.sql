@@ -116,6 +116,7 @@ CREATE TABLE client_products_review(
    comment TEXT,
    id_client VARCHAR(20)  NOT NULL,
    id_product INTEGER NOT NULL,
+   review_date TIMESTAMP DEFAULT NOW(),
    PRIMARY KEY(id_product_review),
    FOREIGN KEY(id_client) REFERENCES clients_account(id_client),
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
@@ -124,6 +125,7 @@ CREATE TABLE client_products_review(
 CREATE TABLE client_services_review(
    id_service_review VARCHAR(50) DEFAULT ('CSR') || LPAD(nextval('client_services_review_sequence')::TEXT, 4, '0'),
    stars SMALLINT NOT NULL,
+   comment TEXT,
    id_client VARCHAR(20)  NOT NULL,
    PRIMARY KEY(id_service_review),
    FOREIGN KEY(id_client) REFERENCES clients_account(id_client)

@@ -10,9 +10,10 @@ class View extends CI_Controller {
         $this->load->library('backoffice/Data_Loader','data_loader');
     }
 
-    public function page($application = 'frontoffice',$section = 'home') {
+    public function page($section = 'login') {
+        $application = 'backoffice';
         $data = $this->main->page($application,$section);
-        $extra_data = $this->data_loader->load_data($application,$section);
+        $extra_data = $this->data_loader->load_data($section);
         $data = array_merge($data,$extra_data);
         $this->load->view('templates/template', $data);
     }
