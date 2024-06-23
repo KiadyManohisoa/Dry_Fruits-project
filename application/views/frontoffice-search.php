@@ -78,9 +78,9 @@
                                     <img src="<?php echo site_url('assets/icons/shopping-bag-disable.png') ?>">
                                 </label>
                                 <div class="option" id="option-<?php echo $product['product_id']; ?>">
-                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-B">Bulk</button>
-                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-W">Wholesale</button>
-                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-D">Detail</button>
+                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-B" <?= $disponibility[$product['product_id']]['B'] ?>>Bulk</button>
+                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-W" <?= $disponibility[$product['product_id']]['W'] ?>>Wholesale</button>
+                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-D" <?= $disponibility[$product['product_id']]['D'] ?>>Detail</button>
                                 </div>
                             </div>
 

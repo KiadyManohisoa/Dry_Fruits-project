@@ -257,6 +257,6 @@ a{
     text-decoration: none;
 }
 
-/* .basket{
-    height: 120vh;
-} */
+.rating-div img{
+    width: 30px;
+}

@@ -25,40 +25,7 @@ class Client_favorite_products_Model extends CI_Model
 
     public function get_favorites_with_latest_movement($id_client)
     {
-        $sql = "
-            SELECT 
-                cfp.id_client_favorite_products,
-                cfp.id_product,
-                vpd.product_name,
-                vpd.image_link as product_image_link,
-                dm.id_detail_movement,
-                dm.movement_date,
-                dm.price as detail_price,
-                dm.reduction
-            FROM 
-                client_favorite_products cfp
-            LEFT JOIN 
-                v_product_detail vpd ON cfp.id_product = vpd.id_product
-            LEFT JOIN 
-                (
-                    SELECT 
-                        dm.id_detail_movement,
-                        dm.movement_date,
-                        dm.price,
-                        dm.reduction,
-                        dm.id_product
-                    FROM 
-                        detail_movement dm
-                    WHERE 
-                        dm.movement_date = (
-                            SELECT MAX(movement_date)
-                            FROM detail_movement
-                            WHERE id_product = dm.id_product
-                        )
-                ) dm ON cfp.id_product = dm.id_product
-            WHERE 
-                cfp.id_client = ?
-        ";
+        $sql = "SELECT * FROM v_product_configuration WHERE product_id in (SELECT id_product FROM client_favorite_products WHERE id_client = ?)";
 
         $query = $this->db->query(
             $sql,

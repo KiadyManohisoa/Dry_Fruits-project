@@ -102,7 +102,7 @@ class Clients_account
 
     public function get_user_image()
     {
-        return $this->phone_number;
+        return $this->user_image;
     }
 
     public function set_user_image($user_image)

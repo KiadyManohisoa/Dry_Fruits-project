@@ -200,5 +200,18 @@ class Product_Model extends CI_Model
         // Retourner le panier traité
         return $basket_return;
     }
+
+    public function get_product_disponibility() {
+        $sql = "SELECT product_id, CASE WHEN ((stock_quantity - order_quantity)*0.2)*0.1 <= 0 THEN 'disabled' ELSE '' END AS D, CASE WHEN ((stock_quantity - order_quantity)*0.2)*0.1 < 10 THEN 'disabled' ELSE '' END AS W, CASE WHEN (stock_quantity - order_quantity)-((stock_quantity - order_quantity)*0.2) <= 0 THEN 'disabled' ELSE '' END AS B from v_product_stock";
+        $disponibility = [];
+        $rows = $this->db->query($sql)->result_array();
+        foreach ($rows as $data) {
+            $disponibility[$data['product_id']]['D'] = $data['d'];
+            $disponibility[$data['product_id']]['W'] = $data['w'];
+            $disponibility[$data['product_id']]['B'] = $data['b'];
+        }
+
+        return $disponibility;
+    }
     
 }

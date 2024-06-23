@@ -145,4 +145,87 @@ class Orders_Model extends CI_Model
         $query = $this ->db->query($sql);
         return $query->result_array();
     }
+
+    public function insert_products_ordered($basket, $id_order) {
+        foreach ($basket as $item) {
+            $data = array(
+                'id_product_ordered' => $this->generate_product_ordered_id(), // Générer l'ID pour products_ordered
+                'sales_type' => $item['type'],
+                'quantity' => $item['quantity_product'],
+                'id_order' => $id_order,
+                'id_product' => $item['id_product']
+            );
+
+            $this->db->insert('products_ordered', $data);
+        }
+    }
+
+    public function create_order($delivery_data, $payment_data,$id_client,$reduction,$cost) {
+        // Générer l'ID pour la livraison et le paiement en utilisant les séquences de PostgreSQL
+        $id_delivery = $this->generate_delivery_id();
+        $id_payment = $this->generate_payment_id();
+        $id_order = $this->generate_order_id();
+
+        // Insérer les données de livraison
+        $delivery_data['id_delivery'] = $id_delivery;
+        $delivery_data['status'] = 0; // Status par défaut, à adapter selon votre logique
+        $delivery_data['cost'] = $cost; // Status par défaut, à adapter selon votre logique
+        $delivery_data['delivery_date'] = $this->calculate_delivery_date(); // Calculer la date de livraison
+
+        $this->db->insert('delivery', $delivery_data);
+
+        // Insérer les données de paiement
+        $payment_data['id_payement'] = $id_payment;
+
+        $this->db->insert('payement', $payment_data);
+
+        // Insérer les données de commande
+        $order_data = array(
+            'reduction' => $reduction, // Vous pouvez définir une réduction si nécessaire
+            'ordering_date' => date('Y-m-d H:i:s'), // Date actuelle
+            'id_payement' => $id_payment,
+            'id_delivery' => $id_delivery,
+            'id_client' => $id_client // Récupérer l'ID client depuis la session
+        );
+
+        $order_data['id_order'] = $id_order;
+
+        $this->db->insert('orders', $order_data);
+
+        // Retourner l'ID de la commande créée
+        return $id_order;
+    }
+
+    private function generate_delivery_id() {
+        // Générer l'ID de livraison en utilisant la séquence de PostgreSQL
+        $query = $this->db->query("SELECT 'DLV' || LPAD(nextval('delivery_sequence')::TEXT, 4, '0') AS id");
+        $row = $query->row();
+        return $row->id;
+    }
+
+    private function generate_payment_id() {
+        // Générer l'ID de paiement en utilisant la séquence de PostgreSQL
+        $query = $this->db->query("SELECT 'PMT' || LPAD(nextval('payement_sequence')::TEXT, 4, '0') AS id");
+        $row = $query->row();
+        return $row->id;
+    }
+
+    private function generate_order_id() {
+        // Générer l'ID de commande en utilisant la séquence de PostgreSQL
+        $query = $this->db->query("SELECT 'ORD' || LPAD(nextval('ordered_product_sequence')::TEXT, 4, '0') AS id");
+        $row = $query->row();
+        return $row->id;
+    }
+
+    private function calculate_delivery_date() {
+        // Calculer la date de livraison (par exemple, 2 semaines après la date de commande)
+        return date('Y-m-d H:i:s', strtotime('+2 weeks'));
+    }
+
+    private function generate_product_ordered_id() {
+        // Générer l'ID pour products_ordered (à adapter selon votre séquence dans PostgreSQL)
+        $query = $this->db->query("SELECT 'PRO' || LPAD(nextval('products_ordered_sequence')::TEXT, 4, '0') AS id");
+        $row = $query->row();
+        return $row->id;
+    }
 }

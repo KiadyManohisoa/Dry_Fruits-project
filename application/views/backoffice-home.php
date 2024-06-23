@@ -1,84 +1,82 @@
 <!-- services rating -->
-    <?php if (isset($review_pourcentage)) { ?>
-        <div class="content container-fluid rating-div">
-            <!-- Ratings & Reviews -->
-            <div class="col-lg-4 col-md-4">
-                <h3>Ratings & Reviews</h3>
-                <div class="rating-summary">
-                    <div class="d-flex align-items-center">
-                        <div class="stars-final">
-                            <img src="<?= site_url('assets/icons/'.((int) $review_pourcentage['final_review']).'-stars.png') ?>">
-                        </div>
-                        <h2><?= $review_pourcentage['final_review']?></h2>
+    <div class="content container-fluid rating-div">
+        <!-- Ratings & Reviews -->
+        <div class="col-lg-4 col-md-4">
+            <h1>Ratings & Reviews</h1>
+            <div class="rating-summary">
+                <div class="d-flex align-items-center">
+                    <div class="stars-final">
+                        <img src="<?= site_url('assets/icons/'.((int) $review_pourcentage['final_review']).'-stars.png') ?>">
                     </div>
-                    <p><?= $review_pourcentage['final_review']?> Reviews</p>
+                    <h2><?= $review_pourcentage['final_review']?></h2>
                 </div>
-                <div class="rating">
-                    <div class="progress-container">
-                        <span class="rating-label">5 Stars</span>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][5]?>%;"></div>
-                        </div>
-                        <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][5]?>%</span>
-                    </div>
-                    <div class="progress-container">
-                        <span class="rating-label">4 Stars</span>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][4]?>%;"></div>
-                        </div>
-                        <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][4]?>%</span>
-                    </div>
-                    <div class="progress-container">
-                        <span class="rating-label">3 Stars</span>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][3]?>%;"></div>
-                        </div>
-                        <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][3]?>%</span>
-                    </div>
-                    <div class="progress-container">
-                        <span class="rating-label">2 Stars</span>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][2]?>%;"></div>
-                        </div>
-                        <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][2]?>%</span>
-                    </div>
-                    <div class="progress-container">
-                        <span class="rating-label">1 Star</span>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][1]?>%;"></div>
-                        </div>
-                        <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][1]?>%</span>
-                    </div>
-                    <div class="progress-container">
-                        <span class="rating-label">0 Stars</span>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][0]?>%;"></div>
-                        </div>
-                        <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][0]?>%</span>
-                    </div>
-                </div>
+                <p><?= $review_pourcentage['final_review']?> Reviews</p>
             </div>
-    
-            <!-- Share your thoughts -->
-            <div class="col-lg-8 col-md-8">
-                <div class="content review-div">
-                    
-                    <?php foreach ($reviews as $review) { ?>
-                        <div class="review">
-                            <h5 class="d-inline"><?= $review['client'] ?></h5>
-                            <span class="review-date float-right"><?= $review['review_date'] ?></span>
-                            <div class="stars-img">
-                                <img src="<?= site_url('assets/icons/'.$review ['stars'].'-stars.png') ?>">
-                            </div>
-                            <p><?= $review ['comment'] ?></p>
-                            <hr>
-                        </div>
-                    <?php } ?>
-    
+            <div class="rating">
+                <div class="progress-container">
+                    <span class="rating-label">5 Stars</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][5]?>%;"></div>
+                    </div>
+                    <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][5]?>%</span>
+                </div>
+                <div class="progress-container">
+                    <span class="rating-label">4 Stars</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][4]?>%;"></div>
+                    </div>
+                    <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][4]?>%</span>
+                </div>
+                <div class="progress-container">
+                    <span class="rating-label">3 Stars</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][3]?>%;"></div>
+                    </div>
+                    <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][3]?>%</span>
+                </div>
+                <div class="progress-container">
+                    <span class="rating-label">2 Stars</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][2]?>%;"></div>
+                    </div>
+                    <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][2]?>%</span>
+                </div>
+                <div class="progress-container">
+                    <span class="rating-label">1 Star</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][1]?>%;"></div>
+                    </div>
+                    <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][1]?>%</span>
+                </div>
+                <div class="progress-container">
+                    <span class="rating-label">0 Stars</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: <?= $review_pourcentage['stars_pourcentages'][0]?>%;"></div>
+                    </div>
+                    <span class="rating-percentage"><?= $review_pourcentage['stars_pourcentages'][0]?>%</span>
                 </div>
             </div>
         </div>
-    <?php } ?>
+
+        <!-- Share your thoughts -->
+        <div class="col-lg-8 col-md-8">
+            <h3>Client remarks</h3>
+            <div class="content review-div">
+                <?php foreach ($reviews as $review) { ?>
+                    <div class="review">
+                        <h5 class="d-inline"><?= $review['client'] ?></h5>
+                        <span class="review-date float-right"><?= $review['review_date'] ?></span>
+                        <div class="stars-img">
+                            <img src="<?= site_url('assets/icons/'.$review ['stars'].'-stars.png') ?>">
+                        </div>
+                        <p><?= $review ['comment'] ?></p>
+                        <hr>
+                    </div>
+                <?php } ?>
+
+            </div>
+        </div>
+    </div>
 <!-- services rating -->
 
 <!-- recherche de clients -->

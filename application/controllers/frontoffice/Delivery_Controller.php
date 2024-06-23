@@ -26,7 +26,7 @@ class Delivery_Controller extends CI_Controller
             $order_details = $this->basket->get_basket_link($order_id);
     
             if (!empty($order_details)) {
-                $data = array_merge($data, ['order_details' => $order_details]);
+                $data = array_merge($data, ['order_details' => $order_details,'order_id' => $order_id]);
             }
     
             $this->load->view('templates/template', $data);

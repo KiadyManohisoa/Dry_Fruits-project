@@ -99,6 +99,7 @@
                             <p id="Adress"><?php echo $order['payment_phone_number']; ?></p>
                         </div>
                     </div>
+                    <div class="form-group text-right"><a class="btn btn-custom btn-lg" href="<?= isset($order_id) ? site_url("frontoffice/Basket_Controller/generatePDF/".$order_id) : '#' ?>">Download PDF</a></div>
                     <hr style="visibility:hidden">
                 </div>
             </div>
@@ -133,14 +134,6 @@
                         </div>
                         <div class="item-number col-lg-4 col-md-4 col-sm-4 col-xs-12">
                             <button type="button" class="btn btn-default change-basket" id="minus-<?= $order['product_id']; ?>-<?= $order['type']; ?>"><img src="<?php echo site_url('assets/icons/minus.png') ?>"></button>
-                                    <style>
-                                        input[type="text"].quantity {
-                                            text-align: left;
-                                            border: none;
-                                            font-size: 20px;
-                                            width: 40px;
-                                        }
-                                    </style>
                             <input type="text" min="1" id="quantity-<?= $order['product_id']; ?>-<?= $order['type']; ?>" value="<?php echo number_format($order['quantity_product']); ?>" name="<?php echo number_format($order['quantity_product']); ?>" class="quantity">
 
                             <button type="button" class="btn btn-default change-basket" id="plus-<?= $order['product_id']; ?>-<?= $order['type']; ?>"><img src="<?php echo site_url('assets/icons/plus.png') ?>"></button>
@@ -191,7 +184,7 @@
 <div id="payments" class="content col-lg-6 col-lg-pull-6 col-md-6 col-md-pull-6 payments">
     <h1 class="hidden-sm hidden-xs">My Basket</h1>
 
-    <form action = "<?php echo site_url('frontoffice/View/page/login')?>" method="post">
+    <form action = "<?php echo site_url('frontoffice/Basket_Controller/create_order')?>" method="post">
         <!-- SHIP -->
         <div class="contents">
             <div id="ship" class="section enabled">
@@ -211,7 +204,7 @@
             <div id="ship-form" class="payment-form">
                 <div class="form-group">
                     <label for="">Adress</label>
-                    <input id="Adress-input" class="form-control" type="text" name="adress" placeholder="Enter your Adress">
+                    <input id="Adress-input" class="form-control" type="text" name="address" placeholder="Enter your Adress">
                 </div>
 
                 <div class="form-group col-lg-5 col-md-5">
@@ -247,6 +240,7 @@
         <br>
         <!-- PAYMENT -->
         <div class="contents">
+            <input type="hidden" id="cost" name="cost" value="<?= number_format($delivery_cost,0, '.', ' '); ?>">
             <div id="pay" class="section">
                 <label class="round-check col-lg-1 col-md-1 col-xs-2 col-sm-2">
                     <input id="pay-check" type="checkbox" disabled>
@@ -269,10 +263,10 @@
                     <br>
                     <div class="form-group input">
                         <p>Phone number</p>
-                        <input type="text" class="form-control" name="phone_number" id="">
+                        <input type="text" class="form-control" value="" name="phone_number" id="">
                     </div>
                 </div>
-                <div class="form-group text-right"><button type="submit" onclick="verify_pay_form()" class="btn btn-custom btn-lg">Pay 42 100 Ar</button></div>
+                <div class="form-group text-right"><button type="submit" onclick="verify_pay_form()" class="btn btn-custom btn-lg">Pay <span id="total-payment"><?php echo isset($order['result']) ? number_format($order['result']+$delivery_cost,0, '.', ' ') : '' ?> Ar</span></button></div>
             </div>
         </div>
         <!-- PAYMENT -->

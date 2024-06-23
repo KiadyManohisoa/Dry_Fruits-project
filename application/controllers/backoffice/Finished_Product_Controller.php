@@ -146,18 +146,23 @@ class Finished_Product_Controller extends CI_Controller {
 
             if ($exist == null) {
 
-                $upload_path = './uploads/';
-                 if (!is_dir($upload_path)) {
-                mkdir($upload_path, 0777, true); // Crée le répertoire avec les permissions appropriées
+                $upload_path = 'uploads/';
+                $product_upload_path = 'uploads/product/';
+
+                if (!is_dir($upload_path)) {
+                    mkdir($upload_path, 0777, true); 
+                }
+                if (!is_dir($product_upload_path)) {
+                    mkdir($product_upload_path, 0777, true); 
                 }
 
                 $config['upload_path'] = $upload_path;
                 $config['allowed_types'] = 'gif|jpg|png';
                 $config['max_size'] = 5048;
-                 $config['max_width'] = 1921;
+                $config['max_width'] = 1921;
                 $config['max_height'] = 1081;
 
-                    $this->load->library('upload', $config);
+                $this->load->library('upload', $config);
 
                     if ($this->upload->do_upload('pictures_details')) {
 
@@ -167,13 +172,7 @@ class Finished_Product_Controller extends CI_Controller {
                         $file_ext = $uploadData['file_ext'];
                         $new_file_name = $timestamp . $file_ext;
                     
-                        $new_path = './uploads_pictures/';
-                    
-                        if (!is_dir($new_path)) {
-                            mkdir($new_path, 0777, true); // Crée le répertoire avec les permissions appropriées
-                        }
-                    
-                        $new_file_path = $new_path . $new_file_name;
+                        $new_file_path = $product_upload_path . $new_file_name;
 
                         rename($uploadData['full_path'], $new_file_path);
                     
@@ -181,6 +180,13 @@ class Finished_Product_Controller extends CI_Controller {
                     
                     } else {
                         $error = $this->upload->display_errors();
+                        $data = array();
+                        $data = $this->main->page('backoffice', 'CRUD');
+                        $extra_data = $this->data_loader->load_data('CRUD');
+                        $data = array_merge($data, $extra_data);
+                        $data['error'] = $error;            
+                        $this->load->view('templates/template', $data);
+
                         //echo $error;
                         return;
                     }

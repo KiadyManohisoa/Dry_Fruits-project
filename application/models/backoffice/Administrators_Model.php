@@ -38,12 +38,12 @@ class Administrators_Model extends CI_Model
     }
 
     public function verify_login($username, $password) {
-        $query = $this->db->get_where('administrators', array('pseudo_name' => $username, 'password' => MD5(''.$password.''), 'status' => 'A'));
+        $query = $this->db->get_where('administrators', array('pseudo_name' => $username, 'password' => MD5(''.$password.'')));
         //echo $this->db->last_query();
-        if($query->num_rows() >= 1) {
-            return true;
+        if($query->num_rows() == 1) {
+            return $query->result_array()[0]['status'];
         }
-        return false;
+        return '';
     }
 
     // public function verify_login($pseudo_name, $password)

@@ -30,4 +30,12 @@ class Client_services_review
     {
         return $this->CI->reviewModel->delete_review($id_service_review);
     }
+
+    public function get_all_services_review(){
+        $reviews = $this->CI->reviewModel->get_all_services_review();
+        if ($reviews==null) {
+            $reviews=[];
+        }
+        return $reviews;
+    }
 }

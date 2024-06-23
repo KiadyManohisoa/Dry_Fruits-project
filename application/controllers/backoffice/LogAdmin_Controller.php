@@ -7,14 +7,21 @@ class LogAdmin_Controller extends CI_Controller {
         parent::__construct();
         $this->load->library('backoffice/Administrator');
         $this->load->model('backoffice/view_model', 'main');
+        $this->load->library('session');
     }
 
     public function authenticate() {
         $pseudo_name = $this->input->post('user_name');
-        $password = $this->input->post('user_psswd');
+            $this->session->unset("admin_status");
+            $password = $this->input->post('user_psswd');
         $response = $this->administrator->login($pseudo_name,$password);
-        if($response==true) {
-            redirect('backoffice/View/page/home');
+        if($response!='') {
+            $this->session->set("admin_status",$response);
+            if ($response=='A') {
+                redirect('backoffice/View/page/home');
+            } else {
+                redirect('backoffice/View/page/delivery');
+            }
         }
         else {
             $data = $this->main->page('backoffice', 'login');

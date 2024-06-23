@@ -24,6 +24,7 @@ CREATE TABLE Product(
    FOREIGN KEY(id_cat_product) REFERENCES cat_product(id_cat_product),
    FOREIGN KEY(id_cat_fruit) REFERENCES cat_fruit(id_cat_fruit)
 );
+ALTER TABLE product ALTER COLUMN image_link DROP NOT NULL;
 
 CREATE TABLE stock(
    id_stock VARCHAR(50) DEFAULT ('STK') || LPAD(nextval('stock_sequence')::TEXT, 4, '0'),
@@ -127,6 +128,7 @@ CREATE TABLE client_services_review(
    stars SMALLINT NOT NULL,
    comment TEXT,
    id_client VARCHAR(20)  NOT NULL,
+   review_date TIMESTAMP DEFAULT NOW(),
    PRIMARY KEY(id_service_review),
    FOREIGN KEY(id_client) REFERENCES clients_account(id_client)
 );

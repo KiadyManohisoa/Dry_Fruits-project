@@ -40,6 +40,9 @@ class Cat_fruit_Controller extends CI_Controller {
                 redirect('backoffice/View/page/CRUD');
             } else {
                 $data['wording'] = $name;
+                $this->cat_fruit->add_fruit($data);                
+                redirect('backoffice/View/page/CRUD');
+
             }
         }
     }

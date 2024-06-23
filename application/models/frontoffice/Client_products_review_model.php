@@ -29,19 +29,46 @@ class Client_products_review_model extends CI_Model {
     }
 
     public function insert($id_client, $stars, $comment, $id_product)
-    {
-        $sql = 'INSERT INTO client_products_review (stars, comment, id_client, id_product) VALUES (?, ?, ?, ?)';
+{
+    // Ensure the date format is correct
+    $currentDate = date('Y-m-d');
 
-        $query = $this->db->query($sql, array($stars, $comment, $id_client, $id_product));
+    // Prepare the SQL query to check if the product was ordered by the client and delivered before today
+    $sql = "SELECT * 
+            FROM products_ordered 
+            WHERE id_product = ? 
+              AND id_order IN (
+                  SELECT id_order 
+                  FROM orders 
+                  WHERE id_client = ? 
+                    AND id_delivery IN (
+                        SELECT id_delivery 
+                        FROM delivery 
+                        WHERE DATE(delivery_date) < ? 
+                          AND status = 1
+                    )
+              )";
 
-        return $query;
+    // Execute the query with the provided parameters
+    $query = $this->db->query($sql, array($id_product, $id_client, $currentDate));
+
+    // Check if any rows are returned
+    if ($query->num_rows() > 0) {
+        // Prepare the insert query for client_products_review table
+        $insert_sql = 'INSERT INTO client_products_review (stars, comment, id_client, id_product) VALUES (?, ?, ?, ?)';
+        
+        // Execute the insert query with the provided parameters
+        $this->db->query($insert_sql, array($stars, $comment, $id_client, $id_product));
+
+        return true;
     }
 
-    public function get_review_by_id_product ($id_product){
-        $sql = 'SELECT * from v_product_comment where id_product = '.$id_product;
-        $query = $this->db->query($sql);
+    return false;
+}
 
-        return $query->result_array();
+
+    public function get_review_by_id_product ($id_product){
+        return $this->db->get_where('v_product_comment', array('id_product' => $id_product))->result_array();
     }
 
     public function get_stars_pourcentage($id_product) {

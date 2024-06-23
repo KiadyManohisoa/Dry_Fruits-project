@@ -28,9 +28,9 @@
                         Add to bag
                     </label>
                     <div class="option" id="option-<?php echo $product['product_id']; ?>">
-                        <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-B">Bulk</button>
-                        <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-W">Wholesale</button>
-                        <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-D">Detail</button>
+                        <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-B" <?= $disponibility[$product['product_id']]['B'] ?>>Bulk</button>
+                        <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-W" <?= $disponibility[$product['product_id']]['W'] ?>>Wholesale</button>
+                        <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-D" <?= $disponibility[$product['product_id']]['D'] ?>>Detail</button>
                     </div>
                 </div>
                 <div href="" class="bag-icon btn btn-favorite">
@@ -118,32 +118,27 @@
                         <h4>Your rating</h4>
                         <label for="1-star">
                             <input type="radio" name="stars" value="1" id="1-star">
-                            <img src="<?= site_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                            <img src="<?= site_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                            <img src="<?= site_url('assets/icons/star-disable.png') ?>">
                         </label>
 
                         <label for="2-star">
                             <input type="radio" name="stars" value="2" id="2-star">
-                            <img src="<?= site_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                            <img src="<?= site_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                            <img src="<?= site_url('assets/icons/star-disable.png') ?>">
                         </label>
 
                         <label for="3-star">
                             <input type="radio" name="stars" value="3" id="3-star">
-                            <img src="<?= site_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                            <img src="<?= site_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                            <img src="<?= site_url('assets/icons/star-disable.png') ?>">
                         </label>
 
                         <label for="4-star">
                             <input type="radio" name="stars" value="4" id="4-star">
-                            <img src="<?= site_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                            <img src="<?= site_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                            <img src="<?= site_url('assets/icons/star-disable.png') ?>">
                         </label>
 
                         <label for="5-star">
                             <input type="radio" name="stars" value="5" id="5-star">
-                            <img src="<?= site_url('assets/icons/star-disable.png') ?>" class="star-disabled">
-                            <img src="<?= site_url('assets/icons/star-enable.png') ?>" class="star-enabled">
+                            <img src="<?= site_url('assets/icons/star-disable.png') ?>">
                         </label>
                         <hr>
                 </div>
@@ -250,9 +245,9 @@
                                     <img src="<?php echo site_url('assets/icons/shopping-bag-disable.png') ?>">
                                 </label>
                                 <div class="option" id="new-option-<?php echo $product['product_id']; ?>">
-                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-B">Bulk</button>
-                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-W">Wholesale</button>
-                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-D">Detail</button>
+                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-B" <?= $disponibility[$product['product_id']]['B'] ?>>Bulk</button>
+                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-W" <?= $disponibility[$product['product_id']]['W'] ?>>Wholesale</button>
+                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-D" <?= $disponibility[$product['product_id']]['D'] ?>>Detail</button>
                                 </div>
                             </div>
 
@@ -335,9 +330,9 @@
                                     <img src="<?php echo site_url('assets/icons/shopping-bag-disable.png') ?>">
                                 </label>
                                 <div class="option" id="most-saled-option-<?php echo $product['product_id']; ?>">
-                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-B">Bulk</button>
-                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-W">Wholesale</button>
-                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-D">Detail</button>
+                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-B" <?= $disponibility[$product['product_id']]['B'] ?>>Bulk</button>
+                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-W" <?= $disponibility[$product['product_id']]['W'] ?>>Wholesale</button>
+                                    <button class="btn btn-default btn-block type" id="<?= $product['product_id']; ?>-D" <?= $disponibility[$product['product_id']]['D'] ?>>Detail</button>
                                 </div>
                             </div>
 

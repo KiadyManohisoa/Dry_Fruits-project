@@ -1,3 +1,4 @@
+
 function verify_ship_form(){
     let Adress_value = document.getElementById("Adress-input").value;
     let Postcode_value = document.getElementById("Postcode-input").value;
@@ -19,7 +20,8 @@ function verify_ship_form(){
          },100);
     }
     else{
-        alert("You should fill the Adress, Post code and City input");
+        document.getElementById("exception").innerHTML = "You should fill the Adress, Post code and City input";
+        $('#ExceptionModal').modal('show');
     }
 }
 
@@ -52,3 +54,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+

@@ -194,6 +194,12 @@ FROM client_products_review join clients_account on
 client_products_review.id_client = clients_account.id_client ; 
 
 
+CREATE or REPLACE VIEW v_services_comment as 
+SELECT clients_account.full_name as client, client_services_review.* 
+FROM client_services_review join clients_account on 
+client_services_review.id_client = clients_account.id_client ; 
+
+
 -- sales Mensuels
 
 CREATE OR REPLACE VIEW v_sale_bulk AS 

@@ -24,14 +24,117 @@ class LogClient_Controller extends CI_Controller {
         return $error;
     }
 
-    public function checkPassword() {
+    public function check_password() {
         $error = '';
         $psswd = $this->input->post('password');
         $confirm_psswd = $this->input->post('confirm_password');
         if($psswd!==$confirm_psswd) {
-            $error = 'Verify your password';
+            $error = 'Please, make sure your passwords are correct';
         }
         return $error;
+    }
+
+    public function is_two_password_empty() {
+        $answer = false;
+        if(empty($this->input->post('password')) && empty($this->input->post('confirm_password'))) {
+            $answer = true;
+        }
+        return $answer;
+    }
+
+    public function check_new_form_exception($key_not_to_check) {
+        $postDatas = $this->input->post();
+        $error = '';
+        if($postDatas) {
+            foreach ($postDatas as $key => $value) {
+                if(!in_array($key,$key_not_to_check)) {
+                    if($value=='') {
+                        $error.= '- The key ' . $key . ' must contain a value </br>';
+                    }
+                }
+            }
+        }
+        return $error;
+    }
+
+    public function upload_client_profile_pic(&$data_client) {
+        $error = '';
+        $id_client = $this->session->get('id_client'); 
+        $upload_path = 'uploads/';
+        $user_upload_path = 'uploads/user_profile/';
+        $user_path = $user_upload_path . $id_client . '/';
+    
+        if (!is_dir($upload_path)) {
+            mkdir($upload_path, 0777, true); 
+        }
+        if (!is_dir($user_upload_path)) {
+            mkdir($user_upload_path, 0777, true); 
+        }
+        if (!is_dir($user_path)) {
+            mkdir($user_path, 0777, true); 
+        }
+    
+        $config['upload_path'] = $upload_path;
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = 5048;
+        $config['max_width'] = 1920;
+        $config['max_height'] = 1080;
+    
+        $this->load->library('upload', $config);
+    
+        if ($this->upload->do_upload('user_profile_pic')) {
+            
+            $files = glob($user_path . '*');
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    unlink($file); 
+                }
+            }
+            $upload_data = $this->upload->data();
+            
+            $file_ext = $upload_data['file_ext'];
+            $new_file_name = 'profile_picture' . $file_ext;
+            $new_file_path = $user_path . $new_file_name;
+    
+            if (rename($upload_data['full_path'], $new_file_path)) {
+                $data_client['user_image'] = $new_file_path;
+            } else {
+                $error = 'Server error : Failed in renaming file';
+            }
+        } else {
+            //$error = $this->upload->display_errors();
+        }
+    
+        return $error;
+    }
+    
+
+    public function update_client_info() {
+        $data = $this->main->page('frontoffice', 'user');
+        $extra_data = $this->data_loader->load_data('frontoffice', 'user');
+        $data = array_merge($data, $extra_data);
+        $key_not_to_check = array ('new_mail','user_profile_pic','password','confirm_password');
+        $error = "";
+        $error = $this->check_new_form_exception($key_not_to_check);
+        $error.= $this->check_password();
+
+        if(!empty($error)) {
+            $data['error'] = $error;      
+        }
+        else {
+            $id_client = $this->session->get('id_client');
+            $data_client = array();
+            $data_client['mail'] = $this->input->post('new_mail');
+            $data_client['phone_number'] = $this->input->post('new_phone_number');
+            $data_client['full_name'] = $this->input->post('new_full_name');
+            if(!$this->is_two_password_empty()) {
+                $data_client['password'] = $this->input->post('password');
+            }
+            $this->upload_client_profile_pic($data_client);
+            $this->clients_account->update_client($id_client,$data_client);
+        }
+
+        $this->load->view('templates/template', $data);      
     }
 
     public function sign_up() {
@@ -45,7 +148,7 @@ class LogClient_Controller extends CI_Controller {
         $psswd = $this->input->post('password');
         $confirm_psswd = $this->input->post('confirm_password');
         $error = $this->check_form_exception();
-        $error.= $this->checkPassword();
+        $error.= $this->check_password();
 
         if(!empty($error)) {
             $data['error'] = $error;      

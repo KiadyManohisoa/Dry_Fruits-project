@@ -266,3 +266,10 @@ body{
     transition: border-color 0.5s;
     border: 2px solid #79B09D;
 }
+
+input[type="text"].quantity {
+    text-align: left;
+    border: none;
+    font-size: 20px;
+    width: 40px;
+}

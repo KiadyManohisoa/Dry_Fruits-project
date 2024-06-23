@@ -115,6 +115,26 @@ frontoffice_app.controller('heartController', function($http) {
             });
         });
 
+        const starInputs = document.querySelectorAll('.stars-div input[name="stars"]');
+    
+        starInputs.forEach(starInput => {
+            starInput.addEventListener('change', () => {
+                const selectedValue = starInput.value;
+                
+                starInputs.forEach(input => {
+                    const label = input.parentNode;
+                    const img = label.querySelector('img');
+                    if (img) {
+                        if (input.value <= selectedValue) {
+                            img.src = toggleSrc(img.src, 'enable');
+                        } else {
+                            img.src = toggleSrc(img.src, 'disable');
+                        }
+                    }
+                });
+            });
+        });
+
         // Gestion des cases à cocher dans les icônes de sac (bag)
         const bags = document.querySelectorAll('.bag-icon input[type="checkbox"]');
 
@@ -198,6 +218,11 @@ frontoffice_app.controller('heartController', function($http) {
                 $http.get(site_url + '/frontoffice/Products_Controller/add_products_to_basket/' + id_product + '/' + type + '/' + quantity_product)
                 .then(function(response) {
                     var data = response.data;
+                    if (data['error']) {
+                        document.getElementById("exception").innerHTML = data['error'];
+                        $('#ExceptionModal').modal('show');
+                        return;
+                    }
                     const quantityElement = document.getElementById(`quantity-${id_product}-${type}`);
                     const totalElement = document.getElementById(`total-${id_product}-${type}`);
                     let priceText = document.getElementById(`product-price-${id_product}-${type}`).textContent;
@@ -244,6 +269,8 @@ frontoffice_app.controller('heartController', function($http) {
                         let total_after_reduction = (total_prices - (total_prices * (reduction_percentage / 100))).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
                         document.getElementById("total").textContent = total_after_reduction + " Ar";
+                        const total_payement = parseInt((total_after_reduction).replace(' ',''))+ parseInt (document.getElementById("cost").value);
+                        document.getElementById("total-payment").innerText = total_payement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + " Ar";
 
                     }
 
@@ -271,12 +298,18 @@ frontoffice_app.controller('heartController', function($http) {
                 quantity_product =  parseInt(this.value) - parseInt(this.name);
 
 
-                this.name=this.value;
-                this.value=this.name;
-
+                
                 $http.get(site_url + '/frontoffice/Products_Controller/add_products_to_basket/' + id_product + '/' + type + '/' + quantity_product)
                 .then(function(response) {
                     var data = response.data;
+                    if (data['error']) {
+                        document.getElementById("exception").innerHTML = data['error'];
+                        $('#ExceptionModal').modal('show');
+                        inputQuantity.value=inputQuantity.name;
+                        return;
+                    }
+                    inputQuantity.name=inputQuantity.value;
+                    inputQuantity.value=inputQuantity.name;
                     const totalElement = document.getElementById(`total-${id_product}-${type}`);
                     let priceText = document.getElementById(`product-price-${id_product}-${type}`).textContent;
                     const cleanedPriceText = priceText.replace(/\D/g, '').replace(" Ar", "").trim();
@@ -319,6 +352,8 @@ frontoffice_app.controller('heartController', function($http) {
                         let total_after_reduction = (total_prices - (total_prices * (reduction_percentage / 100))).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
                         document.getElementById("total").textContent = total_after_reduction + " Ar";
+                        const total_payement = parseInt((total_after_reduction).replace(' ',''))+ parseInt (document.getElementById("cost").value);
+                        document.getElementById("total-payment").innerText = total_payement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + " Ar";
 
                     }
 

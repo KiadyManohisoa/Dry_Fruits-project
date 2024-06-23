@@ -119,11 +119,11 @@ CREATE OR REPLACE FUNCTION get_Balance_By_Date(date_Search DATE,id_cat_produit I
                     JOIN
                         products_ordered po ON o.id_order = po.id_order
                     LEFT JOIN
-                        detail_movement dm ON po.id_product = dm.id_product AND po.sales_type = ''D'' AND dm.movement_date = (select max(movement_date) from detail_movement where DATE(movement_date) <=DATE(o.ordering_date))
+                        detail_movement dm ON po.id_product = dm.id_product AND po.sales_type = ''D'' AND dm.movement_date = (select max(movement_date) from detail_movement where movement_date <=o.ordering_date)
                     LEFT JOIN
-                        wholesale_movement wm ON po.id_product = wm.id_product AND po.sales_type = ''W'' AND wm.movement_date = (select max(movement_date) from wholesale_movement where DATE(movement_date) <=DATE(o.ordering_date))
+                        wholesale_movement wm ON po.id_product = wm.id_product AND po.sales_type = ''W'' AND wm.movement_date = (select max(movement_date) from wholesale_movement where movement_date <=o.ordering_date)
                     LEFT JOIN
-                        bulk_movement bm ON po.id_product = bm.id_product AND po.sales_type = ''B'' AND bm.movement_date = (select max(movement_date) from bulk_movement where DATE(movement_date) <=DATE(o.ordering_date))
+                        bulk_movement bm ON po.id_product = bm.id_product AND po.sales_type = ''B'' AND bm.movement_date = (select max(movement_date) from bulk_movement where movement_date <=o.ordering_date)
                     JOIN
                         Product p ON po.id_product = p.id_product
                     WHERE
@@ -142,10 +142,12 @@ $$ LANGUAGE plpgsql;
 --fonction basket
 CREATE OR REPLACE FUNCTION get_basket_link(id_order VARCHAR)
     RETURNS TABLE (
+        order_id VARCHAR,
         client_full_name VARCHAR,
         client_email VARCHAR,
         client_phone_number VARCHAR,
         delivery_address VARCHAR,
+        delivery_date DATE,
         payment_type VARCHAR,
         payment_phone_number VARCHAR,
         product_name TEXT,
@@ -161,10 +163,12 @@ CREATE OR REPLACE FUNCTION get_basket_link(id_order VARCHAR)
     begin
         RETURN QUERY EXECUTE '
             SELECT
+                ''' || id_order || '''::VARCHAR as order_id,
                 vpd.client_full_name,
                 vpd.client_email,
                 vpd.client_phone_number,
                 vpd.delivery_address,
+                DATE(vpd.delivery_date) as delivery_date,
                 vpd.payment_type,
                 vpd.payment_phone_number,
                 vod.product_name,

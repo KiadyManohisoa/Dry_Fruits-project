@@ -4,9 +4,13 @@ class View_model extends CI_Model {
     public function set_nav_bar($application, $section) {
         $nav_bar = array();
         if ($application=="backoffice") {
-            $nav_bar['home']=array('action' => 'disable', 'wording' => 'home');
-            $nav_bar['user']=array('action' => 'disable', 'wording' => 'client');
-            $nav_bar['edit']=array('action' => 'disable', 'wording' => 'CRUD');
+            $CI =& get_instance();
+            $CI->load->library('session');
+            if ($CI->session->get('admin_status')=='A') {
+                $nav_bar['home']=array('action' => 'disable', 'wording' => 'home');
+                $nav_bar['user']=array('action' => 'disable', 'wording' => 'client');
+                $nav_bar['edit']=array('action' => 'disable', 'wording' => 'CRUD');
+            }
             $nav_bar['truck-side']=array('action' => 'disable', 'wording' => 'delivery');
             $nav_bar['shopping-bag']=array('action' => 'disable', 'wording' => 'bag');
         } 

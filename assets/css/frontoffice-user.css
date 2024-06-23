@@ -11,6 +11,16 @@
     height: 200px;
 }
 
+.user-img {
+    background-size: contain; /* L'image est mise à l'échelle pour être entièrement visible */
+    background-position: center; /* L'image est centrée dans le div */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    border: none; /* Pas de bordure */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .user-img{
     border-radius: 100px;
 }
@@ -97,6 +107,12 @@ hr{
 .stars-div input[type="radio"],.star-enabled {
     display: none;
 }
+
+.rating-div img{
+    width: 30px;
+}
+
+
 .star-disabled{
     display: block;
 }

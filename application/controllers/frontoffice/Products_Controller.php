@@ -5,7 +5,7 @@ class Products_Controller extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('backoffice/Data_Loader','data_loader');
+        $this->load->library('frontoffice/Data_Loader','data_loader');
         $this->load->library('backoffice/Product','product');
         $this->load->model('backoffice/view_model', 'main');
         $this->load->model('backoffice/Product_Model','product_model');
@@ -13,6 +13,7 @@ class Products_Controller extends CI_Controller {
         $this->load->library('frontoffice/Client_services_review','client_services_review');
         $this->load->model('frontoffice/Client_products_review_model','client_products_review_model');
         $this->load->library('frontoffice/Client_favorite_products','client_favorite_products');
+        $this->load->model('frontoffice/Client_favorite_products_model','client_favorite_products_model');
         $this->load->library('Session','session');
     }
 
@@ -42,6 +43,16 @@ class Products_Controller extends CI_Controller {
 
     public function products_search() {
         $data = $this->main->page('frontoffice','search');
+        if ($this->session->get("id_client")!=null) {
+            $data['client_favoris'] = array();
+            $clients_favorites_prod=$this->client_favorite_products_model->get_favorites_with_latest_movement($this->session->get("id_client"));
+            if(!empty($clients_favorites_prod)) {
+                $data['favoris_products'] = $clients_favorites_prod;
+                for($i=0;$i<count($clients_favorites_prod);$i++) {
+                    $data['client_favoris'][] = $clients_favorites_prod[$i]['product_id'];
+                }
+            }
+        }
         $extra_data = $this->data_loader->load_data('search');
         $data = array_merge($data,$extra_data);
         $error = $this->check_form_exception();
@@ -82,10 +93,10 @@ class Products_Controller extends CI_Controller {
 
     public function get_product_by_id($id_product) {
         $data = $this->main->page('frontoffice','home');
+        $extra_data = $this->data_loader->load_data('home');
         $data['product'] = $this->product_model->get_product_by_id($id_product);
         $data['reviews'] = $this->client_products_review->get_review_by_id_product($id_product);
         $data['review_pourcentage'] = $this->client_products_review_model->get_stars_pourcentage($id_product);
-        $extra_data = $this->data_loader->load_data('home');
         $data = array_merge($data,$extra_data);
         $this->load->view('templates/template', $data);
     }
@@ -94,10 +105,18 @@ class Products_Controller extends CI_Controller {
         if ($this->session->get("id_client")!=null) {
             $data_insert = array();
             $data_insert['id_client'] = $this->session->get("id_client");
-            $data_insert['stars'] = $this->input->post('stars');
+            $data_insert['stars'] = $this->input->post('stars')!=null ? $this->input->post('stars') : 0;
             $data_insert['comment'] = $this->input->post('comment');
-            $this->client_services_review->add_services_review($data_insert);
-            redirect(site_url('frontoffice/Products_Controller/View/page/user'));
+            
+            $data = $this->main->page('frontoffice','user');
+
+            if(!$this->client_services_review->add_services_review($data_insert)){
+                $data['error'] = 'You should have at least already ordered before giving your review';
+            }
+
+            $extra_data = $this->data_loader->load_data('user');
+            $data = array_merge($data,$extra_data);
+            $this->load->view('templates/template', $data);
         } else {
             redirect(site_url('frontoffice/View/page/login'));
         }
@@ -106,7 +125,7 @@ class Products_Controller extends CI_Controller {
     public function add_products_review($id_product) {
         if ($this->session->get("id_client")!=null) {
             $id_client = $this->session->get("id_client");
-            $stars = $this->input->post('stars');
+            $stars = $this->input->post('stars')!=null ? $this->input->post('stars') : 0;
             $comment = $this->input->post('comment');
             $this->client_products_review->add_client_product_review($id_client, $stars, $comment, $id_product);
             redirect(site_url('frontoffice/Products_Controller/get_product_by_id/' . $id_product));
@@ -116,6 +135,7 @@ class Products_Controller extends CI_Controller {
     }
 
     public function add_products_to_basket($id_product, $type, $quantity_product = 1) {
+        // $this->session->destroy();
         $basket = $this->session->get('basket');
         if ($basket == null) {
             $basket = [];
@@ -123,10 +143,20 @@ class Products_Controller extends CI_Controller {
     
         for ($i = 0; $i < count($basket); $i++) {
             if ($basket[$i]['id_product'] == $id_product && $basket[$i]['type'] == $type) {
-                if ($quantity_product == 0 || ($basket[$i]['quantity_product'] + $quantity_product) <= 0) {
-                    array_splice($basket, $i, 1); // Supprimer le produit du panier
+                $new_quantity = $basket[$i]['quantity_product'] + $quantity_product;
+                if ($quantity_product == 0 || $new_quantity <= 0) {
+                    array_splice($basket, $i, 1); // Remove the product from the basket
+                    return;
+                } if ($basket[$i]['type'] == "B" && $new_quantity < 10) {
+                    $data['error'] = "Something went wrong, the type of sale Bulk should contain more than 10 kg";
+                    echo json_encode($data);
+                    return;
+                } else if ($basket[$i]['type'] == "W" && $new_quantity < 10) {
+                    $data['error'] = "Something went wrong, the type of sale Wholesale should contain more than 10 packs";
+                    echo json_encode($data);
+                    return;
                 } else {
-                    $basket[$i]['quantity_product'] += $quantity_product;
+                    $basket[$i]['quantity_product'] = $new_quantity;
                 }
                 $this->session->set('basket', $basket);
                 return;
@@ -137,8 +167,10 @@ class Products_Controller extends CI_Controller {
             $type_sales = '';
             if ($type == "B") {
                 $type_sales = 'Bulk';
+                $quantity_product = 10;
             } else if ($type == "W") {
                 $type_sales = 'Wholesale';
+                $quantity_product = 10;
             } else if ($type == "D") {
                 $type_sales = 'Detail';
             } else {
@@ -155,7 +187,9 @@ class Products_Controller extends CI_Controller {
             );
             $this->session->set('basket', $basket);
         }
-    
     }
     
+    
 }
+
+?>

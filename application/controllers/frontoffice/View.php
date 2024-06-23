@@ -12,15 +12,6 @@ class View extends CI_Controller {
     }
 
     public function page($section = 'login') {
-        // if ($section=='home') {
-        //     $newdata = array(
-        //         'username'  => 'john_doe',
-        //         'email'     => 'john@example.com',
-        //         'logged_in' => TRUE
-        //     );
-            
-        //     $this->session->set_array($newdata);
-        // }
         $application = 'frontoffice';
         $data = $this->main->page($application,$section);
         $extra_data = $this->data_loader->load_data($section);
