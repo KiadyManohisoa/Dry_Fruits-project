@@ -44,7 +44,7 @@ class Data_Loader {
             $data['products'] = $CI->product_model->get_all_products_by_price_range(0, 0);
         }
 
-        else if ($section = 'bag') {
+        else if ($section == 'bag') {
             if ($CI->session->get("delivery_cost")==null) {
                 $CI->session->set("delivery_cost",$this->calculate_delivery_cost());
             }
@@ -59,7 +59,19 @@ class Data_Loader {
                 $data['basket'][0]['result'] = $data['basket'][0]['result'] - ($data['basket'][0]['result'] * $CI->session->get('client_reduction')/100);
             }
         }
+        else if ($section=='info') {
+            include(APPPATH . 'config/config_file.php');
 
+            $data['investissors'] = $inverstissor;
+            $data['team'] = $team;
+            $data['about_us'] = $aboutus;
+            $data['legal_notices'] = $legalnotices;
+            $data['public_authorities'] = $publicAuthorities;
+            $data['confidentiality'] = $confidentiality;
+            $data['cookies']=$cookies;
+            $data['type_of_products'] = $typeOfProducts;
+            $data['partners'] = $partners;
+        }
         return $data;
     }
 }

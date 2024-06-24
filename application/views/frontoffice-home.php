@@ -238,7 +238,7 @@
                 <!-- listes des produits -->
                 <?php foreach ($new_products as $product) { ?>
                     <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                        <div class="product-img" style="background-image: url('<?= site_url('assets/'.$product['product_image_link']) ?>')">
+                        <div class="product-img" style="background-image: url('<?= site_url();?><?= $product['product_image_link'];?>')">
                             <div class="bag-icon bag">
                                 <input type="checkbox" name="" id="new-check-<?php echo $product['product_id']; ?>" class="bag">
                                 <label for="new-check-<?php echo $product['product_id']; ?>">

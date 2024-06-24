@@ -1,5 +1,53 @@
+<!-- recherche de clients -->
+<div class="content">
+    <h2>Clients Search</h2>
+    <form class="col-lg-6 col-md-6" action="<?php echo site_url("backoffice/Clients_Search_Controller/search");?>" method="post">
+        <div class="form-group">
+            <input class="form-control" type="text" name="client_name" placeholder="Enter the client full name">
+        </div>
+        <div class="form-group text-right">
+            <button type="submit" class="btn btn-custom btn-lg">Submit</button>
+        </div>
+    </form>
+    <hr>
+    <div id="table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full name</th>
+                    <th>Email</th>
+                    <th>Phone number</th>
+                    <th>Purchases</th>
+                    <th>Date last activities</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(isset($clients) && !empty($clients)) {
+                    ?>
+                    <?php foreach($clients as $client) { ?>
+                        <tr>
+                            <td><a href="<?php echo site_url('backoffice/Clients_Search_Controller/client_info/' . $client->get_id_client() . '/'); ?>"><?php echo $client->get_id_client(); ?></a></td>
+                            <td><?php echo $client->get_full_name(); ?></td>
+                            <td><?php echo $client->get_mail(); ?></td>
+                            <td><?php echo $client->get_phone_number(); ?></td>
+                            <td><?php echo $client->get_purchases();?></td>
+                            <td><?php echo $client->get_last_activites();?></td>
+                        </tr>
+                    <?php } ?>
+                <?php } else if(isset($clients) && empty($clients)) { ?>
+                        <tr>
+                            <td>No clients found</td>
+                        </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- recherche de clients -->
+
 <!-- services rating -->
-    <div class="content container-fluid rating-div">
+<div class="content container-fluid rating-div">
         <!-- Ratings & Reviews -->
         <div class="col-lg-4 col-md-4">
             <h1>Ratings & Reviews</h1>
@@ -78,54 +126,6 @@
         </div>
     </div>
 <!-- services rating -->
-
-<!-- recherche de clients -->
-<div class="content">
-    <h2>Clients Search</h2>
-    <form class="col-lg-6 col-md-6" action="<?php echo site_url("backoffice/Clients_Search_Controller/search");?>" method="post">
-        <div class="form-group">
-            <input class="form-control" type="text" name="client_name" placeholder="Enter the client full name">
-        </div>
-        <div class="form-group text-right">
-            <button type="submit" class="btn btn-custom btn-lg">Submit</button>
-        </div>
-    </form>
-    <hr>
-    <div id="table">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Full name</th>
-                    <th>Email</th>
-                    <th>Phone number</th>
-                    <th>Purchases</th>
-                    <th>Date last activities</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if(isset($clients) && !empty($clients)) {
-                    ?>
-                    <?php foreach($clients as $client) { ?>
-                        <tr>
-                            <td><a href="<?php echo site_url('backoffice/Clients_Search_Controller/client_info/' . $client->get_id_client() . '/'); ?>"><?php echo $client->get_id_client(); ?></a></td>
-                            <td><?php echo $client->get_full_name(); ?></td>
-                            <td><?php echo $client->get_mail(); ?></td>
-                            <td><?php echo $client->get_phone_number(); ?></td>
-                            <td><?php echo $client->get_purchases();?></td>
-                            <td><?php echo $client->get_last_activites();?></td>
-                        </tr>
-                    <?php } ?>
-                <?php } else if(isset($clients) && empty($clients)) { ?>
-                        <tr>
-                            <td>No clients found</td>
-                        </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-<!-- recherche de clients -->
 
 <!-- bilan de production -->
 <div class="content">

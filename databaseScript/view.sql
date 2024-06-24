@@ -34,6 +34,23 @@ LEFT JOIN (select po.id_product, COALESCE(sum(po.order_quantity),0) as order_qua
         ELSE 0
     END AS order_quantity from products_ordered) as po group by (po.id_product)) po ON pc.product_id = po.id_product;
 
+
+--calcul du stock et vente pour chaque produit
+CREATE OR REPLACE VIEW v_product_stock_by_day AS
+SELECT 
+    pc.product_id,
+    s.quantity_kg AS stock_quantity,
+    COALESCE(po.order_quantity,0) AS order_quantity
+FROM v_product_categories pc
+LEFT JOIN (select id_product, COALESCE(sum(quantity_kg),0) as quantity_kg from stock where DATE(renewal_date) <= '2024-06-24' group by (id_product)) s ON pc.product_id = s.id_product
+LEFT JOIN (select po.id_product, COALESCE(sum(po.order_quantity),0) as order_quantity from 
+		   (select id_product, CASE 
+        WHEN sales_type = 'D' THEN quantity * 0.1
+        WHEN sales_type = 'W' THEN quantity * 0.1
+        WHEN sales_type = 'B' THEN quantity
+        ELSE 0
+    END AS order_quantity from products_ordered where id_order in (select id_order from orders where DATE(ordering_date) <= '2024-06-24')) as po group by (po.id_product)) po ON pc.product_id = po.id_product;
+
 --configuration finale de chaque produit 
 CREATE OR REPLACE VIEW v_product_configuration AS
 SELECT 

@@ -9,41 +9,16 @@
     </div>
     <div class="product-container row defiler">
         <!-- listes des investisseurs -->
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
+         <?php foreach($investissors as $investissor) { ?>
+            <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/'.$investissor['picture']);?>')">
+                </div>
+                <div class="product-desc">
+                    <h4><?=$investissor['fullName'];?></h4>
+                    <a href=""><?=$investissor['userName'];?></a>
+                </div>
             </div>
-            <div class="product-desc">
-                <h4>Rakoto Jean</h4>
-                <a href="">@rakotojean</a>
-            </div>
-        </div>
-
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
-            </div>
-            <div class="product-desc">
-                <h4>Rabe Jeanne</h4>
-                <a href="">@rabejeanne</a>
-            </div>
-        </div>
-
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
-            </div>
-            <div class="product-desc">
-                <h4>Andry John</h4>
-                <a href="">@andryjohn</a>
-            </div>
-        </div>
-
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
-            </div>
-            <div class="product-desc">
-                <h4>Rabe Jeanne</h4>
-                <a href="">@rabejeanne</a>
-            </div>
-        </div>
+        <?php } ?>
 
         <!-- listes des investisseurs -->
 
@@ -54,6 +29,9 @@
 <!-- a propos -->
 <div class="dark-content" id="about-us">
     <h3>About us</h3>
+    <?php foreach($about_us as $key => $value) { ?>
+        <h4> <?=$key;?> : <?=$value;?> </h4>
+    <?php } ?>
 </div>
 <!-- a propos -->
 
@@ -68,41 +46,17 @@
     </div>
     <div class="product-container row defiler">
         <!-- listes des teams -->
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
-            </div>
-            <div class="product-desc">
-                <h4>Rakoto Jean</h4>
-                <a href="">@rakotojean</a>
-            </div>
-        </div>
 
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
+         <?php foreach($team as $teammate) { ?>
+            <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
+            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/'.$teammate['picture']);?>')">
             </div>
             <div class="product-desc">
-                <h4>Rabe Jeanne</h4>
-                <a href="">@rabejeanne</a>
+                <h4><?=$teammate['name'].' '.$teammate['firstname'];?></h4>
+                <a href=""><?=$teammate['email'];?></a>
             </div>
         </div>
-
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
-            </div>
-            <div class="product-desc">
-                <h4>Andry John</h4>
-                <a href="">@andryjohn</a>
-            </div>
-        </div>
-
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
-            </div>
-            <div class="product-desc">
-                <h4>Rabe Jeanne</h4>
-                <a href="">@rabejeanne</a>
-            </div>
-        </div>
+        <?php } ?>
 
         <!-- listes des teams -->
 
@@ -113,24 +67,36 @@
 <!-- legal notices -->
 <div class="dark-content" id="legal-notices">
     <h3>Legal notices</h3>
+    <?php foreach($legal_notices as $key => $value) { ?>
+        <h4> <?=$key;?> : <?=$value;?> </h4>
+    <?php } ?>
 </div>
 <!-- legal notices -->
 
 <!-- Demande d'informations des autorités publiques -->
 <div class="dark-content" id="public-authorities-information-request">
     <h3>Public authorities information request</h3>
+    <?php foreach($public_authorities as $key => $value) { ?>
+        <h4> <?=$key;?> : <?=$value;?> </h4>
+    <?php } ?>
 </div>
 <!-- Demande d'informations des autorités publiques -->
 
 <!-- confidentialite -->
 <div class="dark-content" id="confidentiality">
     <h3>Confidentiality</h3>
+    <?php foreach($confidentiality as $key => $value) { ?>
+        <h4> <?=$key;?> : <?=$value;?> </h4>
+    <?php } ?>
 </div>
 <!-- confidentialite -->
 
 <!-- coockies -->
 <div class="dark-content" id="cookies">
     <h3>Cookies</h3>
+    <?php foreach($cookies as $key => $value) { ?>
+        <h4> <?=$key;?> : <?=$value;?> </h4>
+    <?php } ?>
 </div>
 <!-- coockies -->
 
@@ -139,11 +105,14 @@
     <div class="col-lg-6 col-md-6">
         <h3>Contact Us</h3>
         <div class="small-div">
+            <p id="small-div-p"> <?=$about_us['Email']?> </p>
+            <p id="small-div-p"> <?=$about_us['Phone number']?> </p>
         </div>
     </div>
     <div class="col-lg-6 col-md-6">
-        <h3>Loaction</h3>
+        <h3>Location</h3>
         <div class="small-div">
+            <p id="small-div-p"> <?=$about_us['Location']?> </p>
         </div>
     </div>
     <hr>
@@ -153,16 +122,14 @@
 <!-- type de produits -->
 <div class="dark-content" id="type-products">
     <h3>Type of products</h3>
-    <div class="col-lg-6 col-md-6">
+    <?php foreach($type_of_products as $type_product)  { ?>
+        <div class="col-lg-6 col-md-6">
         <div class="small-div">
+            <p id="small-div-p"><?=$type_product['type'];?></p>
         </div>
         <hr>
-    </div>
-    <div class="col-lg-6 col-md-6">
-        <div class="small-div">
-        </div>
-        <hr>
-    </div>
+    </div> 
+    <?php } ?>
     <hr>
 </div>
 <!-- type de produits -->
@@ -178,37 +145,17 @@
     </div>
     <div class="product-container row defiler">
         <!-- listes des partenaires -->
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
-            </div>
-            <div class="product-desc">
-                <h4>Rakoto Jean</h4>
-            </div>
-        </div>
 
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
+        <?php foreach($partners as $partner) { ?>
+            <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/'.$partner['picture']);?>')">
+                </div>
+                <div class="product-desc">
+                    <h4><?=$partner['name'];?></h4>
+                </div>
             </div>
-            <div class="product-desc">
-                <h4>Rabe Jeanne</h4>
-            </div>
-        </div>
+        <?php } ?>
 
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
-            </div>
-            <div class="product-desc">
-                <h4>Andry John</h4>
-            </div>
-        </div>
-
-        <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="product-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')">
-            </div>
-            <div class="product-desc">
-                <h4>Rabe Jeanne</h4>
-            </div>
-        </div>
 
         <!-- listes des partenaires -->
 

@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<div class="content login-form col-lg-5 col-md-5">
+<div class="content login-form col-lg-5 col-md-5 col-sm-10 col-xs-12">
     <div class="defiler-option">
         <button class="col-lg-6 col-md-6 col-sm-6 col-xs-6 btn btn-default btn-active" id="login-button">Login</button>
         <button class="col-lg-6 col-md-6 col-sm-6 col-xs-6 btn btn-default" id="signup-button">Sign Up</button>
@@ -37,11 +37,11 @@
                     <label for="username">Full name</label>
                     <input value="Rakoto Soa" name="full_name" type="mail" class="form-control" id="username2" placeholder="Enter your full name">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-lg-6 col-md-6">
                     <label for="username">Email</label>
                     <input value="rakotosoa@gmail.com" name="mail" type="mail" class="form-control" id="username" placeholder="Enter your email">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-lg-6 col-md-6">
                     <label for="phone_number">Phone number</label>
                     <input value="+261 34 865 68" name="phone_number" type="tel" class="form-control" id="phone_number" placeholder="Enter your phone number">
                 </div>

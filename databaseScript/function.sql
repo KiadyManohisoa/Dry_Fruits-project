@@ -12,129 +12,128 @@ CREATE OR REPLACE FUNCTION get_Balance_By_Date(date_Search DATE,id_cat_produit I
         results NUMERIC(14,2)
     ) AS $$
     BEGIN
-        RETURN QUERY EXECUTE ' 
-        select s.id_product, vpd.product_name, s.total_quantity - COALESCE(o.total_quantity,0) as stock, COALESCE(o.total_quantity,0) as out, COALESCE(sales.number_package,0) as sales, charges.price * (COALESCE(o.total_quantity,0)) as charges, COALESCE(sales_amount.total_price,0) as sales_amount ,COALESCE(sales_amount.total_price,0) - charges.price * (COALESCE(o.total_quantity,0)) as results from
-            (SELECT 
-                        cp.id_cat_product, 
-                        p.id_product,   
-                        SUM(s.quantity_kg) AS total_quantity
-                    FROM 
-                        cat_product cp
-                    JOIN 
-                        Product p ON cp.id_cat_product = p.id_cat_product
-                    JOIN 
-                        stock s ON p.id_product = s.id_product
-                    WHERE
-                        cp.id_cat_product = ''' || id_cat_produit || ''' 
-                        AND DATE(s.renewal_date) = ''' || date_Search || '''
-                    GROUP BY 
-                        cp.id_cat_product, 
-                        p.id_product) s 
-                left join (
-                    SELECT * from v_product_detail
-                ) vpd on s.id_product = vpd.id_product
-            left join
-            (SELECT
-                        cp.id_cat_product,
-                        p.id_product, 
-                        COALESCE(SUM(
-                            CASE 
-                                WHEN po.sales_type IN (''D'',''W'') THEN po.quantity * 0.1
-                                WHEN po.sales_type =''B'' THEN po.quantity
-                                ELSE 0 
-                            END
-                        ),0) AS total_quantity
-                    FROM
-                        orders o
-                    JOIN
-                        products_ordered po ON o.id_order = po.id_order
-                    JOIN
-                        Product p ON po.id_product = p.id_product
-                    JOIN
-                        cat_product cp ON p.id_cat_product = cp.id_cat_product
-                    WHERE
-                        DATE(o.ordering_date) = ''' || date_Search || '''
-                        AND cp.id_cat_product = ''' || id_cat_produit || '''
-                    GROUP BY
-                        cp.id_cat_product,p.id_product) o
-            on s.id_cat_product=o.id_cat_product and s.id_product=o.id_product
-            left join 
-            (
-                SELECT
-                    cp.id_cat_product,
-                    p.id_product,
-                    SUM(
-                        CASE 
-                            WHEN po.sales_type = ''D'' THEN po.quantity
-                            WHEN po.sales_type = ''W'' THEN po.quantity
-                            ELSE 0
-                        END
-                    ) AS number_package
-                FROM
-                    orders o
-                JOIN
-                    products_ordered po ON o.id_order = po.id_order
-                JOIN
-                    Product p ON po.id_product = p.id_product
-                JOIN
-                    cat_product cp ON p.id_cat_product = cp.id_cat_product
-                WHERE
-                    cp.id_cat_product=''' || id_cat_produit || '''
-                    AND DATE(o.ordering_date) = ''' || date_Search || '''
-                    AND (po.sales_type = ''W'' OR po.sales_type = ''D'')
-                GROUP BY
-                    cp.id_cat_product,p.id_product
-            ) sales
-            on s.id_cat_product = sales.id_cat_product and s.id_product=sales.id_product
-            left join (
-                    SELECT 
-                        cp.id_cat_product,
-                        p.id_product,
-                        ckm.price
-                    FROM
-                        charges_kg_movement ckm
-                    JOIN
-                        Product p ON ckm.id_product = p.id_product
-                    JOIN
-                        cat_product cp ON p.id_cat_product = cp.id_cat_product
-                    WHERE
-                        cp.id_cat_product = ''' || id_cat_produit || '''
-                        AND ckm.movement_date = (select max(movement_date) from charges_kg_movement where DATE(movement_date) <= ''' || date_Search || ''')
-            ) charges 
-            on s.id_cat_product = charges.id_cat_product and s.id_product=charges.id_product
-            LEFT join 
-            (SELECT
-                        p.id_cat_product,
-                        p.id_product,
-                        SUM(
-                            CASE 
-                                WHEN po.sales_type = ''D'' THEN dm.price * po.quantity
-                                WHEN po.sales_type = ''W'' THEN wm.price * po.quantity
-                                WHEN po.sales_type = ''B'' THEN bm.price * po.quantity
-                                ELSE 0
-                            END
-                        ) AS total_price
-                    FROM
-                        orders o
-                    JOIN
-                        products_ordered po ON o.id_order = po.id_order
-                    LEFT JOIN
-                        detail_movement dm ON po.id_product = dm.id_product AND po.sales_type = ''D'' AND dm.movement_date = (select max(movement_date) from detail_movement where movement_date <=o.ordering_date)
-                    LEFT JOIN
-                        wholesale_movement wm ON po.id_product = wm.id_product AND po.sales_type = ''W'' AND wm.movement_date = (select max(movement_date) from wholesale_movement where movement_date <=o.ordering_date)
-                    LEFT JOIN
-                        bulk_movement bm ON po.id_product = bm.id_product AND po.sales_type = ''B'' AND bm.movement_date = (select max(movement_date) from bulk_movement where movement_date <=o.ordering_date)
-                    JOIN
-                        Product p ON po.id_product = p.id_product
-                    WHERE
-                        p.id_cat_product=''' || id_cat_produit || '''
-                        AND DATE(o.ordering_date) = ''' || date_Search || '''
-                    GROUP BY
-                        p.id_cat_product,p.id_product) as sales_amount
-            on s.id_cat_product = sales_amount.id_cat_product and s.id_product=sales_amount.id_product
+        RETURN QUERY EXECUTE 'with v_product_stock_by_day as (
+            SELECT 
+                pc.product_id,
+                s.quantity_kg AS stock_quantity,
+                COALESCE(po.order_quantity,0) AS order_quantity
+            FROM v_product_categories pc
+            LEFT JOIN (select id_product, COALESCE(sum(quantity_kg),0) as quantity_kg from stock where DATE(renewal_date) <= ''' || date_Search || ''' group by (id_product)) s ON pc.product_id = s.id_product
+            LEFT JOIN (select po.id_product, COALESCE(sum(po.order_quantity),0) as order_quantity from 
+            		   (select id_product, CASE 
+                    WHEN sales_type = ''D'' THEN quantity * 0.1
+                    WHEN sales_type = ''W'' THEN quantity * 0.1
+                    WHEN sales_type = ''B'' THEN quantity
+                    ELSE 0
+                END AS order_quantity from products_ordered where id_order in (select id_order from orders where DATE(ordering_date) <= ''' || date_Search || ''')) as po group by (po.id_product)) po ON pc.product_id = po.id_product
+            ) 
+        SELECT 
+        s.id_product, 
+        vpd.product_name, 
+        COALESCE(s.stock_quantity, 0) - COALESCE(s.order_quantity, 0) AS stock, 
+        COALESCE(s.order_quantity, 0) AS out_production, 
+        COALESCE(sales.number_package, 0) AS sales, 
+        charges.price * COALESCE(s.order_quantity, 0) AS charges, 
+        COALESCE(sales_amount.total_price, 0) AS sales_amount,
+        COALESCE(sales_amount.total_price, 0) - charges.price * COALESCE(s.order_quantity, 0) AS results
+    FROM (
+        SELECT 
+            cp.id_cat_product, 
+            p.id_product,
+            s.stock_quantity,
+            s.order_quantity
+        FROM cat_product cp
+        JOIN Product p ON cp.id_cat_product = p.id_cat_product
+        JOIN v_product_stock_by_day s ON p.id_product = s.product_id
+        WHERE cp.id_cat_product = ''' || id_cat_produit || '''
+    ) s 
+    LEFT JOIN v_product_detail vpd ON s.id_product = vpd.id_product
+    LEFT JOIN (
+        SELECT
+            cp.id_cat_product,
+            p.id_product, 
+            COALESCE(SUM(
+                CASE 
+                    WHEN po.sales_type IN (''D'',''W'') THEN po.quantity * 0.1
+                    WHEN po.sales_type =''B'' THEN po.quantity
+                    ELSE 0 
+                END
+            ), 0) AS total_quantity
+        FROM orders o
+        JOIN products_ordered po ON o.id_order = po.id_order
+        JOIN Product p ON po.id_product = p.id_product
+        JOIN cat_product cp ON p.id_cat_product = cp.id_cat_product
+        WHERE DATE(o.ordering_date) = ''' || date_Search || '''
+            AND cp.id_cat_product = ''' || id_cat_produit || '''
+        GROUP BY cp.id_cat_product, p.id_product
+    ) o ON s.id_cat_product = o.id_cat_product AND s.id_product = o.id_product
+    LEFT JOIN (
+        SELECT
+            cp.id_cat_product,
+            p.id_product,
+            SUM(
+                CASE 
+                    WHEN po.sales_type = ''D'' THEN po.quantity
+                    WHEN po.sales_type = ''W'' THEN po.quantity
+                    ELSE 0
+                END
+            ) AS number_package
+        FROM orders o
+        JOIN products_ordered po ON o.id_order = po.id_order
+        JOIN Product p ON po.id_product = p.id_product
+        JOIN cat_product cp ON p.id_cat_product = cp.id_cat_product
+        WHERE cp.id_cat_product = ''' || id_cat_produit || '''
+            AND DATE(o.ordering_date) = ''' || date_Search || '''
+            AND (po.sales_type = ''W'' OR po.sales_type = ''D'')
+        GROUP BY cp.id_cat_product, p.id_product
+    ) sales ON s.id_cat_product = sales.id_cat_product AND s.id_product = sales.id_product
+    LEFT JOIN (
+    SELECT cp.id_cat_product,p.id_product,
+	ckm.price
+FROM (select charges_kg_movement.* from charges_kg_movement join (select id_product, max (movement_date) as movement_date from charges_kg_movement WHERE DATE(movement_date) <= ''' || date_Search || ''' group by  id_product) as max_charges on max_charges.id_product=charges_kg_movement.id_product where max_charges.movement_date=charges_kg_movement.movement_date) ckm
+JOIN Product p ON ckm.id_product = p.id_product
+JOIN cat_product cp ON p.id_cat_product = cp.id_cat_product
+WHERE cp.id_cat_product = ''' || id_cat_produit || '''
+AND ckm.movement_date = (SELECT MAX(movement_date) FROM charges_kg_movement WHERE DATE(movement_date) <= ''' || date_Search || ''' and id_product = p.id_product)
+    ) charges ON s.id_cat_product = charges.id_cat_product AND s.id_product = charges.id_product
+    LEFT JOIN (
+        SELECT
+            p.id_cat_product,
+            p.id_product,
+            SUM(
+                CASE 
+                    WHEN po.sales_type = ''D'' THEN dm.price * po.quantity
+                    WHEN po.sales_type = ''W'' THEN wm.price * po.quantity
+                    WHEN po.sales_type = ''B'' THEN bm.price * po.quantity
+                    ELSE 0
+                END
+            ) AS total_price
+        FROM orders o
+        JOIN products_ordered po ON o.id_order = po.id_order
+        LEFT JOIN detail_movement dm ON po.id_product = dm.id_product AND po.sales_type = ''D'' AND dm.movement_date = (
+            SELECT MAX(movement_date) 
+            FROM detail_movement 
+            WHERE movement_date <= o.ordering_date
+        )
+        LEFT JOIN wholesale_movement wm ON po.id_product = wm.id_product AND po.sales_type = ''W'' AND wm.movement_date = (
+            SELECT MAX(movement_date) 
+            FROM wholesale_movement 
+            WHERE movement_date <= o.ordering_date
+        )
+        LEFT JOIN bulk_movement bm ON po.id_product = bm.id_product AND po.sales_type = ''B'' AND bm.movement_date = (
+            SELECT MAX(movement_date) 
+            FROM bulk_movement 
+            WHERE movement_date <= o.ordering_date
+        )
+        JOIN Product p ON po.id_product = p.id_product
+        WHERE p.id_cat_product = ''' || id_cat_produit || '''
+            AND DATE(o.ordering_date) = ''' || date_Search || '''
+        GROUP BY p.id_cat_product, p.id_product
+    ) sales_amount ON s.id_cat_product = sales_amount.id_cat_product AND s.id_product = sales_amount.id_product
         ';
     END;
 $$ LANGUAGE plpgsql;
+
 
 --query test 
 --select * from get_Balance_By_Date(date(now()),2);

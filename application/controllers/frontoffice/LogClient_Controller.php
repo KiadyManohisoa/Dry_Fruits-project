@@ -75,7 +75,7 @@ class LogClient_Controller extends CI_Controller {
         }
     
         $config['upload_path'] = $upload_path;
-        $config['allowed_types'] = 'gif|jpg|png';
+        $config['allowed_types'] = 'gif|jpg|png|jpeg';
         $config['max_size'] = 5048;
         $config['max_width'] = 1920;
         $config['max_height'] = 1080;

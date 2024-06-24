@@ -23,7 +23,7 @@ class Finished_Product_Controller extends CI_Controller {
         $data = $this->main->page('backoffice', 'CRUD');
         $data['id_product_to_update'] = $id_product;
         $exist = $this->product->get_product_by_id($id_product);
-        echo json_encode($exist);
+        //echo json_encode($exist);
         $data['id_cat_fruit'] = $exist->get_id_cat_fruit();
         $data['id_cat_product'] = $exist->get_id_cat_product();
         // $data["stock_update"]=$this->stock->get_stock_by_id($id_stock);
@@ -48,8 +48,10 @@ class Finished_Product_Controller extends CI_Controller {
         $error = '';
         if($postDatas) {
             foreach ($postDatas as $key => $value) {
-                if($value=='' || str_contains($value,"Choose")) {
-                    $error.= '- The key ' . $key . ' must contain a value </br>';
+                if($key!='stock') {
+                    if($value=='' || str_contains($value,"Choose")) {
+                        $error.= '- The key ' . $key . ' must contain a value </br>';
+                    }
                 }
             }
         }
@@ -85,46 +87,85 @@ class Finished_Product_Controller extends CI_Controller {
         $wholesale_reduction = $this->input->post('wholesale_reduction');
         $bulk_price = $this->input->post('bulk_price');
         $bulk_reduction = $this->input->post('bulk_reduction');
-       
-
-        if ($this->input->post('update_mode') == 1) {
-        //echo "mandeha update";
         
-        $id_product_to_update=$this->input->post('id_product_to_update');
-        //echo 'id product to update : '.$id_product_to_update;
-    
-        if ($stock>0) {
-            $data_stock['id_product']= $id_product_to_update;
-            $data_stock['quantity_kg']= $stock;
-            $this->stock->add_stock($data_stock);
-            $this->product_model->update_stock();
+        if(empty($stock)) {
+            $stock=0;
         }
 
-        
-        $data_charges['price']=$charges_by_kg;
-        $data_charges['id_product']=$id_product_to_update;
-        $this->charges_kg_movement->add_charges_movement($data_charges);
-        
-        $data_detail['price']=$detail_price;
-        $data_detail['reduction']=$detail_reduction;
-        $data_detail['id_product']=$id_product_to_update;
-        $this->detail_movement->add_detail_movement($data_detail);
-        
-        
-        $data_wholesale['price']=$wholesale_price;
-        $data_wholesale['reduction']=$wholesale_reduction;
-        $data_wholesale['id_product']=$id_product_to_update;
-        $this->wholesale_movement->add_wholesale_movement($data_wholesale);
-        
+        if ($this->input->post('update_mode') == 1) {
+            //echo "mandeha update";
+            
+            $id_product_to_update=$this->input->post('id_product_to_update');
+            //echo 'id product to update : '.$id_product_to_update;
+            
+            if ($stock>0) {
+                $data_stock['id_product']= $id_product_to_update;
+                $data_stock['quantity_kg']= $stock;
+                $this->stock->add_stock($data_stock);
+                $this->product_model->update_stock();
+            }
 
-        
-        $data_bulk['price']=$bulk_price;
-        $data_bulk['reduction']=$bulk_reduction;
-        $data_bulk['id_product']=$id_product_to_update;
-        $this->bulk_movement->add_bulk_movement($data_bulk);
-        
+            //try upload 
+            $upload_path = 'uploads/';
+                $product_upload_path = 'uploads/product/';
 
-        redirect('index.php/backoffice/View/page/CRUD');
+                if (!is_dir($upload_path)) {
+                    mkdir($upload_path, 0777, true); 
+                }
+                if (!is_dir($product_upload_path)) {
+                    mkdir($product_upload_path, 0777, true); 
+                }
+
+                $config['upload_path'] = $upload_path;
+                $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                $config['max_size'] = 5048;
+                $config['max_width'] = 1921;
+                $config['max_height'] = 1081;
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('pictures_details')) {
+                    $data_product = array();
+                    $uploadData = $this->upload->data();
+                
+                    $timestamp = round(microtime(true) * 1000);
+                    $file_ext = $uploadData['file_ext'];
+                    $new_file_name = $timestamp . $file_ext;
+                
+                    $new_file_path = $product_upload_path . $new_file_name;
+                    rename($uploadData['full_path'], $new_file_path);
+                    
+                    $data_product['image_link'] = $new_file_path;
+                    //echo json_encode($data_product);
+                    //return;
+                    $this->product->update_product($id_product_to_update, $data_product);
+                    //$this->product_model->update($id_product_to_update,$data_product);
+                }
+
+            $data_charges['price']=$charges_by_kg;
+            $data_charges['id_product']=$id_product_to_update;
+            $this->charges_kg_movement->add_charges_movement($data_charges);
+
+            $data_detail['price']=$detail_price;
+            $data_detail['reduction']=$detail_reduction;
+            $data_detail['id_product']=$id_product_to_update;
+            $this->detail_movement->add_detail_movement($data_detail);
+
+
+            $data_wholesale['price']=$wholesale_price;
+            $data_wholesale['reduction']=$wholesale_reduction;
+            $data_wholesale['id_product']=$id_product_to_update;
+            $this->wholesale_movement->add_wholesale_movement($data_wholesale);
+
+
+
+            $data_bulk['price']=$bulk_price;
+            $data_bulk['reduction']=$bulk_reduction;
+            $data_bulk['id_product']=$id_product_to_update;
+            $this->bulk_movement->add_bulk_movement($data_bulk);
+
+
+            redirect('index.php/backoffice/View/page/CRUD');
         
         } else {
 
@@ -133,14 +174,12 @@ class Finished_Product_Controller extends CI_Controller {
         $id_cat_produits = $this->input->post('id_cat_produits');
         $description = $this->input->post('description');
         
-            $now=date("Y-m-d H:i:s");
-
 
             $data_product['id_cat_fruit'] = $id_cat_fruits;
             $data_product['id_cat_product'] = $id_cat_produits;
             $data_product['description'] = $description;
 
-            var_dump($data_product);
+            //var_dump($data_product);
 
             $exist = $this->product->get_by_criteria($id_cat_fruits, $id_cat_produits);
 
@@ -157,7 +196,7 @@ class Finished_Product_Controller extends CI_Controller {
                 }
 
                 $config['upload_path'] = $upload_path;
-                $config['allowed_types'] = 'gif|jpg|png';
+                $config['allowed_types'] = 'gif|jpg|png-jpeg';
                 $config['max_size'] = 5048;
                 $config['max_width'] = 1921;
                 $config['max_height'] = 1081;
@@ -179,16 +218,16 @@ class Finished_Product_Controller extends CI_Controller {
                         $data_product['image_link'] = $new_file_path;
                     
                     } else {
-                        $error = $this->upload->display_errors();
-                        $data = array();
-                        $data = $this->main->page('backoffice', 'CRUD');
-                        $extra_data = $this->data_loader->load_data('CRUD');
-                        $data = array_merge($data, $extra_data);
-                        $data['error'] = $error;            
-                        $this->load->view('templates/template', $data);
+                        // $error = $this->upload->display_errors();
+                        // $data = array();
+                        // $data = $this->main->page('backoffice', 'CRUD');
+                        // $extra_data = $this->data_loader->load_data('CRUD');
+                        // $data = array_merge($data, $extra_data);
+                        // $data['error'] = $error;            
+                        // $this->load->view('templates/template', $data);
 
                         //echo $error;
-                        return;
+                        // return;
                     }
 
                 $this->product->add_product($data_product);

@@ -51,4 +51,11 @@ a{
     background-color: #6e6e6e;
     border-radius: 5px;
     height: 200px;
+    color: #282828;
+    padding: 20px;
+}
+
+#small-div-p{
+    color: #282828;
+    font-size: 20px;
 }

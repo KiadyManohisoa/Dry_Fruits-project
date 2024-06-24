@@ -128,7 +128,7 @@
         </div>
         <div class="desc form-group col-lg-6 col-mg-6">
             <label for="">Pictures details</label>
-            <input <?= isset($update_finished_product) ? 'disabled': '' ?> class="form-control" type="file" name="pictures_details" id="" placeholder="Add a file">
+            <input class="form-control" type="file" name="pictures_details" id="" placeholder="Add a file">
         </div>
 
         <div class="form-group">

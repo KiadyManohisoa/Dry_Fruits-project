@@ -69,81 +69,82 @@ $inverstissor[] = [
 // }
 // ----------------------TEAM -----------------
 $team = [] ; 
-$team = [
+$team[] = [
     'name' =>'RAKOTOHARITIANA' , 
     'firstname' => 'Hedy Hamael' ,
     'email' => 'HedyHamael@gmail.com' , 
-    'picture' => ''
+    'picture' => '_'
 ]; 
 
 $team []= [
     'name' =>'RAZAFINDRAKOTO' , 
     'firstname' => 'Zo Nantenaina' ,
     'email' => 'ZoNantenaina@gmail.com' , 
-    'picture' => ''
+    'picture' => '_'
 ];
 
 $team []= [
     'name' =>'RANDRIANARIVELO' , 
     'firstname' => 'Manoa Fitiavana Onenantsoa' ,
     'email' => 'ManoaFitiavana@gmail.com' , 
-    'picture' => ''
+    'picture' => '_'
 ];
 
 $team []= [
     'name' =>'RAHAJAMANANA' , 
     'firstname' => 'Ralison Toky' ,
     'email' => 'RalisonToky@gmail.com' , 
-    'picture' => ''
+    'picture' => '_'
 ];   
 
 $team []= [
     'name' =>'ANDRIAMANANTSILAVO' , 
     'firstname' => 'Kiady Manohisoa' ,
     'email' => 'KiadyManohisoa@gmail.com' , 
-    'picture' => ''
+    'picture' => '_'
 ]; 
 
 $team []= [
     'name' =>'RAZAFINDRALAMBO' , 
     'firstname' => 'Nambinonjanahary Secille' ,
     'email' => 'Nambinonjanahary@gmail.com' , 
-    'picture' => ''
+    'picture' => '_'
 ]; 
 
 $team []= [
     'name' =>'HARILOVA' , 
     'firstname' => 'Mamitiana Fabio' ,
     'email' => 'MamitianaFabio@gmail.com' , 
-    'picture' => ''
+    'picture' => '_'
 ];
 
 $team []= [
     'name' =>'RANDRIANARISOA' , 
     'firstname' => 'Ravotiana' ,
     'email' => 'Ravotiana@gmail.com' , 
-    'picture' => ''
+    'picture' => '_'
 ];
 
 $team []= [
     'name' =>'RASAMIMANANA' , 
     'firstname' => 'Mialy Tiana' ,
     'email' => 'MialyTiana@gmail.com' , 
-    'picture' => ''
+    'picture' => '_'
 ];
 
 // ----------------------------------about us -------------------------
 $aboutus = array (
-    'projectName' => 'DryFruit' , 
-    'email' => 'DryFruit@gmail.com' , 
-    'phoneNumber' => '030000000', 
-    'address' => 'Antananarivo,101' , 
-    'tagline' => 'DryFruit - Nourishing Lives with Nature s Best', 
-    'overview' => 'Welcome to DryFruit, your number one source for premium dry fruits. We are dedicated to providing you the very best of nature s bounty, with an emphasis on quality, freshness, and health benefits.', 
-    'storytelling' => 'Founded in 2024 by passionate nutrition enthusiasts, DryFruit has come a long way from its beginnings in a small home kitchen. When we first started out, our passion for healthy and delicious snacks drove us to start our own business.',
-    'grouth' => 'We now serve customers all over the country and are thrilled to be a part of the health-conscious wing of the food industry.',
-    'custommerconnection' => 'We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please do not hesitate to contact us.',
-    'sign-off'=>'Sincerly , [foundername] , Founder'
+    'Project name' => 'DryFruit' , 
+    'Email' => 'DryFruit@gmail.com' , 
+    'Phone number' => '030000000', 
+    'Address' => 'Antananarivo,101' , 
+    'Tagline' => 'DryFruit - Nourishing Lives with Nature s Best', 
+    'Overview' => 'Welcome to DryFruit, your number one source for premium dry fruits. We are dedicated to providing you the very best of nature s bounty, with an emphasis on quality, freshness, and health benefits.', 
+    'Story telling' => 'Founded in 2024 by passionate nutrition enthusiasts, DryFruit has come a long way from its beginnings in a small home kitchen. When we first started out, our passion for healthy and delicious snacks drove us to start our own business.',
+    'Grouth' => 'We now serve customers all over the country and are thrilled to be a part of the health-conscious wing of the food industry.',
+    'Customer connection' => 'We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please do not hesitate to contact us.',
+    'Sign-off'=>'Sincerly , [foundername] , Founder',
+    'Location' => 'IT University'
 );
 
 // TAGLINES
@@ -176,10 +177,8 @@ $legalnotices = array (
 
 // ------------ PUBLIC AUTHORITIES ----------------------
 $publicAuthorities = array (
-    'contactInformation' => array (
-        'email' => $aboutus['email'] , 
-        'phoneNumber' => $aboutus['phoneNumber']
-    ),
+    'Email' => $aboutus['Email'] , 
+    'Phone number' => $aboutus['Phone number'],
     'responseTime' => 'We aim to respond to information requests from public authorities promptly and within a reasonable timeframe.' , 
     'compliance' => 'Please include relevant details and the purpose of your request to facilitate a timely response.'
 );
@@ -197,9 +196,10 @@ $confidentiality = array (
 // --------------------COOKIES--------------------
 $cookies = array (
     'whatAreCookies' => 'Cookies are small text files that are stored on your computer or mobile device when you visit a website. They allow the website to recognize your device and store information about your preferences or past actions.' , 
-    'useOfCookiesAtDryFruit' => array (
-        'Shopping Cart: To remember items added to your shopping cart as you navigate through our website.' , 'Payment Processing: To facilitate secure payment transactions and prevent fraudulent activities.' , 'Payment Processing: To facilitate secure payment transactions and prevent fraudulent activities.' , 'User Preferences: To remember your preferences and settings during and between visits.'
-    ),
+    'Shopping Cart' => 'To remember items added to your shopping cart as you navigate through our website.' , 
+    'Payment Processing' => 'To facilitate secure payment transactions and prevent fraudulent activities.' ,
+    'Payment Processing' => 'To facilitate secure payment transactions and prevent fraudulent activities.' ,
+    'User Preferences' => 'To remember your preferences and settings during and between visits.',
     'managingCookies' => 'You can control and manage cookies in various ways, including by adjusting your browser settings. However, please note that disabling certain cookies may affect the functionality of our website.',
     'consent' => 'By using our website, you consent to the use of cookies as described in this policy. If you do not agree with the use of cookies, you should adjust your browser settings accordingly or refrain from using our website.'
 );
@@ -208,11 +208,11 @@ $cookies = array (
 $typeOfProducts = [] ; 
 $typeOfProducts[] = [
     'type' => 'Dry fruit' , 
-    'picture' => ''
+    'picture' => '_'
 ];
 $typeOfProducts[] = [
     'type' => 'Candied fruit' , 
-    'picture' => ''
+    'picture' => '_'
 ];
 
 
