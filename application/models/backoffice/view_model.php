@@ -13,6 +13,7 @@ class View_model extends CI_Model {
             }
             $nav_bar['truck-side']=array('action' => 'disable', 'wording' => 'delivery');
             $nav_bar['shopping-bag']=array('action' => 'disable', 'wording' => 'bag');
+            $nav_bar['exit']=array('action' => 'disable', 'wording' => 'log-out');
         } 
         else if ($application=="frontoffice") {
             $nav_bar['home']=array('action' => 'disable', 'wording' => 'home');

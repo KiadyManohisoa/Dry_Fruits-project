@@ -29,7 +29,7 @@ ALTER TABLE product ALTER COLUMN image_link DROP NOT NULL;
 CREATE TABLE stock(
    id_stock VARCHAR(50) DEFAULT ('STK') || LPAD(nextval('stock_sequence')::TEXT, 4, '0'),
    renewal_date TIMESTAMP DEFAULT NOW(),
-   quantity_kg NUMERIC(9,2)   NOT NULL,
+   quantity_kg NUMERIC(9,2)  CHECK (quantity_kg >= 0),
    id_product INTEGER NOT NULL,
    PRIMARY KEY(id_stock),
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
@@ -56,9 +56,9 @@ CREATE TABLE administrators(
 
 CREATE TABLE delivery(
    id_delivery VARCHAR(50) DEFAULT ('DLV') || LPAD(nextval('delivery_sequence')::TEXT, 4, '0'),
-   delivery_date TIMESTAMP,
+   delivery_date TIMESTAMP DEFAULT now(),
    delivery_address VARCHAR(100)  NOT NULL,
-   cost NUMERIC(10,2)   NOT NULL,
+   cost NUMERIC(10,2) CHECK (cost >=0),
    status SMALLINT NOT NULL,
    PRIMARY KEY(id_delivery)
 );
@@ -75,8 +75,8 @@ CREATE TABLE client_favorite_products(
 CREATE TABLE detail_movement(
    id_detail_movement VARCHAR(50) DEFAULT ('MVD') || LPAD(nextval('movement_detail_sequence')::TEXT, 4, '0'),
    movement_date TIMESTAMP DEFAULT NOW(),
-   price NUMERIC(14,2)  ,
-   reduction SMALLINT,
+   price NUMERIC(14,2)  CHECK (price >=0),
+   reduction SMALLINT CHECK(reduction >=0),
    id_product INTEGER NOT NULL,
    PRIMARY KEY(id_detail_movement),
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
@@ -85,8 +85,8 @@ CREATE TABLE detail_movement(
 CREATE TABLE wholesale_movement(
    id_wholesale_movement VARCHAR(50) DEFAULT ('MVW') || LPAD(nextval('movement_wholesale_sequence')::TEXT, 4, '0'),
    movement_date TIMESTAMP DEFAULT NOW(),
-   price NUMERIC(14,2)  ,
-   reduction SMALLINT,
+   price NUMERIC(14,2)  CHECK(price >=0),
+   reduction SMALLINT CHECK(reduction >=0),
    id_product INTEGER NOT NULL,
    PRIMARY KEY(id_wholesale_movement),
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
@@ -95,8 +95,8 @@ CREATE TABLE wholesale_movement(
 CREATE TABLE bulk_movement(
    id_bulk_movement VARCHAR(50) DEFAULT ('MVB') || LPAD(nextval('movement_bulk_sequence')::TEXT, 4, '0'),
    movement_date TIMESTAMP DEFAULT NOW(),
-   price NUMERIC(14,2)  ,
-   reduction SMALLINT,
+   price NUMERIC(14,2)  CHECK (price >=0),
+   reduction SMALLINT CHECK(reduction >=0),
    id_product INTEGER NOT NULL,
    PRIMARY KEY(id_bulk_movement),
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
@@ -105,7 +105,7 @@ CREATE TABLE bulk_movement(
 CREATE TABLE charges_kg_movement(
    id_charges_movement VARCHAR(50) DEFAULT ('MVC') || LPAD(nextval('movement_charges_sequence')::TEXT, 4, '0'),
    movement_date TIMESTAMP DEFAULT NOW(),
-   price NUMERIC(14,2)  ,
+   price NUMERIC(14,2)  CHECK(price >=0),
    id_product INTEGER NOT NULL,
    PRIMARY KEY(id_charges_movement),
    FOREIGN KEY(id_product) REFERENCES Product(id_product)
@@ -113,7 +113,7 @@ CREATE TABLE charges_kg_movement(
 
 CREATE TABLE client_products_review(
    id_product_review VARCHAR(50) DEFAULT ('CPR') || LPAD(nextval('client_products_review_sequence')::TEXT, 4, '0'),
-   stars SMALLINT NOT NULL,
+   stars SMALLINT CHECK (stars >=0 || stars <=5),
    comment TEXT,
    id_client VARCHAR(20)  NOT NULL,
    id_product INTEGER NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE client_products_review(
 
 CREATE TABLE client_services_review(
    id_service_review VARCHAR(50) DEFAULT ('CSR') || LPAD(nextval('client_services_review_sequence')::TEXT, 4, '0'),
-   stars SMALLINT NOT NULL,
+   stars SMALLINT CHECK (stars >=0 || stars <=5),
    comment TEXT,
    id_client VARCHAR(20)  NOT NULL,
    review_date TIMESTAMP DEFAULT NOW(),
@@ -142,8 +142,8 @@ CREATE TABLE payement(
 
 CREATE TABLE orders(
    id_order VARCHAR(35) DEFAULT ('ORD') || LPAD(nextval('ordered_product_sequence')::TEXT, 4, '0'),
-   reduction SMALLINT,
-   ordering_date TIMESTAMP,
+   reduction SMALLINT CHECK (reduction >=0),
+   ordering_date TIMESTAMP DEFAULT NOW(),
    id_payement VARCHAR(35)  NOT NULL,
    id_delivery VARCHAR(50)  NOT NULL,
    id_client VARCHAR(20)  NOT NULL,
@@ -155,8 +155,8 @@ CREATE TABLE orders(
 
 CREATE TABLE products_ordered(
    id_product_ordered VARCHAR(75) DEFAULT ('PRO') || LPAD(nextval('products_ordered_sequence')::TEXT, 4, '0'),
-   sales_type CHAR(1) ,
-   quantity NUMERIC(14,2)  ,
+   sales_type CHAR(1) NOT NULL,
+   quantity NUMERIC(14,2) CHECK(quantity > 0),
    id_order VARCHAR(35)  NOT NULL,
    id_product INTEGER NOT NULL,
    PRIMARY KEY(id_product_ordered),

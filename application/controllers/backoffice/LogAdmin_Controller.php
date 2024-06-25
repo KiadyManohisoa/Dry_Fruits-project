@@ -30,5 +30,10 @@ class LogAdmin_Controller extends CI_Controller {
         }
     }
 
+    public function log_out (){
+        $this->session->unset("admin_status");
+        redirect('backoffice/View/page');
+    }
+
 
 }
