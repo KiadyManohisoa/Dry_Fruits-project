@@ -57,7 +57,7 @@ CREATE TABLE administrators(
 CREATE TABLE delivery(
    id_delivery VARCHAR(50) DEFAULT ('DLV') || LPAD(nextval('delivery_sequence')::TEXT, 4, '0'),
    delivery_date TIMESTAMP,
-   delivery_address VARCHAR(50)  NOT NULL,
+   delivery_address VARCHAR(100)  NOT NULL,
    cost NUMERIC(10,2)   NOT NULL,
    status SMALLINT NOT NULL,
    PRIMARY KEY(id_delivery)
