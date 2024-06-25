@@ -220,25 +220,62 @@ client_services_review.id_client = clients_account.id_client ;
 -- sales Mensuels
 
 CREATE OR REPLACE VIEW v_sale_bulk AS 
-SELECT DISTINCT ON (orders.ordering_date,orders.id_order)
-orders.id_order,orders.reduction order_reduction,orders.ordering_date,bulk_movement.movement_date,bulk_movement.price,bulk_movement.reduction,products_ordered.id_product,products_ordered.quantity,products_ordered.sales_type, products_ordered.id_product_ordered
+SELECT DISTINCT ON (orders.ordering_date, products_ordered.id_product_ordered)
+orders.id_order,
+orders.reduction AS order_reduction,
+orders.ordering_date,
+bulk_movement.movement_date,
+bulk_movement.price,
+bulk_movement.reduction,
+products_ordered.id_product,
+products_ordered.quantity,
+products_ordered.sales_type,
+products_ordered.id_product_ordered
 FROM products_ordered 
-JOIN orders ON products_ordered.id_order= orders.id_order
-JOIN bulk_movement ON products_ordered.id_product = bulk_movement.id_product   WHERE products_ordered.sales_type='B' AND orders.ordering_date>=bulk_movement.movement_date ORDER BY orders.ordering_date,orders.id_order,bulk_movement ASC;
+JOIN orders ON products_ordered.id_order = orders.id_order
+JOIN bulk_movement ON products_ordered.id_product = bulk_movement.id_product
+WHERE products_ordered.sales_type = 'B' 
+  AND orders.ordering_date >= bulk_movement.movement_date 
+ORDER BY orders.ordering_date, products_ordered.id_product_ordered, bulk_movement.movement_date ASC;
 
 CREATE OR REPLACE VIEW v_sale_wholesale AS 
-SELECT DISTINCT ON (orders.ordering_date,orders.id_order)
-orders.id_order,orders.reduction order_reduction,orders.ordering_date,wholesale_movement.movement_date,wholesale_movement.price,wholesale_movement.reduction,products_ordered.id_product,products_ordered.quantity,products_ordered.sales_type, products_ordered.id_product_ordered
+SELECT DISTINCT ON (orders.ordering_date, products_ordered.id_product_ordered)
+orders.id_order,
+orders.reduction AS order_reduction,
+orders.ordering_date,
+wholesale_movement.movement_date,
+wholesale_movement.price,
+wholesale_movement.reduction,
+products_ordered.id_product,
+products_ordered.quantity,
+products_ordered.sales_type,
+products_ordered.id_product_ordered
 FROM products_ordered 
-JOIN orders ON products_ordered.id_order= orders.id_order
-JOIN wholesale_movement ON products_ordered.id_product = wholesale_movement.id_product   WHERE products_ordered.sales_type='W' AND orders.ordering_date>=wholesale_movement.movement_date ORDER BY orders.ordering_date,orders.id_order,wholesale_movement ASC;
+JOIN orders ON products_ordered.id_order = orders.id_order
+JOIN wholesale_movement ON products_ordered.id_product = wholesale_movement.id_product
+WHERE products_ordered.sales_type = 'W' 
+  AND orders.ordering_date >= wholesale_movement.movement_date 
+ORDER BY orders.ordering_date, products_ordered.id_product_ordered, wholesale_movement.movement_date ASC;
 
 CREATE OR REPLACE VIEW v_sale_detail AS 
-SELECT DISTINCT ON (orders.ordering_date,orders.id_order)
-orders.id_order,orders.reduction order_reduction,orders.ordering_date,detail_movement.movement_date,detail_movement.price,detail_movement.reduction,products_ordered.id_product,products_ordered.quantity,products_ordered.sales_type, products_ordered.id_product_ordered
+SELECT DISTINCT ON (orders.ordering_date, products_ordered.id_product_ordered)
+orders.id_order,
+orders.reduction AS order_reduction,
+orders.ordering_date,
+detail_movement.movement_date,
+detail_movement.price,
+detail_movement.reduction,
+products_ordered.id_product,
+products_ordered.quantity,
+products_ordered.sales_type,
+products_ordered.id_product_ordered
 FROM products_ordered 
-JOIN orders ON products_ordered.id_order= orders.id_order
-JOIN detail_movement ON products_ordered.id_product = detail_movement.id_product   WHERE products_ordered.sales_type='D' AND orders.ordering_date>=detail_movement.movement_date ORDER BY orders.ordering_date,orders.id_order,detail_movement ASC;
+JOIN orders ON products_ordered.id_order = orders.id_order
+JOIN detail_movement ON products_ordered.id_product = detail_movement.id_product
+WHERE products_ordered.sales_type = 'D' 
+  AND orders.ordering_date >= detail_movement.movement_date 
+ORDER BY orders.ordering_date, products_ordered.id_product_ordered, detail_movement.movement_date ASC;
+
 
 CREATE OR REPLACE VIEW v_sales AS 
 SELECT * FROM v_sale_wholesale UNION ALL SELECT * FROM v_sale_bulk UNION ALL SELECT * FROM v_sale_detail;

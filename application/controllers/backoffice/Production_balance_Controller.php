@@ -37,6 +37,7 @@ class Production_balance_Controller extends CI_Controller {
             $date_rechercher = $this->input->post('search_date');
             $idcategorie = $this->input->post('product_category');
             $data['Production_balance'] = $this->production_balance->get_balance_production($date_rechercher,$idcategorie);
+            $data['totals'] = $this->production_balance->get_totals_balance_production($date_rechercher,$idcategorie);
             $data['date_search'] = $date_rechercher;
         }
         $this->load->view('templates/template',$data);

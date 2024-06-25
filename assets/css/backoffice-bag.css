@@ -17,6 +17,7 @@ body{
     border-bottom: none;
 }
 .receipt img {
+    padding: 0;
     width: 100px;
     height: 100px;
     background-color: #e0e0e0;

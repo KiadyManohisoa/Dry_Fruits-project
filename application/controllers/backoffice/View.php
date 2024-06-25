@@ -8,9 +8,13 @@ class View extends CI_Controller {
         parent::__construct();
         $this->load->model('backoffice/view_model','main');
         $this->load->library('backoffice/Data_Loader','data_loader');
+        $this->load->library('Session','session');
     }
 
     public function page($section = 'login') {
+        if($this->session->get('admin_status')==null) {
+            $section='login';
+        }
         $application = 'backoffice';
         $data = $this->main->page($application,$section);
         $extra_data = $this->data_loader->load_data($section);

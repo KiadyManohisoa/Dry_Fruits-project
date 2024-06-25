@@ -90,15 +90,6 @@ class Product_Model extends CI_Model
                 $this->db->where("detail_price <=", $max);
             }
             $this->db->group_end();
-    
-            $this->db->or_group_start();
-            if ($min > 0) {
-                $this->db->where("wholesale_price >=", $min);
-            }
-            if ($max > 0) {
-                $this->db->where("wholesale_price <=", $max);
-            }
-            $this->db->group_end();
             $this->db->group_end();
         }
 

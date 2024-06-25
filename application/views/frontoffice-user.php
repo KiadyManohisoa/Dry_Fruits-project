@@ -8,7 +8,7 @@
                     <h3 class="modal-title">Edit Profile</h3>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="<?php echo site_url();?>frontoffice/LogClient_Controller/update_client_info" enctype="multipart/form-data">
+                    <form method="post" action="<?php echo site_url('frontoffice/LogClient_Controller/update_client_info');?>" enctype="multipart/form-data">
                         <div class="form-group  col-lg-6 col-md-6 col-sm-6">
                             <label for="profile-pic">Profile picture</label>
                             <input type="file" name="user_profile_pic" class="form-control" id="profile-pic" placeholder="Username">
@@ -50,7 +50,7 @@
 <!-- a propos de l'utilisateur -->
 <div class="content">
     <center class="col-lg-3 col-md-3 col-sm-4">
-        <div class="user-img" style="background-image: url('<?php echo site_url();?><?php echo $user->get_user_image();?>')"></div>
+        <div class="user-img" style="background-image: url('<?php echo site_url($user->get_user_image());?>')"></div>
         <hr>
         <button id="openProfileEditer" type="submit" class="btn btn-custom btn-lg user-button">Edit Profile</button>
     </center>
@@ -89,7 +89,7 @@
                 <?php if(isset($favoris_products)) { 
                     foreach ($favoris_products as $product) { ?>
                         <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                            <div class="product-img" style="background-image: url('<?= site_url('assets/'.$product['product_image_link']) ?>')">
+                            <div class="product-img" style="background-image: url('<?= site_url($product['product_image_link']) ?>')">
                                 <div class="bag-icon bag">
                                     <input type="checkbox" name="" id="new-check-<?php echo $product['product_id']; ?>" class="bag">
                                     <label for="new-check-<?php echo $product['product_id']; ?>">

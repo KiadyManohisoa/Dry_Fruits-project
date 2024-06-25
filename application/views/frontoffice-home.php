@@ -13,7 +13,7 @@
         <!-- Product details -->
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <div class="product-img-placeholder"></div>
+                <div class="product-img-placeholder" style="background-image: url('<?= site_url();?><?= $product['product_image_link'];?>')"></div>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 product-details">
                 <h1 class="product-title"><?= $product['product_category']." ".$product['fruit_category']; ?></h1>
@@ -188,7 +188,7 @@
                         
                     </div>
                     <div class="col-lg-6 col-md-6 hidden-xs hidden-sm text-center">
-                        <div class="reduce-img" style="background-image: url('<?= site_url('assets/'.$reduce_products[0]['product_image_link']) ?>')"></div>
+                        <div class="reduce-img" style="background-image: url('<?= site_url($reduce_products[0]['product_image_link']) ?>')"></div>
                     </div>
                 </div>
         
@@ -198,7 +198,7 @@
                         <h2><?= $reduce_products[1]['detail_price']; ?> Ar </h2><h1 id="reduction">-<?= $reduce_products[1]['detail_reduction']; ?>%</h1>
                     </div>
                     <div class="col-lg-6 col-md-6 hidden-xs hidden-sm text-center">
-                        <div class="reduce-img" style="background-image: url('<?= site_url('assets/'.$reduce_products[1]['product_image_link']) ?>')"></div>
+                        <div class="reduce-img" style="background-image: url('<?= site_url($reduce_products[1]['product_image_link']) ?>')"></div>
                     </div>
                 </div>
         
@@ -208,7 +208,7 @@
                         <h2><?= $reduce_products[2]['detail_price']; ?> Ar </h2><h1 id="reduction">-<?= $reduce_products[2]['detail_reduction']; ?>%</h1>
                     </div>
                     <div class="col-lg-6 col-md-6 hidden-xs hidden-sm text-center">
-                        <div class="reduce-img" style="background-image: url('<?= site_url('assets/'.$reduce_products[2]['product_image_link']) ?>')"></div>
+                        <div class="reduce-img" style="background-image: url('<?= site_url($reduce_products[2]['product_image_link']) ?>')"></div>
                     </div>
                 </div>
             </div>
@@ -313,7 +313,7 @@
     <!-- produits recemment acheter -->
         <div class="content products-defiler">
             <div class="title">
-            <h3 class="col-lg-9 col-md-9 col-sm-4 col-xs-4">Recently Viewed</h3>
+            <h3 class="col-lg-9 col-md-9 col-sm-4 col-xs-4">Mostly Viewed</h3>
             <div class="text-right col-lg-3 col-md-3 col-sm-8 col-xs-8">
                 <button class="btn btn-default btn-conrtrol prev-btn"><img src="<?= site_url('assets/icons/chevron-left.png') ?>"></button>
                 <button class="btn btn-default btn-conrtrol next-btn"><img src="<?= site_url('assets/icons/chevron-right.png') ?>"></button>
@@ -323,7 +323,7 @@
                 <!-- listes des produits -->
                 <?php foreach ($most_saled_products as $product) { ?>
                     <div class="product col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                        <div class="product-img" style="background-image: url('<?= site_url('assets/'.$product['product_image_link']) ?>')">
+                        <div class="product-img" style="background-image: url('<?= site_url();?><?= $product['product_image_link'];?>')">
                             <div class="bag-icon bag">
                                 <input type="checkbox" name="" id="most-saled-check-<?php echo $product['product_id']; ?>" class="bag">
                                 <label for="most-saled-check-<?php echo $product['product_id']; ?>">

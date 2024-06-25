@@ -116,6 +116,23 @@ class Production_balance
         }
         $this->results = $results;
     }
+    
+    public static function get_totals_balance_production($date_search, $id_cat_produit) {
+        $CI = &get_instance();
+        $CI->load->model('backoffice/Production_balance_Model','Production_balance_Model');
+        $CI->load->library('backoffice/util_lib','util_lib');
+
+        $balance_total = $CI->Production_balance_Model->get_totals_balance_by_date($date_search,$id_cat_produit);
+
+        $totals = array();
+        $totals['stock'] = $CI->util_lib->format_number($balance_total[0]['stock'] ?? 0,2);
+        $totals['out'] = $CI->util_lib->format_number($balance_total[0]['out'] ?? 0, 2);
+        $totals['sales'] = $CI->util_lib->format_number($balance_total[0]['sales'] ?? 0, 2);
+        $totals['charges'] = $CI->util_lib->format_number($balance_total[0]['charges'] ?? 0, 2);
+        $totals['sales_amount'] = $CI->util_lib->format_number($balance_total[0]['sales_amount'] ?? 0, 2);
+        $totals['results'] = $CI->util_lib->format_number($balance_total[0]['results'] ?? 0, 2);
+        return $totals;
+    }
 
     public static function get_balance_production($date_search, $id_cat_produit)
     {

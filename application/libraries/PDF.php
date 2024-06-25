@@ -14,11 +14,9 @@ class Pdf extends FPDF {
         $this->order_details = $order_details;
     }
 
-    
     function Header() {
-        $this->backgroundImage = site_url("assets/images/Bill.png");
+        $this->backgroundImage = base_url("assets/images/Bill.png"); // Use base_url() for proper URL
         if ($this->backgroundImage) {
-            // Ensure base_url() is used correctly for URLs, not for local file paths
             $this->Image($this->backgroundImage, 0, 0, $this->GetPageWidth(), $this->GetPageHeight());
         }
         // Logo ou titre du document
@@ -73,7 +71,6 @@ class Pdf extends FPDF {
         $this->Cell(130, 7, 'Total:', 1, 0, 'R');
         $this->Cell(55, 7, number_format($this->order_details[0]['result'], 2, '.', ' ') . ' Ar', 1, 1, 'R');
     }
-    
 
     function GenerateCustomerInfo() {
         // Informations personnelles du client
@@ -97,16 +94,23 @@ class Pdf extends FPDF {
         $this->setX(46);
         $this->Cell(0, 7, $this->order_details[0]['payment_type'], 0, 1, 'L');
         $this->setX(57);
-        $this->Cell(0, 5, $this->order_details[0]['client_phone_number'], 0, 1, 'L');
+        $this->Cell(0, 5, $this->order_details[0]['payment_phone_number'], 0, 1, 'L');
     }
-
 
     function GeneratePDF() {
         $this->AddPage();
         $this->GenerateCustomerInfo();
         $this->GenerateTable();
         $this->GenerateSummary();
+        
+        // Headers to force download
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="BILL-'.$this->order_details[0]['order_id'].'.pdf"');
+        header('Cache-Control: private, max-age=0, must-revalidate');
+        header('Pragma: public');
+
+        // Output the PDF
+        $this->Output('D', 'BILL-'.$this->order_details[0]['order_id'].'.pdf');
     }
 }
-
 ?>

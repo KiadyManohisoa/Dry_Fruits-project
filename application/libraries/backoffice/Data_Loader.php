@@ -39,6 +39,7 @@ class Data_Loader {
             $data['ls_cat_products'] = $CI->cat_product->get_all_products();
             $data['clients'] = $CI->clients_account->get_all_clients();
             $data['Production_balance'] = $CI->production_balance->get_balance_production(date('Y-m-d'),1);
+            $data['totals'] = $CI->production_balance->get_totals_balance_production(date('Y-m-d'),1);
             $data['date_search'] = date('Y-m-d');
     }
         else if ($section == 'delivery'){

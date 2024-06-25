@@ -179,7 +179,18 @@
                     <td><?php echo $balance->get_sales_amount() ?> Ar</td>
                     <td><?php echo $balance->get_results(); ?> Ar</td>
                 </tr>
-                <?php }  }?>
+                <?php } ?>
+                <tr style="font-weight: bold;">
+                    <td>Totals</td>
+                    <td><?php echo $totals['stock'];?> kg </td>
+                    <td><?php echo $totals['out'];?> kg </td>
+                    <td><?php echo $totals['sales'];?> pts </td>
+                    <td><?php echo $totals['charges'];?> Ar </td>
+                    <td><?php echo $totals['sales_amount'];?> Ar </td>
+                    <td><?php echo $totals['results'];?> Ar </td>
+                </tr>
+                
+                <?php } ?>
             </tbody>
         </table>
     </div>

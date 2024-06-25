@@ -11,7 +11,7 @@ class View extends CI_Controller {
         $this->load->library('Session','session');
     }
 
-    public function page($section = 'login') {
+    public function page($section = 'home') {
         $application = 'frontoffice';
         $data = $this->main->page($application,$section);
         $extra_data = $this->data_loader->load_data($section);

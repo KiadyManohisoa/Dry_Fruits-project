@@ -15,7 +15,7 @@ CREATE OR REPLACE FUNCTION get_Balance_By_Date(date_Search DATE,id_cat_produit I
         RETURN QUERY EXECUTE 'with v_product_stock_by_day as (
             SELECT 
                 pc.product_id,
-                s.quantity_kg AS stock_quantity,
+                COALESCE(s.quantity_kg,0) - COALESCE(pob.order_quantity,0) AS stock_quantity,
                 COALESCE(po.order_quantity,0) AS order_quantity
             FROM v_product_categories pc
             LEFT JOIN (select id_product, COALESCE(sum(quantity_kg),0) as quantity_kg from stock where DATE(renewal_date) <= ''' || date_Search || ''' group by (id_product)) s ON pc.product_id = s.id_product
@@ -25,7 +25,14 @@ CREATE OR REPLACE FUNCTION get_Balance_By_Date(date_Search DATE,id_cat_produit I
                     WHEN sales_type = ''W'' THEN quantity * 0.1
                     WHEN sales_type = ''B'' THEN quantity
                     ELSE 0
-                END AS order_quantity from products_ordered where id_order in (select id_order from orders where DATE(ordering_date) <= ''' || date_Search || ''')) as po group by (po.id_product)) po ON pc.product_id = po.id_product
+                END AS order_quantity from products_ordered where id_order in (select id_order from orders where DATE(ordering_date) = ''' || date_Search || ''')) as po group by (po.id_product)) po ON pc.product_id = po.id_product
+            LEFT JOIN (select pob.id_product, COALESCE(sum(pob.order_quantity),0) as order_quantity from 
+            		   (select id_product, CASE 
+                    WHEN sales_type = ''D'' THEN quantity * 0.1
+                    WHEN sales_type = ''W'' THEN quantity * 0.1
+                    WHEN sales_type = ''B'' THEN quantity
+                    ELSE 0
+                END AS order_quantity from products_ordered where id_order in (select id_order from orders where DATE(ordering_date) < ''' || date_Search || ''')) as pob group by (pob.id_product)) pob ON pc.product_id = pob.id_product
             ) 
         SELECT 
         s.id_product, 
@@ -90,11 +97,11 @@ CREATE OR REPLACE FUNCTION get_Balance_By_Date(date_Search DATE,id_cat_produit I
     LEFT JOIN (
     SELECT cp.id_cat_product,p.id_product,
 	ckm.price
-FROM (select charges_kg_movement.* from charges_kg_movement join (select id_product, max (movement_date) as movement_date from charges_kg_movement WHERE DATE(movement_date) <= ''' || date_Search || ''' group by  id_product) as max_charges on max_charges.id_product=charges_kg_movement.id_product where max_charges.movement_date=charges_kg_movement.movement_date) ckm
-JOIN Product p ON ckm.id_product = p.id_product
-JOIN cat_product cp ON p.id_cat_product = cp.id_cat_product
-WHERE cp.id_cat_product = ''' || id_cat_produit || '''
-AND ckm.movement_date = (SELECT MAX(movement_date) FROM charges_kg_movement WHERE DATE(movement_date) <= ''' || date_Search || ''' and id_product = p.id_product)
+    FROM (select charges_kg_movement.* from charges_kg_movement join (select id_product, max (movement_date) as movement_date from charges_kg_movement WHERE DATE(movement_date) <= ''' || date_Search || ''' group by  id_product) as max_charges on max_charges.id_product=charges_kg_movement.id_product where max_charges.movement_date=charges_kg_movement.movement_date) ckm
+    JOIN Product p ON ckm.id_product = p.id_product
+    JOIN cat_product cp ON p.id_cat_product = cp.id_cat_product
+    WHERE cp.id_cat_product = ''' || id_cat_produit || '''
+    AND ckm.movement_date = (SELECT MAX(movement_date) FROM charges_kg_movement WHERE DATE(movement_date) <= ''' || date_Search || ''' and id_product = p.id_product)
     ) charges ON s.id_cat_product = charges.id_cat_product AND s.id_product = charges.id_product
     LEFT JOIN (
         SELECT
@@ -102,9 +109,9 @@ AND ckm.movement_date = (SELECT MAX(movement_date) FROM charges_kg_movement WHER
             p.id_product,
             SUM(
                 CASE 
-                    WHEN po.sales_type = ''D'' THEN dm.price * po.quantity
-                    WHEN po.sales_type = ''W'' THEN wm.price * po.quantity
-                    WHEN po.sales_type = ''B'' THEN bm.price * po.quantity
+                    WHEN po.sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction / 100)) * po.quantity
+                    WHEN po.sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction / 100)) * po.quantity
+                    WHEN po.sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction / 100)) * po.quantity
                     ELSE 0
                 END
             ) AS total_price
@@ -113,17 +120,17 @@ AND ckm.movement_date = (SELECT MAX(movement_date) FROM charges_kg_movement WHER
         LEFT JOIN detail_movement dm ON po.id_product = dm.id_product AND po.sales_type = ''D'' AND dm.movement_date = (
             SELECT MAX(movement_date) 
             FROM detail_movement 
-            WHERE movement_date <= o.ordering_date
+            WHERE movement_date <= o.ordering_date and detail_movement.id_product = po.id_product
         )
         LEFT JOIN wholesale_movement wm ON po.id_product = wm.id_product AND po.sales_type = ''W'' AND wm.movement_date = (
             SELECT MAX(movement_date) 
             FROM wholesale_movement 
-            WHERE movement_date <= o.ordering_date
+            WHERE movement_date <= o.ordering_date and wholesale_movement.id_product = po.id_product
         )
         LEFT JOIN bulk_movement bm ON po.id_product = bm.id_product AND po.sales_type = ''B'' AND bm.movement_date = (
             SELECT MAX(movement_date) 
             FROM bulk_movement 
-            WHERE movement_date <= o.ordering_date
+            WHERE movement_date <= o.ordering_date and bulk_movement.id_product = po.id_product
         )
         JOIN Product p ON po.id_product = p.id_product
         WHERE p.id_cat_product = ''' || id_cat_produit || '''
@@ -150,6 +157,7 @@ CREATE OR REPLACE FUNCTION get_basket_link(id_order VARCHAR)
         payment_type VARCHAR,
         payment_phone_number VARCHAR,
         product_name TEXT,
+        product_image_link VARCHAR(50),
         type_sales TEXT,
         unit_product_price NUMERIC(14,2),
         quantity_product NUMERIC(14,2),
@@ -171,6 +179,7 @@ CREATE OR REPLACE FUNCTION get_basket_link(id_order VARCHAR)
                 vpd.payment_type,
                 vpd.payment_phone_number,
                 vod.product_name,
+                vod.product_image_link,
                 vod.type_sales,
                 vod.unit_product_price,
                 vod.quantity_product,
@@ -203,6 +212,7 @@ CREATE OR REPLACE FUNCTION get_basket_link(id_order VARCHAR)
                 SELECT 
             vod.order_id,
             vod.product_name,
+            vod.product_image_link,
             vod.product_ordered_sales_type,
             CASE
                     WHEN vod.product_ordered_sales_type = ''D'' THEN ''Detail''
@@ -229,8 +239,8 @@ CREATE OR REPLACE FUNCTION get_basket_link(id_order VARCHAR)
                 ELSE 0
             END AS reduction_product,
             CASE
-                WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity * 0.1
-                WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity * 0.1
+                WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
+                WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
                 WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
                 ELSE 0
             END AS price_product_with_reduction
@@ -272,23 +282,23 @@ CREATE OR REPLACE FUNCTION get_basket_link(id_order VARCHAR)
                     o.reduction,
                     SUM(
                         CASE
-                            WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity * 0.1
-                            WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity * 0.1
+                            WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
+                            WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
                             WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
                             ELSE 0
                         END
                     ) AS total_price_product,
                     SUM(
                         CASE
-                            WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity * 0.1
-                            WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity * 0.1
+                            WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
+                            WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
                             WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
                             ELSE 0
                         END
                     ) - (SUM(
                         CASE
-                            WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity * 0.1
-                            WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity * 0.1
+                            WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
+                            WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
                             WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
                             ELSE 0
                         END

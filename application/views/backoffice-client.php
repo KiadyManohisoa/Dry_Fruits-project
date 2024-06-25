@@ -2,7 +2,7 @@
 <!-- a propos de l'utilisateur -->
 <div class="content">
     <center class="col-lg-3 col-md-3 col-sm-4">
-        <div class="user-img" style="background-image: url('<?php echo site_url('assets/images/image.jpg') ?>')"></div>
+    <div class="user-img" style="background-image: url('<?php echo site_url($client->get_user_image());?>')"></div>
         <hr>
     </center>
     <div class="col-lg-9 col-md-9 col-sm-8">

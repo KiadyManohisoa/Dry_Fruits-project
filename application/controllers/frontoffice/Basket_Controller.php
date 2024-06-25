@@ -83,7 +83,6 @@ class Basket_Controller extends CI_Controller {
     
             $this->load->library('PDF', $order_details);
             $this->pdf->GeneratePDF();
-            $this->pdf->Output('I', 'Order_Details.pdf');
         }        
     
     }

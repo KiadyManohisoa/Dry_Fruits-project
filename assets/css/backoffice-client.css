@@ -13,7 +13,14 @@
 
 .user-img{
     border-radius: 100px;
-}
+    background-size: contain; /* L'image est mise à l'échelle pour être entièrement visible */
+    background-position: center; /* L'image est centrée dans le div */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    border: none; /* Pas de bordure */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
 .user-button{
     width: 100%;
 }

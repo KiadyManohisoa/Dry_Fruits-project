@@ -91,13 +91,16 @@ class Products_Controller extends CI_Controller {
         }
     }
 
-    public function get_product_by_id($id_product) {
+    public function get_product_by_id($id_product,$err_data=null) {
         $data = $this->main->page('frontoffice','home');
         $extra_data = $this->data_loader->load_data('home');
         $data['product'] = $this->product_model->get_product_by_id($id_product);
         $data['reviews'] = $this->client_products_review->get_review_by_id_product($id_product);
         $data['review_pourcentage'] = $this->client_products_review_model->get_stars_pourcentage($id_product);
         $data = array_merge($data,$extra_data);
+        if(!empty($err_data) || $err_data!=null) {
+            $data['error'] = $err_data;
+        }
         $this->load->view('templates/template', $data);
     }
 
@@ -127,8 +130,12 @@ class Products_Controller extends CI_Controller {
             $id_client = $this->session->get("id_client");
             $stars = $this->input->post('stars')!=null ? $this->input->post('stars') : 0;
             $comment = $this->input->post('comment');
-            $this->client_products_review->add_client_product_review($id_client, $stars, $comment, $id_product);
-            redirect(site_url('frontoffice/Products_Controller/get_product_by_id/' . $id_product));
+            $answer = $this->client_products_review->add_client_product_review($id_client, $stars, $comment, $id_product);
+            $error = null;
+            if(!$answer) {
+                $error = 'You should have at least already ordered before giving your review';
+            }
+            $this->get_product_by_id($id_product,$error);
         } else {
             redirect(site_url('frontoffice/View/page/login'));
         }

@@ -71,6 +71,14 @@ a{
         width: 100%;
         padding-bottom: 100%; /* Maintains aspect ratio */
         border-radius: 10px;
+        background-size: contain; /* L'image est mise à l'échelle pour être entièrement visible */
+        background-position: center; /* L'image est centrée dans le div */
+        background-repeat: no-repeat; /* Empêche la répétition de l'image */
+        border: none; /* Pas de bordure */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
     }
     .product-details {
         padding-top: 20px;

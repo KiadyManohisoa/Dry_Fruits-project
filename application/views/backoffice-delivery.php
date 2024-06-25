@@ -82,7 +82,7 @@
                         <td><a href="<?php echo site_url('backoffice/Delivery_Controller/basket_link/'.$deliverie_management['order_id']);?>">Baskets-<?php echo $deliverie_management['order_id']; ?> </a></td>
                         <td>
                             <label for="<?= $deliverie_management['delivery_id'];?>" class="round-check" href="#">
-                                <input type="checkbox" class="delivery-check" <?= $deliverie_management['delivery_status'] == 1 ? 'checked' : '' ?> id="<?= $deliverie_management['delivery_id'];?>">
+                                <input type="checkbox" class="delivery-check" <?= $deliverie_management['delivery_status'] == 1 ? 'checked disabled' : '' ?> id="<?= $deliverie_management['delivery_id'];?>">
                                 <span></span>
                             </label>
                             

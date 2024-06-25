@@ -9,7 +9,7 @@
             <?php if (isset($order_details) && !empty($order_details)) { ?>
                 <?php foreach ($order_details as $order) { ?>
                     <div class="item">
-                        <img src="" alt="Product Image" class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                        <img src="<?= site_url();?><?= $order['product_image_link'];?>" alt="Product Image" class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                         <div class="item-details col-lg-5 col-md-5 col-sm-6 col-xs-6">
                             <strong><?php echo $order['product_name']; ?></strong>
                             <small><?php echo $order['type_sales']; ?></small>

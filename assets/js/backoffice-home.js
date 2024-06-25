@@ -139,7 +139,6 @@ function update_global_chart(chartData) {
             scales: {
                 y: {
                     min : 0,
-                    max : 250000
                 }
             }
         }
