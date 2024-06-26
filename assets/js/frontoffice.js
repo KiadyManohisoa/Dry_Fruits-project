@@ -271,7 +271,7 @@ frontoffice_app.controller('heartController', function($http) {
 
                         document.getElementById("total").textContent = total_after_reduction + " Ar";
                         const total_payement = parseFloat(total_prices - (total_prices * (reduction_percentage / 100)))+ cost;
-                        alert(total_payement);
+                        //alert(total_payement);
                         document.getElementById("total-payment").innerText = total_payement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + " Ar";
 
                     }

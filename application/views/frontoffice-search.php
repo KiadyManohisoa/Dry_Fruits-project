@@ -71,7 +71,7 @@
                  <!-- listes produits -->
                 <?php foreach ($tab_products as $product) { ?>
                      <div class="item col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                        <div class="item-img" style="background-image: url('<?php echo site_url('assets/'.$product['product_image_link']) ?>')">
+                        <div class="item-img" style="background-image: url('<?php echo site_url($product['product_image_link']) ?>')">
                             <div class="bag-icon bag">
                                 <input type="checkbox" name="" id="check-<?php echo $product['product_id']; ?>" class="bag">
                                 <label for="check-<?php echo $product['product_id']; ?>">

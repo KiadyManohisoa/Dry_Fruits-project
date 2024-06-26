@@ -17,11 +17,11 @@
             <form action="<?php echo site_url();?>index.php/frontoffice/LogClient_Controller/authenticate" method="post">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input value="alice@example.com" name="user" type="text" class="form-control" id="username1" placeholder="Enter your email or phone number">
+                    <input name="user" type="text" class="form-control" id="username1" placeholder="Enter your email or phone number">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input value="password1" name="user_password" type="password" class="form-control" id="password0" placeholder="Password">
+                    <input name="user_password" type="password" class="form-control" id="password0" placeholder="Password">
                 </div>
                 <center>
                     <button type="submit" class="btn btn-custom btn-lg">Login</button>
@@ -35,23 +35,23 @@
             <form action="<?php echo site_url();?>index.php/frontoffice/LogClient_Controller/sign_up" method="post">
                 <div class="form-group">
                     <label for="username">Full name</label>
-                    <input value="Rakoto Soa" name="full_name" type="mail" class="form-control" id="username2" placeholder="Enter your full name">
+                    <input name="full_name" type="mail" class="form-control" id="username2" placeholder="Enter your full name">
                 </div>
                 <div class="form-group col-lg-6 col-md-6">
                     <label for="username">Email</label>
-                    <input value="rakotosoa@gmail.com" name="mail" type="mail" class="form-control" id="username" placeholder="Enter your email">
+                    <input name="mail" type="mail" class="form-control" id="username" placeholder="Enter your email">
                 </div>
                 <div class="form-group col-lg-6 col-md-6">
                     <label for="phone_number">Phone number</label>
-                    <input value="+261 34 865 68" name="phone_number" type="tel" class="form-control" id="phone_number" placeholder="Enter your phone number">
+                    <input name="phone_number" type="tel" class="form-control" id="phone_number" placeholder="Enter your phone number">
                 </div>
                 <div class="form-group col-lg-6 col-md-6">
                     <label for="password">Password</label>
-                    <input value="rakoto" name="password" type="password" class="form-control" id="password1" placeholder="Enter your password">
+                    <input name="password" type="password" class="form-control" id="password1" placeholder="Enter your password">
                 </div>
                 <div class="form-group col-lg-6 col-md-6">
                     <label for="password">Confirm password</label>
-                    <input value="rakoto" name="confirm_password" type="password" class="form-control" id="password2" placeholder="Confirm your password">
+                    <input name="confirm_password" type="password" class="form-control" id="password2" placeholder="Confirm your password">
                 </div>
                 <center>
                     <button type="submit" class="btn btn-custom btn-lg">Sign Up</button>

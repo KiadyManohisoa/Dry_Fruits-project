@@ -11,7 +11,7 @@ INSERT INTO cat_fruit (wording) VALUES
 
 INSERT INTO Product (image_link, description, creation_date, status, id_cat_product, id_cat_fruit) VALUES
 ('link_to_image1.jpg', 'Dried apple slices', NOW() + INTERVAL '1 second', 1, 1, 1),
-('link_to_image2.jpg', 'Candied banana chips', NOW() + INTERVAL '2 seconds', 1, 2, 2),
+('link_to_image2.jpg', 'Dried banana chips', NOW() + INTERVAL '2 seconds', 1, 1, 2),
 ('link_to_image3.jpg', 'Dried cherries', NOW() + INTERVAL '3 seconds', 1, 1, 3),
 ('link_to_image4.jpg', 'Candied dates', NOW() + INTERVAL '4 seconds', 1, 2, 4),
 ('link_to_image5.jpg', 'Dried elderberries', NOW() + INTERVAL '5 seconds', 1, 1, 5);
@@ -119,3 +119,11 @@ INSERT INTO client_products_review (review_date, stars, comment, id_client, id_p
 INSERT INTO client_products_review (review_date, stars, comment, id_client, id_product) VALUES
 (NOW() + INTERVAL '1 second', 3, 'It is really good!', 'CTL0004', 1),
 (NOW() + INTERVAL '2 seconds', 5, 'It is really good!', 'CTL0005', 1);
+
+INSERT INTO client_services_review (stars,comment,id_client) VALUES 
+(4, 'Great product!','CTL0001'),
+(2, 'A little bit of delay!','CTL0001'),
+(5, 'So happy for my order','CTL0001'),
+(1, 'Too late','CTL0001'),
+(5, 'I recommand it','CTL0001');
+

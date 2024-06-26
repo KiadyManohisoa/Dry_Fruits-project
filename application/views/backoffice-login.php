@@ -14,11 +14,11 @@
     <form action="<?php echo site_url();?>index.php/backoffice/LogAdmin_Controller/authenticate" method="post">
         <div class="form-group">
             <label for="username">Username</label>
-            <input value="admin1" name="user_name" type="text" class="form-control" id="username" placeholder="Username">
+            <input name="user_name" type="text" class="form-control" id="username" placeholder="Username">
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input value="admin1" name="user_psswd" type="password" class="form-control" id="password" placeholder="Password">
+            <input name="user_psswd" type="password" class="form-control" id="password" placeholder="Password">
         </div>
         <center>
             <button type="submit" class="btn btn-custom btn-lg">Login</button>
