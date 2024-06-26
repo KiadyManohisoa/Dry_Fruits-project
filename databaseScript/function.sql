@@ -164,86 +164,94 @@ CREATE OR REPLACE FUNCTION get_basket_link(id_order VARCHAR)
         reduction_product NUMERIC(14,2),
         price_product_with_reduction NUMERIC(14,2),
         total_price_product NUMERIC(14,2),
-        reduction SMALLINT,
+        reduction INTEGER,
         result NUMERIC(14,2)
     ) AS $$
-    begin
-        RETURN QUERY EXECUTE '
-            SELECT
-                ''' || id_order || '''::VARCHAR as order_id,
-                vpd.client_full_name,
-                vpd.client_email,
-                vpd.client_phone_number,
-                vpd.delivery_address,
-                DATE(vpd.delivery_date) as delivery_date,
-                vpd.payment_type,
-                vpd.payment_phone_number,
-                vod.product_name,
-                vod.product_image_link,
-                vod.type_sales,
-                vod.unit_product_price,
-                vod.quantity_product,
-                vod.reduction_product,
-                vod.price_product_with_reduction,
-                o.total_price_product,
-                o.reduction,
-                o.result
-            FROM (
-                SELECT
-                    o.id_client,
-                    o.id_order,
-                    c.full_name AS client_full_name,
-                    c.mail AS client_email,
-                    c.phone_number AS client_phone_number,
-                    d.delivery_address,
-                    pm.mode AS payment_type,
-                    pm.phone_number AS payment_phone_number,
-                    d.delivery_date,
-                    d.cost AS delivery_cost
-                FROM
-                    orders o
-                    LEFT JOIN clients_account c ON o.id_client = c.id_client
-                    LEFT JOIN payement pm ON o.id_payement = pm.id_payement
-                    LEFT JOIN delivery d ON o.id_delivery = d.id_delivery
-                WHERE
-                    o.id_order = ''' || id_order || '''
-            ) vpd
-            LEFT JOIN (
-                SELECT 
-            vod.order_id,
+BEGIN
+    RETURN QUERY EXECUTE '
+        SELECT
+            ''' || id_order || '''::VARCHAR as order_id,
+            vpd.client_full_name,
+            vpd.client_email,
+            vpd.client_phone_number,
+            vpd.delivery_address,
+            DATE(vpd.delivery_date) as delivery_date,
+            vpd.payment_type,
+            vpd.payment_phone_number,
             vod.product_name,
             vod.product_image_link,
-            vod.product_ordered_sales_type,
-            CASE
+            vod.type_sales,
+            COALESCE(vod.unit_product_price, 0) AS unit_product_price,
+            COALESCE(vod.quantity_product, 0) AS quantity_product,
+            COALESCE(vod.reduction_product, 0) AS reduction_product,
+            COALESCE(vod.price_product_with_reduction, 0) AS price_product_with_reduction,
+            COALESCE(o.total_price_product, 0) AS total_price_product,
+            COALESCE(o.reduction, 0) AS reduction,
+            COALESCE(o.result, 0) AS result
+        FROM (
+            SELECT
+                o.id_client,
+                o.id_order,
+                c.full_name AS client_full_name,
+                c.mail AS client_email,
+                c.phone_number AS client_phone_number,
+                d.delivery_address,
+                pm.mode AS payment_type,
+                pm.phone_number AS payment_phone_number,
+                d.delivery_date,
+                d.cost AS delivery_cost
+            FROM
+                orders o
+                LEFT JOIN clients_account c ON o.id_client = c.id_client
+                LEFT JOIN payement pm ON o.id_payement = pm.id_payement
+                LEFT JOIN delivery d ON o.id_delivery = d.id_delivery
+            WHERE
+                o.id_order = ''' || id_order || '''
+        ) vpd
+        LEFT JOIN (
+            SELECT 
+                vod.order_id,
+                vod.product_name,
+                vod.product_image_link,
+                vod.product_ordered_sales_type,
+                CASE
                     WHEN vod.product_ordered_sales_type = ''D'' THEN ''Detail''
                     WHEN vod.product_ordered_sales_type = ''W'' THEN ''Wholesale''
                     WHEN vod.product_ordered_sales_type = ''B'' THEN ''Bulk''
                     ELSE ''''
                 END AS type_sales,
-            CASE
-                WHEN vod.product_ordered_sales_type = ''D'' THEN dm.price
-                WHEN vod.product_ordered_sales_type = ''W'' THEN wm.price
-                WHEN vod.product_ordered_sales_type = ''B'' THEN bm.price
-                ELSE 0
-            END AS unit_product_price,
-            CASE
-                WHEN vod.product_ordered_sales_type = ''D'' THEN vod.product_ordered_quantity
-                WHEN vod.product_ordered_sales_type = ''W'' THEN vod.product_ordered_quantity
-                WHEN vod.product_ordered_sales_type = ''B'' THEN vod.product_ordered_quantity
-                ELSE 0
-            END AS quantity_product,
-            CASE
-                WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100))
-                WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100))
-                WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100))
-                ELSE 0
-            END AS reduction_product,
-            CASE
-                WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
-                WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
-                WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
-                ELSE 0
-            END AS price_product_with_reduction
+                COALESCE(
+                    CASE
+                        WHEN vod.product_ordered_sales_type = ''D'' THEN dm.price
+                        WHEN vod.product_ordered_sales_type = ''W'' THEN wm.price
+                        WHEN vod.product_ordered_sales_type = ''B'' THEN bm.price
+                        ELSE 0
+                    END, 0
+                ) AS unit_product_price,
+                COALESCE(
+                    CASE
+                        WHEN vod.product_ordered_sales_type = ''D'' THEN vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''W'' THEN vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''B'' THEN vod.product_ordered_quantity
+                        ELSE 0
+                    END, 0
+                ) AS quantity_product,
+                COALESCE(
+                    CASE
+                        WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100))
+                        WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100))
+                        WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100))
+                        ELSE 0
+                    END, 0
+                ) AS reduction_product,
+                COALESCE(
+                    CASE
+                        WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
+                        ELSE 0
+                    END, 0
+                ) AS price_product_with_reduction
             FROM  
                 v_order_delivery_info vod
                 LEFT JOIN detail_movement dm 
@@ -275,72 +283,72 @@ CREATE OR REPLACE FUNCTION get_basket_link(id_order VARCHAR)
                     )
             WHERE
                 vod.order_id = ''' || id_order || '''
-                ) vod ON vpd.id_order = vod.order_id
-            LEFT JOIN (
-                SELECT 
-                    o.id_order,
-                    o.reduction,
-                    SUM(
-                        CASE
-                            WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
-                            WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
-                            WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
-                            ELSE 0
-                        END
-                    ) AS total_price_product,
-                    SUM(
-                        CASE
-                            WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
-                            WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
-                            WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
-                            ELSE 0
-                        END
-                    ) - (SUM(
-                        CASE
-                            WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
-                            WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
-                            WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
-                            ELSE 0
-                        END
-                    ) * o.reduction / 100) AS result
-                FROM
-                    orders o
-                    LEFT JOIN v_order_delivery_info vod ON o.id_order = vod.order_id
-                    LEFT JOIN detail_movement dm 
-                        ON vod.product_id = dm.id_product 
-                        AND vod.product_ordered_sales_type = ''D''
-                        AND dm.movement_date = (
-                            SELECT MAX(movement_date)
-                            FROM detail_movement
-                            WHERE id_product = vod.product_id 
-                            AND movement_date <= vod.order_date
-                        )
-                    LEFT JOIN wholesale_movement wm 
-                        ON vod.product_id = wm.id_product 
-                        AND vod.product_ordered_sales_type = ''W''
-                        AND wm.movement_date = (
-                            SELECT MAX(movement_date)
-                            FROM wholesale_movement
-                            WHERE id_product = vod.product_id 
-                            AND movement_date <= vod.order_date
-                        )
-                    LEFT JOIN bulk_movement bm 
-                        ON vod.product_id = bm.id_product 
-                        AND vod.product_ordered_sales_type = ''B''
-                        AND bm.movement_date = (
-                            SELECT MAX(movement_date)
-                            FROM bulk_movement
-                            WHERE id_product = vod.product_id 
-                            AND movement_date <= vod.order_date
-                        )
-                WHERE
-                    o.id_order = ''' || id_order || '''
-                GROUP BY 
-                    o.id_order,
-                    o.reduction
-            ) o ON vpd.id_order = o.id_order
-        ';
-        END;
-    $$ LANGUAGE plpgsql;
+        ) vod ON vpd.id_order = vod.order_id
+        LEFT JOIN (
+            SELECT 
+                o.id_order,
+                o.reduction,
+                COALESCE(SUM(
+                    CASE
+                        WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
+                        ELSE 0
+                    END
+                ), 0) AS total_price_product,
+                COALESCE(SUM(
+                    CASE
+                        WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
+                        ELSE 0
+                    END
+                ), 0) - (COALESCE(SUM(
+                    CASE
+                        WHEN vod.product_ordered_sales_type = ''D'' THEN (dm.price - (dm.price * dm.reduction/100)) * vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''W'' THEN (wm.price - (wm.price * wm.reduction/100)) * vod.product_ordered_quantity
+                        WHEN vod.product_ordered_sales_type = ''B'' THEN (bm.price - (bm.price * bm.reduction/100)) * vod.product_ordered_quantity 
+                        ELSE 0
+                    END
+                ), 0) * o.reduction / 100) AS result
+            FROM
+                orders o
+                LEFT JOIN v_order_delivery_info vod ON o.id_order = vod.order_id
+                LEFT JOIN detail_movement dm 
+                    ON vod.product_id = dm.id_product 
+                    AND vod.product_ordered_sales_type = ''D''
+                    AND dm.movement_date = (
+                        SELECT MAX(movement_date)
+                        FROM detail_movement
+                        WHERE id_product = vod.product_id 
+                        AND movement_date <= vod.order_date
+                    )
+                LEFT JOIN wholesale_movement wm 
+                    ON vod.product_id = wm.id_product 
+                    AND vod.product_ordered_sales_type = ''W''
+                    AND wm.movement_date = (
+                        SELECT MAX(movement_date)
+                        FROM wholesale_movement
+                        WHERE id_product = vod.product_id 
+                        AND movement_date <= vod.order_date
+                    )
+                LEFT JOIN bulk_movement bm 
+                    ON vod.product_id = bm.id_product 
+                    AND vod.product_ordered_sales_type = ''B''
+                    AND bm.movement_date = (
+                        SELECT MAX(movement_date)
+                        FROM bulk_movement
+                        WHERE id_product = vod.product_id 
+                        AND movement_date <= vod.order_date
+                    )
+            WHERE
+                o.id_order = ''' || id_order || '''
+            GROUP BY 
+                o.id_order, 
+                o.reduction
+        ) o ON vpd.id_order = o.id_order';
+END;
+$$ LANGUAGE plpgsql;
+
 --requete
 --select * from get_basket_link('ORD0003');

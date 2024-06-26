@@ -3,9 +3,9 @@ if(!defined('BASEPATH')) exit('Access Denied');
 class View_model extends CI_Model {
     public function set_nav_bar($application, $section) {
         $nav_bar = array();
+        $CI =& get_instance();
+        $CI->load->library('session');
         if ($application=="backoffice") {
-            $CI =& get_instance();
-            $CI->load->library('session');
             if ($CI->session->get('admin_status')=='A') {
                 $nav_bar['home']=array('action' => 'disable', 'wording' => 'home');
                 $nav_bar['user']=array('action' => 'disable', 'wording' => 'client');
@@ -21,6 +21,9 @@ class View_model extends CI_Model {
             $nav_bar['user']=array('action' => 'disable', 'wording' => 'user');
             $nav_bar['shopping-bag']=array('action' => 'disable', 'wording' => 'bag');
             $nav_bar['info']=array('action' => 'disable', 'wording' => 'info');
+            if ($CI->session->get("id_client")!=null) {
+                $nav_bar['exit']=array('action' => 'disable', 'wording' => 'log-out');
+            }
         }
         foreach ($nav_bar as $key => $value) {
             if ($value['wording']==$section) {

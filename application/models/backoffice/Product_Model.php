@@ -193,13 +193,25 @@ class Product_Model extends CI_Model
     }
 
     public function get_product_disponibility() {
-        $sql = "SELECT product_id, CASE WHEN ((stock_quantity - order_quantity)*0.2)*0.1 <= 0 THEN 'disabled' ELSE '' END AS D, CASE WHEN ((stock_quantity - order_quantity)*0.2)*0.1 < 10 THEN 'disabled' ELSE '' END AS W, CASE WHEN (stock_quantity - order_quantity)-((stock_quantity - order_quantity)*0.2) <= 0 THEN 'disabled' ELSE '' END AS B from v_product_stock";
+        $sql = "SELECT product_id, CASE WHEN ((stock_quantity - order_quantity)*0.5)*0.1 <= 0 THEN 'disabled' ELSE '' END AS D, CASE WHEN ((stock_quantity - order_quantity)*0.5)*0.1 < 10 THEN 'disabled' ELSE '' END AS W, CASE WHEN (stock_quantity - order_quantity)-((stock_quantity - order_quantity)*0.5) <= 0 THEN 'disabled' ELSE '' END AS B from v_product_stock";
         $disponibility = [];
         $rows = $this->db->query($sql)->result_array();
         foreach ($rows as $data) {
             $disponibility[$data['product_id']]['D'] = $data['d'];
             $disponibility[$data['product_id']]['W'] = $data['w'];
             $disponibility[$data['product_id']]['B'] = $data['b'];
+        }
+
+        return $disponibility;
+    }
+
+    public function get_product_disponibility_quantity() {
+        $sql = "SELECT product_id, ((stock_quantity - order_quantity)*0.5)*0.1 AS packs, (stock_quantity - order_quantity)-((stock_quantity - order_quantity)*0.5) AS kg from v_product_stock";
+        $disponibility = [];
+        $rows = $this->db->query($sql)->result_array();
+        foreach ($rows as $data) {
+            $disponibility[$data['product_id']]['packs'] = $data['packs'];
+            $disponibility[$data['product_id']]['kg'] = $data['kg'];
         }
 
         return $disponibility;

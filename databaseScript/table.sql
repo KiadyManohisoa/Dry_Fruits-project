@@ -113,7 +113,7 @@ CREATE TABLE charges_kg_movement(
 
 CREATE TABLE client_products_review(
    id_product_review VARCHAR(50) DEFAULT ('CPR') || LPAD(nextval('client_products_review_sequence')::TEXT, 4, '0'),
-   stars SMALLINT CHECK (stars >=0 || stars <=5),
+   stars SMALLINT CHECK (stars >=0 AND stars <= 5),
    comment TEXT,
    id_client VARCHAR(20)  NOT NULL,
    id_product INTEGER NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE client_products_review(
 
 CREATE TABLE client_services_review(
    id_service_review VARCHAR(50) DEFAULT ('CSR') || LPAD(nextval('client_services_review_sequence')::TEXT, 4, '0'),
-   stars SMALLINT CHECK (stars >=0 || stars <=5),
+   stars SMALLINT CHECK (stars >=0 AND stars <= 5),
    comment TEXT,
    id_client VARCHAR(20)  NOT NULL,
    review_date TIMESTAMP DEFAULT NOW(),

@@ -3,11 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Data_Loader {
 
-    private function calculate_delivery_cost() {
-        // Exemple de calcul du coût de livraison (à adapter selon vos besoins)
-        return rand(5000, 10000); // Coût aléatoire entre 50 et 100
-    }
-
     public function load_data($section) {
         $CI =& get_instance();
         $CI->load->library("session");
@@ -23,7 +18,6 @@ class Data_Loader {
             $data['user'] = $CI->clients_account->get_client_by_id($id_client);
             $data['last_orders'] = $CI->orders->get_all_client_orders($id_client);
 
-            
             $data['favoris_products'] = array();
             $data['client_favoris'] = array();
             $clients_favorites_prod=$CI->client_favorite_products_model->get_favorites_with_latest_movement($id_client);
@@ -46,7 +40,7 @@ class Data_Loader {
 
         else if ($section == 'bag') {
             if ($CI->session->get("delivery_cost")==null) {
-                $CI->session->set("delivery_cost",$this->calculate_delivery_cost());
+                $CI->session->set("delivery_cost",5000);
             }
             $data['delivery_cost'] = $CI->session->get("delivery_cost");
             $CI->load->model('backoffice/Product_Model','product_model');

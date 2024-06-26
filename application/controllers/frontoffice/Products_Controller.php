@@ -142,7 +142,7 @@ class Products_Controller extends CI_Controller {
     }
 
     public function add_products_to_basket($id_product, $type, $quantity_product = 1) {
-        // $this->session->destroy();
+        $disponibility = $this->product_model->get_product_disponibility_quantity();
         $basket = $this->session->get('basket');
         if ($basket == null) {
             $basket = [];
@@ -153,17 +153,34 @@ class Products_Controller extends CI_Controller {
                 $new_quantity = $basket[$i]['quantity_product'] + $quantity_product;
                 if ($quantity_product == 0 || $new_quantity <= 0) {
                     array_splice($basket, $i, 1); // Remove the product from the basket
+                    $this->session->set('basket', $basket);
                     return;
-                } if ($basket[$i]['type'] == "B" && $new_quantity < 10) {
-                    $data['error'] = "Something went wrong, the type of sale Bulk should contain more than 10 kg";
+                }
+                if (($type=='D' || $type=='W') && $new_quantity > $disponibility[$id_product]['packs']) {
+                    $data['error'] = "Out of packs stock";
                     echo json_encode($data);
                     return;
-                } else if ($basket[$i]['type'] == "W" && $new_quantity < 10) {
-                    $data['error'] = "Something went wrong, the type of sale Wholesale should contain more than 10 packs";
+                }
+                else if ($type=='B' && $new_quantity > $disponibility[$id_product]['kg']) {
+                    $data['error'] = "Out of bulk stock";
                     echo json_encode($data);
                     return;
-                } else {
-                    $basket[$i]['quantity_product'] = $new_quantity;
+                } else{
+                     if ($basket[$i]['type'] == "B" && $new_quantity < 2) {
+                        $data['error'] = "Something went wrong, the type of sale Bulk should contain more than 2 kg";
+                        echo json_encode($data);
+                        return;
+                    } else if ($basket[$i]['type'] == "W" && $new_quantity < 10) {
+                        $data['error'] = "Something went wrong, the type of sale Wholesale should contain more than 10 packs";
+                        echo json_encode($data);
+                        return;
+                    } else {
+                        $basket[$i]['quantity_product'] = $new_quantity;
+                        if ($type=='D' && $new_quantity>= 10) {
+                            $basket[$i]['type']='W';
+                            $basket[$i]['type_sales']='Wholesale';
+                        }
+                    }
                 }
                 $this->session->set('basket', $basket);
                 return;
@@ -174,7 +191,7 @@ class Products_Controller extends CI_Controller {
             $type_sales = '';
             if ($type == "B") {
                 $type_sales = 'Bulk';
-                $quantity_product = 10;
+                $quantity_product = 2;
             } else if ($type == "W") {
                 $type_sales = 'Wholesale';
                 $quantity_product = 10;

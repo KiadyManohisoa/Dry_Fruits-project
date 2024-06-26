@@ -68,7 +68,14 @@ $inverstissor[] = [
 //     echo "-----------------------\n";
 // }
 // ----------------------TEAM -----------------
-$team = [] ; 
+$team = [] ;
+$team[] = [
+    'name' =>'RAKOTOFIRINGA' , 
+    'firstname' => 'Riantsoa Fanantenana' ,
+    'email' => 'rakotofiringa.riantsoa147@gmail.com' , 
+    'picture' => '_'
+];
+
 $team[] = [
     'name' =>'RAKOTOHARITIANA' , 
     'firstname' => 'Hedy Hamael' ,

@@ -180,4 +180,11 @@ class LogClient_Controller extends CI_Controller {
         }
     }
 
+    public function log_out (){
+        $this->session->unset("id_client");
+        $this->session->unset("basket");
+        redirect('frontoffice/View/page');
+    }
+
+
 }

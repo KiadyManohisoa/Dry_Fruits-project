@@ -1,3 +1,4 @@
+const cost = 5000;
 var frontoffice_app = angular.module('frontofficeApp', []);
 function formatNumber(number, decimals = 2, dec_point = '.', thousands_sep = ' ') {
     // Convertir le nombre en chaîne et séparer la partie entière de la partie décimale
@@ -269,7 +270,8 @@ frontoffice_app.controller('heartController', function($http) {
                         let total_after_reduction = (total_prices - (total_prices * (reduction_percentage / 100))).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
                         document.getElementById("total").textContent = total_after_reduction + " Ar";
-                        const total_payement = parseInt((total_after_reduction).replace(' ',''))+ parseInt (document.getElementById("cost").value);
+                        const total_payement = parseFloat(total_prices - (total_prices * (reduction_percentage / 100)))+ cost;
+                        alert(total_payement);
                         document.getElementById("total-payment").innerText = total_payement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + " Ar";
 
                     }
@@ -352,7 +354,7 @@ frontoffice_app.controller('heartController', function($http) {
                         let total_after_reduction = (total_prices - (total_prices * (reduction_percentage / 100))).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
                         document.getElementById("total").textContent = total_after_reduction + " Ar";
-                        const total_payement = parseInt((total_after_reduction).replace(' ',''))+ parseInt (document.getElementById("cost").value);
+                        const total_payement = parseFloat(total_prices - (total_prices * (reduction_percentage / 100)))+ cost;
                         document.getElementById("total-payment").innerText = total_payement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + " Ar";
 
                     }

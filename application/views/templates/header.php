@@ -22,14 +22,18 @@
     <!-- HEADER -->
     <div class="header">
         <div class="row">
-            <div height="50px" class="col-lg-3 col-md-3 col-xs-3 col-sm-3" id="title">
+            <div height="50px" class="col-lg-3 col-md-3 col-xs-1 col-sm-1" id="title">
                 <a href="<?php echo $application==='frontoffice' ? site_url("/frontoffice/View/page/info") : site_url("/backoffice/View/page/home") ?>">
-                    <img height="35px" src="
+                    <img class="hidden-xs hidden-sm" height="35px" src="
                         <?php echo site_url('assets/icons/'.$title.".png") ?>
+                    ">
+                    <img class="hidden-lg hidden-md" height="35px" src="
+                        <?php echo site_url('assets/icons/'.$title."-icon.png") ?>
                     ">
                 </a>
             </div>
-            <div class="col-lg-9 col-md-9 col-xs-9 col-sm-9 last">
+
+            <div class="col-lg-9 col-md-9 col-xs-11 col-sm-11 last">
                 <?php foreach ($nav_bar as $key => $value) { ?>
                     <a href="<?php echo site_url("/".$application."/View/page/".$value['wording']) ?>" class="btn btn-default form-component">
                         <center>
